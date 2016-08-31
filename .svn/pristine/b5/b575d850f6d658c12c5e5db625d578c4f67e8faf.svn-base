@@ -1,0 +1,74 @@
+<!-- 高级搜索 -->
+<div class="high_search" id="highSearch">
+
+    <div class="clear">
+        <p class="fl p1">标签中文名<input type="text" name="name"/></p>
+
+        <p class="fl p2">标签英文名<input type="text" name="code"/></p>
+
+        <p class="fl p3">标签类型<my-select type="text" select-name="type" select-code="21" double-select-id="tag" ng-model="typeOption"/></p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">标签数据类型
+            <my-select select-name="dataCategory" select-code="4" double-select-id="dataSource"
+                       ng-model="dataCategoryOption"/>
+        </p>
+
+        <p class="fl p2">审核状态<select name="modifyStatus" id="modifyStatus">
+            <option value="">请选择</option>
+        </select></p>
+
+        <p class="fl p3">使用状态<select name="useStatus" id="useStatus">
+            <option value="">请选择</option>
+        </select></p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">一级类目
+            <my-select select-name="categoryL1" double-select-id="categoryL2" select-code="24"
+                       ng-model="categoryL1Option"></my-select>
+        </p>
+        <p class="fl p2">二级类目<select name="categoryL2" id="categoryL2"/></p>
+
+        <p class="fl p3">统计口径<input type="text" name="description"/></p></div>
+    <div class="clear">
+        <p class="fl p1">数据源<select name="dataSource" id="dataSource"/></p>
+
+        <p class="fl p2">数据库<input type="text" name="metaDbName"/></p>
+
+        <p class="fl p3">标签表<input type="text" name="metaTableName"/></p></div>
+    <div class="clear">
+        <p class="fl p1">字段名<input type="text" name="metaColumnName"/></p>
+
+        <p class="fl p2">更新周期
+            <my-select select-name="refreshCycle" select-code="14" ng-model="refreshCycle"/>
+        </p>
+        <p class="fl p3">使用项目<input type="text"/></p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">创建人<input type="text" name="createdUserName"/></p>
+
+        <p class="fl p2">修改人<input type="text" name="modifiedUserName"/></p>
+        <p class="fl p3">标签识别<select name="tag" id="tag"/></p>
+    </div>
+    <div class="clear date1">
+        <p class="fl p4">创建时间<input type="text" name="startCreatTime" id="createStart" style="text-indent:25px;"
+                                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'createEnd\')||\'2030-10-01\'}'})"/>至<input
+                type="text" style="text-indent:25px;" id="createEnd" name="endCreateTime"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'createStart\')}',maxDate:'2020-10-01'})"/><img
+                src="./public/images/date.png" class="calender1"/>
+            <img src="./public/images/date.png" class="calender2" alt=""/></p>
+    </div>
+    <div class="clear date2">
+        <p class="fl p4">修改时间<input style="text-indent:25px;" type="text" name="startModifyTime" id="modifyStart"
+                                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'modifyEnd\')||\'2030-10-01\'}'})"/>至<input
+                style="text-indent:25px;" type="text" id="modifyEnd" name="endModifyTime"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'modifyStart\')}',maxDate:'2020-10-01'})"/><img
+                src="./public/images/date.png" class="calender1" alt=""/>
+            <img src="./public/images/date.png" class="calender2" alt=""/></p>
+    </div>
+    <hr/>
+    <div class="submit fr">
+        <a href="javascript:;" class="a1" ng-click="advancedSearchConfirm()">确定</a>
+        <a href="javascript:;" class="a2" ng-click="closeAdvancedSearch()">取消</a>
+    </div>
+</div>

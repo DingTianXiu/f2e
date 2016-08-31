@@ -1,0 +1,1984 @@
+/**
+ * jQuery ligerUI 1.3.3 ligergird
+ */
+!function ($) {
+    function removeArrItem(a, b) {
+        for (var c = a.length - 1; c >= 0; c--) b(a[c]) && a.splice(c, 1)
+    }
+
+    var l = $.ligerui;
+    var isturn = false;
+    var herfPath = '';
+    $.fn.ligerGrid = function () {
+        return $.ligerui.run.call(this, "ligerGrid", arguments)
+    }, $.fn.ligerGetGridManager = function () {
+        return $.ligerui.run.call(this, "ligerGetGridManager", arguments)
+    }, $.ligerDefaults.Grid = {
+        title: null,
+        width: "auto",
+        height: "auto",
+        columnWidth: null,
+        resizable: !0,
+        url: !1,
+        urlParms: null,
+        data: null,
+        usePager: !0,
+        hideLoadButton: !1,
+        pagerRender: null,
+        page: 1,
+        pageSize: 10,
+        pageSizeOptions: [10, 20, 30, 40, 50],
+        parms: [],
+        columns: [],
+        minColToggle: 1,
+        dataType: "server",
+        dataAction: "server",
+        showTableToggleBtn: !1,
+        switchPageSizeApplyComboBox: !1,
+        allowAdjustColWidth: !0,
+        checkbox: !1,
+        isSingleCheck: !1,
+        allowHideColumn: !0,
+        enabledEdit: !1,
+        isScroll: !0,
+        dateFormat: "yyyy-MM-dd",
+        inWindow: !0,
+        statusName: "__status",
+        method: "post",
+        async: !0,
+        fixedCellHeight: !0,
+        heightDiff: 0,
+        cssClass: null,
+        root: "Rows",
+        record: "Total",
+        pageParmName: "page",
+        pagesizeParmName: "pagesize",
+        sortnameParmName: "sortname",
+        sortorderParmName: "sortorder",
+        allowUnSelectRow: !1,
+        alternatingRow: !0,
+        mouseoverRowCssClass: "l-grid-row-over",
+        enabledSort: !0,
+        rowClsRender: null,
+        rowAttrRender: null,
+        groupColumnName: null,
+        groupColumnDisplay: "分组",
+        groupRender: null,
+        totalRender: null,
+        delayLoad: !1,
+        where: null,
+        selectRowButtonOnly: !1,
+        selectable: !0,
+        whenRClickToSelect: !1,
+        contentType: null,
+        checkboxColWidth: 27,
+        detailColWidth: 29,
+        clickToEdit: !0,
+        detailToEdit: !1,
+        onEndEdit: null,
+        minColumnWidth: 80,
+        tree: null,
+        isChecked: null,
+        isSelected: null,
+        frozen: !0,
+        frozenDetail: !1,
+        frozenCheckbox: !0,
+        isShowCheckbox: true,
+        detail: null,
+        detailHeight: 260,
+        isShowDetailToggle: null,
+        rownumbers: !1,
+        frozenRownumbers: !0,
+        rownumbersColWidth: 26,
+        colDraggable: !1,
+        rowDraggable: !1,
+        rowDraggingRender: null,
+        autoCheckChildren: !0,
+        onRowDragDrop: null,
+        rowHeight: 28,
+        headerRowHeight: 28,
+        toolbar: null,
+        toolbarShowInLeft: !0,
+        headerImg: null,
+        editorTopDiff: 3,
+        editorLeftDiff: 1,
+        editorHeightDiff: -1,
+        unSetValidateAttr: !0,
+        autoFilter: !1,
+        rowSelectable: !0,
+        scrollToPage: !1,
+        scrollToAppend: !0,
+        onDragCol: null,
+        onToggleCol: null,
+        onChangeSort: null,
+        onSuccess: null,
+        onDblClickRow: null,
+        onSelectRow: null,
+        onBeforeSelectRow: null,
+        onUnSelectRow: null,
+        onBeforeCheckRow: null,
+        onCheckRow: null,
+        onBeforeCheckAllRow: null,
+        onCheckAllRow: null,
+        onBeforeShowData: null,
+        onAfterShowData: null,
+        onError: null,
+        onSubmit: null,
+        onReload: null,
+        onToFirst: null,
+        onToPrev: null,
+        onToNext: null,
+        onToLast: null,
+        onAfterAddRow: null,
+        onBeforeEdit: null,
+        onBeforeSubmitEdit: null,
+        onAfterEdit: null,
+        onLoading: null,
+        onLoaded: null,
+        onContextmenu: null,
+        onBeforeCancelEdit: null,
+        onAfterSubmitEdit: null,
+        onRowDragDrop: null,
+        onGroupExtend: null,
+        onGroupCollapse: null,
+        onTreeExpand: null,
+        onTreeCollapse: null,
+        onTreeExpanded: null,
+        onTreeCollapsed: null,
+        onLoadData: null,
+        onHeaderCellBulid: null
+    }, $.ligerDefaults.GridString = {
+        errorMessage: "发生错误",
+        pageStatMessage: "显示从{from}到{to}，总 {total} 条 。每页显示：{pagesize}",
+        pageTextMessage: "Page",
+        loadingMessage: "加载中...",
+        findTextMessage: "查找",
+        noRecordMessage: "没有符合条件的记录存在",
+        isContinueByDataChanged: "数据已经改变,如果继续将丢失数据,是否继续?",
+        cancelMessage: "取消",
+        saveMessage: "保存",
+        applyMessage: "应用",
+        draggingMessage: "{count}行"
+    }, $.ligerDefaults.Grid_columns = {
+        id: null,
+        name: null,
+        totalSummary: null,
+        display: null,
+        headerRender: null,
+        isAllowHide: !0,
+        isSort: !1,
+        type: null,
+        columns: null,
+        width: 120,
+        minWidth: 80,
+        format: null,
+        align: "left",
+        hide: !1,
+        editor: null,
+        render: null,
+        textField: null
+    }, $.ligerDefaults.Grid_editor = {
+        type: null,
+        ext: null,
+        onChange: null,
+        onChanged: null
+    }, $.ligerMethos.Grid = $.ligerMethos.Grid || {}, $.ligerDefaults.Grid.sorters = $.ligerDefaults.Grid.sorters || {}, $.ligerDefaults.Grid.formatters = $.ligerDefaults.Grid.formatters || {}, $.ligerDefaults.Grid.editors = $.ligerDefaults.Grid.editors || {}, $.ligerDefaults.Grid.sorters["date"] = function (a, b) {
+        return b > a ? -1 : a > b ? 1 : 0
+    }, $.ligerDefaults.Grid.sorters["int"] = function (a, b) {
+        return parseInt(a) < parseInt(b) ? -1 : parseInt(a) > parseInt(b) ? 1 : 0
+    }, $.ligerDefaults.Grid.sorters["float"] = function (a, b) {
+        return parseFloat(a) < parseFloat(b) ? -1 : parseFloat(a) > parseFloat(b) ? 1 : 0
+    }, $.ligerDefaults.Grid.sorters["string"] = function (a, b) {
+        return a ? a.localeCompare(b) : !1
+    }, $.ligerDefaults.Grid.formatters["date"] = function (value, column) {
+        function getFormatDate(a, b) {
+            var e, f, g;
+            if (this.options, isNaN(a)) return null;
+            e = b, f = {
+                "M+": a.getMonth() + 1,
+                "d+": a.getDate(),
+                "h+": a.getHours(),
+                "m+": a.getMinutes(),
+                "s+": a.getSeconds(),
+                "q+": Math.floor((a.getMonth() + 3) / 3),
+                S: a.getMilliseconds()
+            }, /(y+)/.test(e) && (e = e.replace(RegExp.$1, (a.getFullYear() + "").substr(4 - RegExp.$1.length)));
+            for (g in f) new RegExp("(" + g + ")").test(e) && (e = e.replace(RegExp.$1, 1 == RegExp.$1.length ? f[g] : ("00" + f[g]).substr(("" + f[g]).length)));
+            return e
+        }
+
+        if (!value) return "";
+        if ("string" == typeof value && /^\/Date/.test(value) && (value = value.replace(/^\//, "new ").replace(/\/$/, ""), eval("value = " + value)), value instanceof Date) {
+            var format = column.format || this.options.dateFormat || "yyyy-MM-dd";
+            return getFormatDate(value, format)
+        }
+        return value.toString()
+    }, $.ligerDefaults.Grid.formatters["ref"] = function (a) {
+        return $.isArray(a) ? a.length > 1 ? a[1] : a[0] : a
+    }, $.ligerui.controls.Grid = function (a, b) {
+        $.ligerui.controls.Grid.base.constructor.call(this, a, b)
+    }, $.ligerui.controls.Grid.ligerExtend($.ligerui.core.UIComponent, {
+        __getType: function () {
+            return "$.ligerui.controls.Grid"
+        },
+        __idPrev: function () {
+            return "grid"
+        },
+        _extendMethods: function () {
+            return $.ligerMethos.Grid
+        },
+        _init: function () {
+            var a, b, c, d;
+            $.ligerui.controls.Grid.base._init.call(this), a = this, b = this.options, b.dataType = b.url ? "server" : "local", "local" == b.dataType && (b.data = b.data || [], b.dataAction = "local"), 0 == b.isScroll && (b.height = "auto"), b.frozen || (b.frozenCheckbox = !1, b.frozenDetail = !1, b.frozenRownumbers = !1), b.detailToEdit && (b.enabledEdit = !0, b.clickToEdit = !1, b.detail = {
+                height: "auto",
+                onShowDetail: function (c, d) {
+                    function f() {
+                        $(d).parent().parent().remove(), a.collapseDetail(c)
+                    }
+
+                    $(d).addClass("l-grid-detailpanel-edit"), a.beginEdit(c, function () {
+                        var e = $("<div class='l-editbox'></div>");
+                        return e.width(120).height(b.rowHeight + 1), e.appendTo(d), e
+                    }), $("<div class='l-clear'></div>").appendTo(d), $("<div class='l-button'>" + b.saveMessage + "</div>").appendTo(d).click(function () {
+                        a.endEdit(c), f()
+                    }), $("<div class='l-button'>" + b.applyMessage + "</div>").appendTo(d).click(function () {
+                        a.submitEdit(c)
+                    }), $("<div class='l-button'>" + b.cancelMessage + "</div>").appendTo(d).click(function () {
+                        a.cancelEdit(c), f()
+                    })
+                }
+            }), b.tree && (b.tree.childrenName = b.tree.childrenName || "children", b.tree.isParent = b.tree.isParent || function (a) {
+                    var c = b.tree.childrenName in a;
+                    return c
+                }, b.tree.isExtend = b.tree.isExtend || function (a) {
+                    return "isextend" in a && 0 == a["isextend"] ? !1 : !0
+                });
+            for (c in liger.editors) d = liger.editors[c], !d || c in b.editors || (b.editors[c] = liger.getEditor($.extend({
+                type: c,
+                master: a
+            }, d)))
+        },
+        _render: function () {
+            var c, d, e, a = this,
+                b = this.options;
+            a.grid = $(a.element), a.grid.addClass("l-panel"), c = [], c.push("        <div class='l-panel-header'><span class='l-panel-header-text'></span></div>"), c.push("                    <div class='l-grid-loading'></div>"), c.push("        <div class='l-panel-topbar' style='display:none'><div class='l-panel-topbarinner'></div></div><div class='l-clear'></div>"), c.push("        <div class='l-panel-bwarp'>"), c.push("            <div class='l-panel-body'>"), c.push("                <div class='l-grid'>"), c.push("                    <div class='l-grid-dragging-line'></div>"), c.push("                    <div class='l-grid-popup'><table cellpadding='0' cellspacing='0'><tbody></tbody></table></div>"), c.push("                  <div class='l-grid1'>"), c.push("                      <div class='l-grid-header l-grid-header1'>"), c.push("                          <div class='l-grid-header-inner'><table class='l-grid-header-table' cellpadding='0' cellspacing='0'><tbody></tbody></table></div>"), c.push("                      </div>"), c.push("                      <div class='l-grid-body l-grid-body1'>"), c.push("                      </div>"), c.push("                  </div>"), c.push("                  <div class='l-grid2'>"), c.push("                      <div class='l-grid-header l-grid-header2'>"), c.push("                          <div class='l-grid-header-inner'><table class='l-grid-header-table' cellpadding='0' cellspacing='0'><tbody></tbody></table></div>"), c.push("                      </div>"), c.push("                      <div class='l-grid-body l-grid-body2 l-scroll'>"), c.push("                      </div>"), c.push("                  </div>"), c.push("                 </div>"), c.push("              </div>"), c.push("         </div>"), c.push("         <div class='l-panel-bar'>"), c.push("            <div class='l-panel-bbar-inner'>"), c.push("                <div class='l-bar-group  l-bar-message'><span class='l-bar-text'></span></div>"), c.push("            <div class='l-bar-group l-bar-selectpagesize'></div>"), c.push("                <div class='l-bar-separator'></div>"), c.push("                <div class='l-bar-group'>"), c.push("                    <div class='l-bar-button l-bar-btnfirst'><span></span></div>"), c.push("                    <div class='l-bar-button l-bar-btnprev'><span></span></div>"), c.push("                </div>"), c.push("                <div class='l-bar-separator'></div>"), c.push("                <div class='l-bar-group'><span class='pcontrol'> <input type='text' size='4' value='1' style='width:20px' maxlength='3' /> / <span></span></span></div>"), c.push("                <div class='l-bar-separator'></div>"), c.push("                <div class='l-bar-group'>"), c.push("                     <div class='l-bar-button l-bar-btnnext'><span></span></div>"), c.push("                    <div class='l-bar-button l-bar-btnlast'><span></span></div>"), c.push("                </div>"), c.push("                <div class='l-bar-separator'></div>"), c.push("                <div class='l-bar-group'>"), c.push("                     <div class='l-bar-button l-bar-btnload'><span></span></div>"), c.push("                </div>"), c.push("                <div class='l-bar-separator'></div>"), c.push("                <div class='l-clear'></div>"), c.push("            </div>"), c.push("         </div>"), a.grid.html(c.join("")), a.header = $(".l-panel-header:first", a.grid), a.body = $(".l-panel-body:first", a.grid), a.toolbar = $(".l-panel-bar:first", a.grid), a.popup = $(".l-grid-popup:first", a.grid), a.gridloading = $(".l-grid-loading:first", a.grid), a.draggingline = $(".l-grid-dragging-line", a.grid), a.topbar = $(".l-panel-topbarinner:first", a.grid), a.gridview = $(".l-grid:first", a.grid), a.gridview.attr("id", a.id + "grid"), a.gridview1 = $(".l-grid1:first", a.gridview), a.gridview2 = $(".l-grid2:first", a.gridview), a.gridheader = $(".l-grid-header:first", a.gridview2), a.gridbody = $(".l-grid-body:first", a.gridview2), b.autoFilter && (d = {
+                text: "高级查询",
+                gridid: a.id,
+                click: function () {
+                    a.showFilter()
+                },
+                icon: "search2"
+            }, b.toolbar && b.toolbar.items ? b.toolbar.items.push(d) : b.toolbar = {
+                items: [d]
+            }), a.f = {}, a.f.gridheader = $(".l-grid-header:first", a.gridview1), a.f.gridbody = $(".l-grid-body:first", a.gridview1), a.currentData = null, a.changedCells = {}, a.editors = {}, a.editor = {
+                editing: !1
+            }, a.cacheData = {}, "auto" == b.height && a.bind("SysGridHeightChanged", function () {
+                a.enabledFrozen() && a.gridview.height(Math.max(a.gridview1.height(), a.gridview2.height()))
+            }), e = $.extend({}, b), this._bulid(), this._setColumns(b.columns), delete e["columns"], delete e["data"], delete e["url"], a.set(e), b.delayLoad || (b.url ? a.set({
+                url: b.url
+            }) : b.data && a.set({
+                data: b.data
+            }))
+        },
+        _setFrozen: function (a) {
+            a ? this.grid.addClass("l-frozen") : this.grid.removeClass("l-frozen")
+        },
+        _setCssClass: function (a) {
+            this.grid.addClass(a)
+        },
+        _setLoadingMessage: function (a) {
+            this.gridloading.html(a)
+        },
+        _setToolbar: function (a) {
+            var d, b = this,
+                c = this.options;
+            a && $.fn.ligerToolBar ? (b.topbar.parent().show(), b.toolbarManager = b.topbar.ligerToolBar(a), a.title && (d = $("<div class='l-panel-topbartitle'><span>" + a.title + "</span></div>"), a.icon && (d.append("<img class='l-panel-topbaricon' src='" + a.icon + "'></img>"), d.addClass("l-panel-topbartitle-hasicon")), b.topbar.parent().append(d)), c.toolbarShowInLeft && b.topbar.addClass("l-panel-topbarinner-left")) : b.topbar.parent().remove()
+        },
+        isHorizontalScrollShowed: function () {
+            var a = this,
+                b = a.gridbody.find(".l-grid-body-inner:first");
+            return b.length ? a.gridbody.width() - 20 < b.width() : !1
+        },
+        _setHeight: function (a) {
+            var d, e, f, b = this,
+                c = this.options;
+            return b.unbind("SysGridHeightChanged"), "auto" == a ? (b.bind("SysGridHeightChanged", function () {
+                b.enabledFrozen() && b.gridview.height(Math.max(b.gridview1.height(), b.gridview2.height()))
+            }), void 0) : (a = b._calculateGridBodyHeight(a), a > 0 && (b.gridbody.height(a), c.frozen && (d = b.gridbody.width(), e = $(":first-child", b.gridbody).width(), e && e + 18 > d ? a > 18 && b.f.gridbody.height(a - 18) : b.f.gridbody.height(a)), f = c.headerRowHeight * (b._columnMaxLevel - 1) + c.headerRowHeight - 1, b.gridview.height(a + f)), b._updateHorizontalScrollStatus.ligerDefer(b, 10), void 0)
+        },
+        _calculateGridBodyHeight: function (a) {
+            var d, b = this,
+                c = this.options;
+            return "string" == typeof a && a.indexOf("%") > 0 && (a = c.inWindow ? .01 * $(window).height() * parseInt(a) : .01 * b.grid.parent().height() * parseInt(a)), c.title && (a -= 24), (c.usePager && c.pagerRender || !c.scrollToPage) && (a -= b.toolbar.outerHeight()), c.totalRender && (a -= 25), c.toolbar && (a -= b.topbar.outerHeight()), d = c.headerRowHeight * (b._columnMaxLevel - 1) + c.headerRowHeight - 1, a -= d || 0
+        },
+        _updateHorizontalScrollStatus: function () {
+            var a = this;
+            this.options, a.isHorizontalScrollShowed() ? a.gridview.addClass("l-grid-hashorizontal") : a.gridview.removeClass("l-grid-hashorizontal")
+        },
+        _updateFrozenWidth: function () {
+            var c, a = this;
+            this.options, a.enabledFrozen() && (a.gridview1.width(a.f.gridtablewidth), c = a.gridview.width() - a.f.gridtablewidth, a.gridview2.css({
+                left: a.f.gridtablewidth
+            }), c > 0 && a.gridview2.css({
+                width: c
+            }))
+        },
+        _setWidth: function () {
+            var b = this;
+            this.options, b.enabledFrozen() && b._onResize()
+        },
+        _setUrl: function (a) {
+            this.options.url = a, a ? (this.options.dataType = "server", this.loadData(!0)) : this.options.dataType = "local"
+        },
+        removeParm: function (a) {
+            var b = this,
+                c = b.get("parms");
+            c || (c = {}), c instanceof Array ? removeArrItem(c, function (b) {
+                return b.name == a
+            }) : delete c[a], b.set("parms", c)
+        },
+        setParm: function (a, b) {
+            var c = this,
+                d = c.get("parms");
+            d || (d = {}), d instanceof Array ? (removeArrItem(d, function (b) {
+                return b.name == a
+            }), d.push({
+                name: a,
+                value: b
+            })) : d[a] = b, c.set("parms", d)
+        },
+        _setData: function () {
+            this.loadData(this.options.data), this.trigger("afterSetData")
+        },
+        loadData: function (a, b) {
+            var e, f, g, h, i, j, c = this,
+                d = this.options;
+            if (c.loading = !0, c.trigger("loadData"), e = null, f = !0, "function" == typeof a ? (e = a, c.lastData ? c.data = c.lastData : (c.data = c.currentData, c.data || (c.data = {}), c.data[d.root] || (c.data[d.root] = []), c.lastData = c.data), f = !1) : "boolean" == typeof a ? f = a : "object" == typeof a && a ? (f = !1, d.dataType = "local", d.data = a) : "number" == typeof a && (d.newPage = a), d.newPage || (d.newPage = 1), "server" == d.dataAction && (d.sortOrder || (d.sortOrder = "asc")), g = [], d.parms)
+                if (h = $.isFunction(d.parms) ? d.parms() : d.parms, h.length)
+                    for ($(h).each(function () {
+                        g.push({
+                            name: this.name,
+                            value: this.value
+                        })
+                    }), i = h.length - 1; i >= 0; i--) h[i].temp && h.splice(i, 1);
+                else if ("object" == typeof h)
+                    for (j in h) g.push({
+                        name: j,
+                        value: h[j]
+                    });
+            "server" == d.dataAction && (d.usePager && (g.push({
+                name: d.pageParmName,
+                value: d.newPage
+            }), g.push({
+                name: d.pagesizeParmName,
+                value: d.pageSize
+            })), d.sortName && (g.push({
+                name: d.sortnameParmName,
+                value: d.sortName
+            }), g.push({
+                name: d.sortorderParmName,
+                value: d.sortOrder
+            }))), $(".l-bar-btnload span", c.toolbar).addClass("l-disabled"), "local" == d.dataType ? (c.filteredData = $.extend(!0, {}, d.data || c.currentData), e && (c.filteredData[d.root] = c._searchData(c.filteredData[d.root], e)), c.currentData = d.usePager ? c._getCurrentPageData(c.filteredData) : c.filteredData, c._convertTreeData(), c._showData()) : "local" != d.dataAction || f ? c.loadServerData(g, e, b) : c.data && c.data[d.root] && (c.filteredData = c.data, e && (c.filteredData[d.root] = c._searchData(c.filteredData[d.root], e)), c.currentData = c._getCurrentPageData(c.filteredData), c._convertTreeData(), c._showData()), c.loading = !1
+        },
+        _convertTreeData: function () {
+            var a = this,
+                b = this.options;
+            b.tree && b.tree.idField && b.tree.parentIDField && (a.currentData[b.root] = a.arrayToTree(a.currentData[b.root], b.tree.idField, b.tree.parentIDField), a.currentData[b.record] = a.currentData[b.root].length)
+        },
+        loadServerData: function (a, b, c) {
+            function i(a) {
+                var b, c, d;
+                if (!a) return "null";
+                if (b = a, c = {}, $.isArray(b))
+                    for (d = 0; d < b.length; d++) c[b[d].name] = b[d].value;
+                else c = b;
+                return liger.toJSON(c)
+            }
+
+            var g, h, d = this,
+                e = this.options,
+                f = e.url;
+            if ($.isFunction(f) && (f = f.call(d)), g = $.isFunction(e.urlParms) ? e.urlParms.call(d) : e.urlParms)
+                for (name in g) f += -1 == f.indexOf("?") ? "?" : "&", f += name + "=" + g[name];
+            h = {
+                type: e.method,
+                headers: {
+                    ticket: Cookies.get("auth") || ""
+                },
+                url: f,
+                data: a,
+                async: e.async,
+                dataType: "json",
+                beforeSend: function () {
+                    d.hasBind("loading") ? d.trigger("loading") : d.toggleLoading(!0)
+                },
+                success: function (a) {
+                    return d.trigger("success", [a, d]), a && a[e.root] && a[e.root].length ? (d.data = a, null != d.data[e.record] && (d.cacheData.records = d.data[e.record]), "server" == e.dataAction ? (d.currentData = d.data, null == d.currentData[e.record] && d.cacheData.records && (d.currentData[e.record] = d.cacheData.records)) : (d.filteredData = d.data, b && (d.filteredData[e.root] = d._searchData(d.filteredData[e.root], b)), d.currentData = e.usePager ? d._getCurrentPageData(d.filteredData) : d.filteredData), d._convertTreeData(), d._showData.ligerDefer(d, 10, [c]), void 0) : (d.currentData = d.data = {}, d.currentData[e.root] = d.data[e.root] = [], d.currentData[e.record] = d.data[e.record] = a && a[e.record] ? a[e.record] : 0, d._convertTreeData(), d._showData(c), void 0)
+                },
+                complete: function () {
+                    d.trigger("complete", [d]), d.hasBind("loaded") ? d.trigger("loaded", [d]) : d.toggleLoading.ligerDefer(d, 10, [!1])
+                },
+                error: function (a, b, c) {
+                    d.currentData = d.data = {}, d.currentData[e.root] = d.data[e.root] = [], d.currentData[e.record] = d.data[e.record] = 0, d.toggleLoading.ligerDefer(d, 10, [!1]), $(".l-bar-btnload span", d.toolbar).removeClass("l-disabled"), d.trigger("error", [a, b, c])
+                }
+            }, e.contentType && (h.contentType = e.contentType), "application/json" == e.contentType && "string" != typeof parms && (h.data = i(a)), $.ajax(h)
+        },
+        toggleLoading: function (a) {
+            this.gridloading[a ? "show" : "hide"]()
+        },
+        _createEditor: function (a, b, c, d, e) {
+            var f = a.create.call(this, b, c);
+            return a.setValue && a.setValue.call(this, f, c.value, c), c.column.editor && c.column.editor.initSelect && (f.element && $(f.element).is(":text") && $(f.element).select(), f instanceof jQuery && (f.is(":text") ? f.select() : f.find(":text").select())), a.setText && c.column.textField && a.setText.call(this, f, c.text, c), a.resize && a.resize.call(this, f, d, e, c), f
+        },
+        beginEdit: function (a, b) {
+            var e, f, g, h, i, j, k, l, m, n, c = this,
+                d = this.options;
+            if (d.enabledEdit && (e = c.getRow(a), !e._editing && 0 != c.trigger("beginEdit", {
+                    record: e,
+                    rowindex: e["__index"]
+                }))) {
+                for (c.editors[e["__id"]] = {}, e._editing = !0, c.reRender({
+                    rowdata: e
+                }), b = b || function (a, b) {
+                        var d = c.getCellObj(a, b),
+                            e = $(d).html("");
+                        return c.setCellEditing(a, b, !0), e
+                    }, f = 0, g = c.columns.length; g > f; f++) h = c.columns[f], h.name && h.editor && h.editor.type && d.editors[h.editor.type] && (i = d.editors[h.editor.type], j = {
+                    record: e,
+                    value: c._getValueByName(e, h.name),
+                    column: h,
+                    rowindex: e["__index"],
+                    grid: c
+                }, k = b(e, h), l = k.width(), m = k.height(), n = c._createEditor(i, k, j, l, m), c.editors[e["__id"]][h["__id"]] = {
+                    editor: i,
+                    input: n,
+                    editParm: j,
+                    container: k
+                });
+                c.trigger("afterBeginEdit", {
+                    record: e,
+                    rowindex: e["__index"]
+                })
+            }
+        },
+        cancelEdit: function (a) {
+            var c, d, e, f, b = this;
+            if (void 0 == a)
+                for (c in b.editors) b.cancelEdit(c);
+            else {
+                if (d = b.getRow(a), !b.editors[d["__id"]]) return;
+                if (0 == b.trigger("beforeCancelEdit", {
+                        record: d,
+                        rowindex: d["__index"]
+                    })) return;
+                for (e in b.editors[d["__id"]]) f = b.editors[d["__id"]][e], f.editor.destroy && f.editor.destroy(f.input, f.editParm);
+                delete b.editors[d["__id"]], delete d["_editing"], b.reRender({
+                    rowdata: d
+                })
+            }
+        },
+        addEditRow: function (a, b) {
+            this.submitEdit(), a = this.add(a), this.beginEdit(a, b)
+        },
+        submitEdit: function (a) {
+            var d, e, f, g, h, i, b = this;
+            if (this.options, void 0 == a)
+                for (d in b.editors) b.submitEdit(d);
+            else {
+                if (e = b.getRow(a), f = {}, !e || !b.editors[e["__id"]]) return;
+                for (g in b.editors[e["__id"]]) h = b.editors[e["__id"]][g], i = h.editParm.column, i.name && (f[i.name] = h.editor.getValue(h.input, h.editParm)), i.textField && h.editor.getText && (f[i.textField] = h.editor.getText(h.input, h.editParm));
+                if (0 == b.trigger("beforeSubmitEdit", {
+                        record: e,
+                        rowindex: e["__index"],
+                        newdata: f
+                    })) return !1;
+                b.updateRow(e, f), b.trigger("afterSubmitEdit", {
+                    record: e,
+                    rowindex: e["__index"],
+                    newdata: f
+                })
+            }
+        },
+        _enabledEditByCell: function (a) {
+            var d, b = this;
+            return this.options, d = b.getColumn(a), d ? d.editor && d.editor.type : !1
+        },
+        endEditToNext: function () {
+            function j() {
+                return e.parent("tr").next(".l-grid-row").find("td:first")
+            }
+
+            var c, d, e, f, g, i, a = this;
+            if (this.options, c = a.editor, d = null, e = null, c && (f = c.editParm, g = f.column, $.inArray(g, a.columns), i = a.getCellObj(f.record, f.column), e = $(i), d = e.next(), d.length || (d = j()), d.length))
+                for (; !a._enabledEditByCell(d.get(0));) e = d, d = d.next(), d.length || (d = j());
+            a.endEdit(), d && d.length && a._applyEditor(d.get(0))
+        },
+        endEdit: function (a) {
+            var d, e, f, g, b = this;
+            if (this.options, b.editor.editing) d = b.editor, b.trigger("sysEndEdit", [b.editor.editParm]), b.trigger("endEdit", [b.editor.editParm]), d.editor.destroy && d.editor.destroy(d.input, d.editParm), b.editor.container.remove(), b.reRender({
+                rowdata: b.editor.editParm.record,
+                column: b.editor.editParm.column
+            }), b.trigger("afterEdit", [b.editor.editParm]), b.editor = {
+                editing: !1
+            };
+            else if (void 0 != a) {
+                if (e = b.getRow(a), !b.editors[e["__id"]]) return;
+                if (0 == b.submitEdit(a)) return !1;
+                for (f in b.editors[e["__id"]]) d = b.editors[e["__id"]][f], d.editor.destroy && d.editor.destroy(d.input, d.editParm);
+                delete b.editors[e["__id"]], delete e["_editing"], b.trigger("afterEdit", {
+                    record: e,
+                    rowindex: e["__index"]
+                })
+            } else
+                for (g in b.editors) b.endEdit(g);
+            b._fixHeight.ligerDefer(b, 10)
+        },
+        setWidth: function (a) {
+            return this._setWidth(a)
+        },
+        setHeight: function (a) {
+            return this._setHeight(a)
+        },
+        enabledCheckbox: function () {
+            return this.options.checkbox ? !0 : !1
+        },
+        enabledFrozen: function () {
+            var c, d, e, a = this,
+                b = this.options;
+            if (!b.frozen) return !1;
+            if (c = a.columns || [], a.enabledDetail() && b.frozenDetail || a.enabledCheckbox() && b.frozenCheckbox || b.frozenRownumbers && b.rownumbers) return !0;
+            for (d = 0, e = c.length; e > d; d++)
+                if (c[d].frozen) return !0;
+            return this._setFrozen(!1), !1
+        },
+        enabledDetailEdit: function () {
+            return this.enabledDetail() ? this.options.detailToEdit ? !0 : !1 : !1
+        },
+        enabledDetail: function () {
+            return this.options.detail && this.options.detail.onShowDetail ? !0 : !1
+        },
+        enabledGroup: function () {
+            return this.options.groupColumnName ? !0 : !1
+        },
+        deleteSelectedRow: function () {
+            var a, b;
+            if (this.selected) {
+                for (a in this.selected) b = this.selected[a], b["__id"] in this.records && this._deleteData.ligerDefer(this, 10, [b]);
+                this.reRender.ligerDefer(this, 20)
+            }
+        },
+        removeRange: function (a) {
+            var b = this;
+            this.options, $.each(a, function () {
+                b._removeData(this)
+            }), b.reRender()
+        },
+        remove: function (a) {
+            var b = this;
+            this.options, b.getRow(a), b._removeData(a), b.reRender()
+        },
+        deleteRange: function (a) {
+            var b = this;
+            this.options, $.each(a, function () {
+                b._deleteData(this)
+            }), b.reRender()
+        },
+        deleteRow: function (a) {
+            var d, b = this;
+            this.options, d = b.getRow(a), d && (b._deleteData(d), b.reRender(), b.isDataChanged = !0)
+        },
+        _deleteData: function (a) {
+            var e, f, g, b = this,
+                c = this.options,
+                d = b.getRow(a);
+            if (d[c.statusName] = "delete", c.tree && (e = b.getChildren(d, !0)))
+                for (f = 0, g = e.length; g > f; f++) e[f][c.statusName] = "delete";
+            b.deletedRows = b.deletedRows || [], b.deletedRows.push(d), b._removeSelected(d)
+        },
+        updateCell: function (a, b, c) {
+            var f, g, h, i, j, k, l, m, d = this,
+                e = this.options;
+            if ("string" != typeof a) "number" == typeof a ? (f = d.columns[a], h = d.getRow(c), g = d.getCellObj(h, f)) : "object" == typeof a && a["__id"] ? (f = a, h = d.getRow(c), g = d.getCellObj(h, f)) : (g = a, k = g.id.split("|"), l = k[k.length - 1], f = d._columns[l], m = $(g).parent(), h = h || d.getRow(m[0])), null != b && f.name && (d._setValueByName(h, f.name, b), "add" != h[e.statusName] && (h[e.statusName] = "update"), d.isDataChanged = !0), d.reRender({
+                rowdata: h,
+                column: f
+            });
+            else
+                for (i = 0, j = d.columns.length; j > i; i++) d.columns[i].name == a && d.updateCell(i, b, c)
+        },
+        addRows: function (a, b, c, d) {
+            var e = this;
+            this.options, $(a).each(function () {
+                e.addRow(this, b, c, d)
+            })
+        },
+        _createRowid: function () {
+            return "r" + (1e3 + this.recordNumber)
+        },
+        _isRowId: function (a) {
+            return a in this.records
+        },
+        _addNewRecord: function (a, b, c) {
+            var f, g, h, d = this,
+                e = this.options;
+            return d.recordNumber++, a["__id"] = d._createRowid(), a["__previd"] = b, b && -1 != b ? (f = d.records[b], f["__nextid"] && -1 != f["__nextid"] && (g = d.records[f["__nextid"]], g && (g["__previd"] = a["__id"])), f["__nextid"] = a["__id"], a["__index"] = f["__index"] + 1) : a["__index"] = 0, e.tree && (c && -1 != c ? (h = d.records[c], a["__pid"] = c, a["__level"] = h["__level"] + 1) : (a["__pid"] = -1, a["__level"] = 1), a["__hasChildren"] = a[e.tree.childrenName] ? !0 : !1), a[e.statusName] = a[e.statusName] || "nochanged", d.rows[a["__index"]] = a, d.records[a["__id"]] = a, a
+        },
+        _getRows: function (a) {
+            function e(a) {
+                var b, f, g;
+                if (a && a.length)
+                    for (b = 0, f = a.length; f > b; b++) g = a[b], d.push(g), g[c.tree.childrenName] && e(g[c.tree.childrenName])
+            }
+
+            var c = this.options,
+                d = [];
+            return e(a), d
+        },
+        _updateGridData: function () {
+            function d(e, f) {
+                var g, h, i;
+                if (e && e.length)
+                    for (g = 0, h = e.length; h > g; g++) i = e[g], a.formatRecord(i), "delete" != i[b.statusName] && (a._addNewRecord(i, c, f), c = i["__id"], i["__hasChildren"] && d(i[b.tree.childrenName], i["__id"]))
+            }
+
+            var c, a = this,
+                b = this.options;
+            return a.recordNumber = 0, a.rows = [], a.records = {}, c = -1, d(a.currentData[b.root], -1), a.rows
+        },
+        _moveData: function (a, b, c) {
+            var f, g, h, i, j, d = this;
+            this.options, f = d.getRow(a), g = d.getRow(b), j = d._getParentChildren(f), h = $.inArray(f, j), j.splice(h, 1), j = d._getParentChildren(g), i = $.inArray(g, j), j.splice(i + (c ? 1 : 0), 0, f)
+        },
+        move: function (a, b, c) {
+            this._moveData(a, b, c), this.reRender()
+        },
+        moveRange: function (a, b, c) {
+            for (var d in a) this._moveData(a[d], b, c);
+            this.reRender()
+        },
+        up: function (a) {
+            var d, e, f, g, b = this;
+            this.options, d = b.getRow(a), e = b._getParentChildren(d), f = $.inArray(d, e), -1 != f && 0 != f && (g = b.getSelected(), b.move(d, e[f - 1], !1), b.select(g))
+        },
+        down: function (a) {
+            var d, e, f, g, b = this;
+            this.options, d = b.getRow(a), e = b._getParentChildren(d), f = $.inArray(d, e), -1 != f && f != e.length - 1 && (g = b.getSelected(), b.move(d, e[f + 1], !0), b.select(g))
+        },
+        addRow: function (a, b, c, d) {
+            var g, h, i, e = this,
+                f = this.options;
+            if (a = a || {}, e._addData(a, d, b, c), e.reRender(), a[f.statusName] = "add", f.tree && (g = e.getChildren(a, !0)))
+                for (h = 0, i = g.length; i > h; h++) g[h][f.statusName] = "add";
+            return e.isDataChanged = !0, f.total = f.total ? f.total + 1 : 1, f.pageCount = Math.ceil(f.total / f.pageSize), e._buildPager(), e.trigger("SysGridHeightChanged"), e.trigger("afterAddRow", [a]), a
+        },
+        updateRow: function (a, b) {
+            var c = this,
+                d = this.options,
+                e = c.getRow(a);
+            return c.isDataChanged = !0, $.extend(e, b || {}), "add" != e[d.statusName] && (e[d.statusName] = "update"), c.reRender.ligerDefer(c, 10, [{
+                rowdata: e
+            }]), e
+        },
+        setCellEditing: function (a, b, c) {
+
+            var f, g, h, i, j, d = this;
+            if (this.options, f = d.getCellObj(a, b), g = c ? "addClass" : "removeClass", $(f)[g]("l-grid-row-cell-editing"), 0 != a["__id"]) {
+                if (h = $(d.getRowObj(a["__id"])).prev(), !h.length || h.length <= 0 || null == h[0].id || "" == h[0].id) return;
+                if (i = d.getRow(h[0]), j = d.getCellObj(i, b), !j) return;
+                $(j)[g]("l-grid-row-cell-editing-topcell")
+            }
+            -1 != b["__previd"] && null != b["__previd"] && (j = $(d.getCellObj(a, b)).prev(), $(j)[g]("l-grid-row-cell-editing-leftcell"))
+        },
+        reRender: function (a) {
+
+            function i(a) {
+                var d, e;
+                if (a.totalSummary)
+                    for (d = 0; d < b.totalNumber; d++) e = document.getElementById(b.id + "|total" + d + "|" + a["__id"]), $("div:first", e).html(b._getTotalCellContent(a, b.groups && b.groups[d] ? b.groups[d] : b.currentData[c.root]))
+            }
+
+            var d, e, f, g, h, b = this,
+                c = this.options;
+            if (a = a || {}, d = a.rowdata, e = a.column, f = a.totalOnly, !(e && (e.isdetail || e.ischeckbox) || d && "delete" == d[c.statusName]))
+                if (f) $(b.columns).each(function () {
+                    i(this)
+                });
+                else if (d && e) g = b.getCellObj(d, e), $(g).html(b._getCellHtml(d, e)), e.issystem || b.setCellEditing(d, e, !1);
+                else if (d) $(b.columns).each(function () {
+                    b.reRender({
+                        rowdata: d,
+                        column: this
+                    })
+                });
+                else if (e) {
+                    for (h in b.records) b.reRender({
+                        rowdata: b.records[h],
+                        column: e
+                    });
+                    i(e)
+                } else b._showData()
+        },
+        getData: function (a, b) {
+            var f, g, c = this,
+                d = this.options,
+                e = [];
+            void 0 == b && (b = !0);
+            for (f in c.records) g = $.extend(!0, {}, c.records[f]), (g[d.statusName] == a || void 0 == a) && e.push(c.formatRecord(g, b));
+            return e
+        },
+        formatRecord: function (a, b) {
+            return delete a["__id"], delete a["__previd"], delete a["__nextid"], delete a["__index"], this.options.tree && (delete a["__pid"], delete a["__level"], delete a["__hasChildren"]), b && delete a[this.options.statusName], a
+        },
+        getUpdated: function () {
+            return this.getData("update", !0)
+        },
+        getDeleted: function () {
+            return this.deletedRows
+        },
+        getAdded: function () {
+            return this.getData("add", !0)
+        },
+        getChanges: function () {
+            var c, a = this;
+            return this.options, c = [], this.deletedRows && $(this.deletedRows).each(function () {
+                var b = $.extend(!0, {}, this);
+                c.push(a.formatRecord(b, !1))
+            }), $.merge(c, a.getData("update", !1)), $.merge(c, a.getData("add", !1)), c
+        },
+        getColumn: function (a) {
+            var d, e, b = this;
+            return this.options, "string" == typeof a ? b._isColumnId(a) ? b._columns[a] : b.columns[parseInt(a)] : "number" == typeof a ? b.columns[a] : "object" == typeof a && 1 == a.nodeType ? (d = a.id.split("|"), e = d[d.length - 1], b._columns[e]) : a
+        },
+        getColumnByName: function (a) {
+            var b = this;
+            for (this.options, i = 0; i < b.columns.length; i++)
+                if (b.columns[i].name == a) return b.columns[i];
+            return null
+        },
+        getColumnType: function (a) {
+            var b = this;
+            for (this.options, i = 0; i < b.columns.length; i++)
+                if (b.columns[i].name == a) return b.columns[i].type ? b.columns[i].type : "string";
+            return null
+        },
+        isTotalSummary: function () {
+            var c, a = this;
+            for (this.options, c = 0; c < a.columns.length; c++)
+                if (a.columns[c].totalSummary) return !0;
+            return !1
+        },
+        getColumns: function (a) {
+            var d, e, f, b = this;
+            this.options, d = [];
+            for (e in b._columns) f = b._columns[e], void 0 != a ? f["__level"] == a && d.push(f) : f["__leaf"] && d.push(f);
+            return d
+        },
+        changeSort: function (a, b) {
+            var e, c = this,
+                d = this.options;
+            if (c.loading) return !0;
+            if ("local" == d.dataAction) {
+                if (e = c.getColumnType(a), c.sortedData || (c.sortedData = c.filteredData), !c.sortedData || !c.sortedData[d.root]) return;
+                d.sortName == a ? c.sortedData[d.root].reverse() : c.sortedData[d.root].sort(function (b, d) {
+                    return c._compareData(b, d, a, e)
+                }), c.currentData = d.usePager ? c._getCurrentPageData(c.sortedData) : c.sortedData, c._showData()
+            }
+            d.sortName = a, d.sortOrder = b, "server" == d.dataAction && c.loadData(d.where)
+        },
+        changePage: function (a) {
+            var d, e, b = this,
+                c = this.options;
+            if (b.loading) return !0;
+            if ("local" != c.dataAction && b.isDataChanged && !confirm(c.isContinueByDataChanged)) return !1;
+            switch (c.pageCount = parseInt($(".pcontrol span", b.toolbar).html()), a) {
+                case "first":
+                    if (1 == c.page) return;
+                    c.newPage = 1;
+                    break;
+                case "prev":
+                    if (1 == c.page) return;
+                    c.page > 1 && (c.newPage = parseInt(c.page) - 1);
+                    break;
+                case "next":
+                    if (c.page >= c.pageCount) return;
+                    c.newPage = parseInt(c.page) + 1;
+                    break;
+                case "last":
+                    if (c.page >= c.pageCount) return;
+                    c.newPage = c.pageCount;
+                    break;
+                case "input":
+                    d = parseInt($(".pcontrol input", b.toolbar).val()), isNaN(d) && (d = 1), 1 > d ? d = 1 : d > c.pageCount && (d = c.pageCount), $(".pcontrol input", b.toolbar).val(d), c.newPage = d
+            }
+            return c.newPage == c.page ? !1 : (1 == c.newPage ? ($(".l-bar-btnfirst span", b.toolbar).addClass("l-disabled"), $(".l-bar-btnprev span", b.toolbar).addClass("l-disabled")) : ($(".l-bar-btnfirst span", b.toolbar).removeClass("l-disabled"), $(".l-bar-btnprev span", b.toolbar).removeClass("l-disabled")), c.newPage == c.pageCount ? ($(".l-bar-btnlast span", b.toolbar).addClass("l-disabled"), $(".l-bar-btnnext span", b.toolbar).addClass("l-disabled")) : ($(".l-bar-btnlast span", b.toolbar).removeClass("l-disabled"), $(".l-bar-btnnext span", b.toolbar).removeClass("l-disabled")), b.trigger("changePage", [c.newPage]), "server" == c.dataAction ? (c.parms || (c.parms = []), $.isArray(c.parms) ? c.parms.push({
+                name: "changepage",
+                value: "1",
+                temp: !0
+            }) : c.parms["changepage"] = "1", b.loadData(c.where)) : (b.currentData = b._getCurrentPageData(b.filteredData), c.tree && (e = c.tree.childrenName, $(b.filteredData[c.root]).each(function (a, b) {
+                b[e] && (b[e] = [])
+            }), b._convertTreeData()), b._showData()), void 0)
+        },
+        getSelectedRow: function () {
+            var a, b;
+            for (a in this.selected)
+                if (b = this.selected[a], b["__id"] in this.records) return b;
+            return null
+        },
+        getSelectedRows: function () {
+            var b, c, a = [];
+            for (b in this.selected) c = this.selected[b], c["__id"] in this.records && a.push(c);
+            return a
+        },
+        getSelectedRowObj: function () {
+            var a, b;
+            for (a in this.selected)
+                if (b = this.selected[a], b["__id"] in this.records) return this.getRowObj(b);
+            return null
+        },
+        getSelectedRowObjs: function () {
+            var b, c, a = [];
+            for (b in this.selected) c = this.selected[b], c["__id"] in this.records && a.push(this.getRowObj(c));
+            return a
+        },
+        getCellObj: function (a, b) {
+            var c = this.getRow(a);
+            return b = this.getColumn(b), document.getElementById(this._getCellDomId(c, b))
+        },
+        getRowObj: function (a, b) {
+            var c = this;
+            return this.options, null == a ? null : "string" == typeof a ? c._isRowId(a) ? document.getElementById(c.id + (b ? "|1|" : "|2|") + a) : document.getElementById(c.id + (b ? "|1|" : "|2|") + c.rows[parseInt(a)]["__id"]) : "number" == typeof a ? document.getElementById(c.id + (b ? "|1|" : "|2|") + c.rows[a]["__id"]) : "object" == typeof a && a["__id"] ? c.getRowObj(a["__id"], b) : a
+        },
+        getRow: function (a) {
+            var b = this;
+            return this.options, null == a ? null : "string" == typeof a ? b._isRowId(a) ? b.records[a] : b.rows[parseInt(a)] : "number" == typeof a ? b.rows[parseInt(a)] : "object" != typeof a || 1 != a.nodeType || a["__id"] ? a : b._getRowByDomId(a.id)
+        },
+        _setColumnVisible: function (a, b) {
+            var e, f, g, c = this;
+            if (this.options, b) {
+                if (a._hide = !0, document.getElementById(a["__domid"]).style.display = "none", -1 != a["__pid"]) {
+                    for (f = !0, e = this._columns[a["__pid"]], g = 0; e && g < e.columns.length; g++)
+                        if (!e.columns[g]._hide) {
+                            f = !1;
+                            break
+                        }
+                    f && (e._hide = !0, document.getElementById(e["__domid"]).style.display = "none", this._setColumnVisible(e, b))
+                }
+            } else a._hide = !1, document.getElementById(a["__domid"]).style.display = "", -1 != a["__pid"] && (e = c._columns[a["__pid"]], e._hide && (document.getElementById(e["__domid"]).style.display = "", this._setColumnVisible(e, b)))
+        },
+        toggleCol: function (a, b, c) {
+            var f, g, h, i, j, k, l, m, d = this;
+            if (this.options, "number" == typeof a) f = d.columns[a];
+            else if ("object" == typeof a && a["__id"]) f = a;
+            else if ("string" == typeof a) {
+                if (!d._isColumnId(a)) return $(d.columns).each(function () {
+                    this.name == a && d.toggleCol(this, b, c)
+                }), void 0;
+                f = d._columns[a]
+            }
+            if (f && (g = f["__leafindex"], h = document.getElementById(f["__domid"]))) {
+                h = $(h), i = [];
+                for (j in d.rows) k = d.getCellObj(d.rows[j], f), k && i.push(k);
+                for (j = 0; j < d.totalNumber; j++) l = document.getElementById(d.id + "|total" + j + "|" + f["__id"]), l && i.push(l);
+                m = f._width, b && f._hide ? (f.frozen ? d.f.gridtablewidth += parseInt(m) + 1 : d.gridtablewidth += parseInt(m) + 1, d._setColumnVisible(f, !1), $(i).show()) : b || f._hide || (f.frozen ? d.f.gridtablewidth -= parseInt(m) + 1 : d.gridtablewidth -= parseInt(m) + 1, d._setColumnVisible(f, !0), $(i).hide()), f.frozen ? ($("div:first", d.f.gridheader).width(d.f.gridtablewidth), $("div:first", d.f.gridbody).width(d.f.gridtablewidth)) : ($("div:first", d.gridheader).width(d.gridtablewidth + 40), d.gridtablewidth ? $("div:first", d.gridbody).width(d.gridtablewidth) : $("div:first", d.gridbody).css("width", "auto")), d._updateFrozenWidth(), c || $(":checkbox[columnindex=" + g + "]", d.popup).each(function () {
+                    if (this.checked = b, $.fn.ligerCheckBox) {
+                        var a = $(this).ligerGetCheckBoxManager();
+                        a && a.updateStyle()
+                    }
+                })
+            }
+            $('.l-grid2').css('left', 0)
+            $('.l-grid-body-inner').attr('style', '')
+        },
+        setColumnWidth: function (a, b) {
+            var e, f, g, h, i, j, k, l, m, c = this,
+                d = this.options;
+            if (b) {
+                if (b = parseInt(b, 10), "number" == typeof a) e = c.columns[a];
+                else if ("object" == typeof a && a["__id"]) e = a;
+                else if ("string" == typeof a) {
+                    if (!c._isColumnId(a)) return $(c.columns).each(function () {
+                        this.name == a && c.setColumnWidth(this, b)
+                    }), void 0;
+                    e = c._columns[a]
+                }
+                if (e && (f = d.minColumnWidth, e.minWidth && (f = e.minWidth), b = f > b ? f : b, g = b - e._width, 0 != c.trigger("beforeChangeColumnWidth", [e, b]))) {
+                    e._width = b, e.frozen ? (c.f.gridtablewidth += g, $("div:first", c.f.gridheader).width(c.f.gridtablewidth), $("div:first", c.f.gridbody).width(c.f.gridtablewidth)) : (c.gridtablewidth += g, $("div:first", c.gridheader).width(c.gridtablewidth + 40), $("div:first", c.gridbody).width(c.gridtablewidth)), $(document.getElementById(e["__domid"])).css("width", b), h = [];
+                    for (i in c.records) j = c.getCellObj(c.records[i], e), j && h.push(j), !c.enabledDetailEdit() && c.editors[i] && c.editors[i][e["__id"]] && (k = c.editors[i][e["__id"]], k.editor.resize && k.editor.resize(k.input, b, k.container.height(), k.editParm));
+                    for (l = 0; l < c.totalNumber; l++) m = document.getElementById(c.id + "|total" + l + "|" + e["__id"]), m && h.push(m);
+                    $(h).css("width", b).find("> div.l-grid-row-cell-inner:first").css("width", b - 8), c._updateFrozenWidth(), c._updateHorizontalScrollStatus.ligerDefer(c, 10), c.trigger("afterChangeColumnWidth", [e, b])
+                }
+            }
+        },
+        changeHeaderText: function (a, b) {
+            var e, f, g, c = this,
+                d = this.options;
+            if ("number" == typeof a) e = c.columns[a];
+            else if ("object" == typeof a && a["__id"]) e = a;
+            else if ("string" == typeof a) {
+                if (!c._isColumnId(a)) return $(c.columns).each(function () {
+                    this.name == a && c.changeHeaderText(this, b)
+                }), void 0;
+                e = c._columns[a]
+            }
+            e && (f = e["__leafindex"], g = document.getElementById(e["__domid"]), $(".l-grid-hd-cell-text", g).html(b), d.allowHideColumn && $(":checkbox[columnindex=" + f + "]", c.popup).parent().next().html(b))
+        },
+        changeCol: function (a, b, c) {
+            var f, g, h, i, j, k, l, d = this,
+                e = this.options;
+            a && b && (f = d.getColumn(a), g = d.getColumn(b), f.frozen = g.frozen, j = -1 == f["__pid"] ? e.columns : d._columns[f["__pid"]].columns, k = -1 == g["__pid"] ? e.columns : d._columns[g["__pid"]].columns, h = $.inArray(f, j), i = $.inArray(g, k), l = j == k, f["__level"] == g["__level"], k.splice(i + (c ? 1 : 0), 0, f), l ? c ? j.splice(h, 1) : j.splice(h + 1, 1) : j.splice(h, 1), d._setColumns(e.columns), d.reRender())
+        },
+        collapseDetail: function (a) {
+            var d, e, f, g, h, b = this;
+            if (this.options, d = b.getRow(a))
+                for (e = 0, f = b.columns.length; f > e; e++)
+                    if (b.columns[e].isdetail) return g = b.getRowObj(d), h = b.getCellObj(d, b.columns[e]), $(g).next("tr.l-grid-detailpanel").hide(), $(".l-grid-row-cell-detailbtn:first", h).removeClass("l-open"), b.trigger("SysGridHeightChanged"), void 0
+        },
+        extendDetail: function (a) {
+            var d, e, f, g, h, b = this;
+            if (this.options, d = b.getRow(a))
+                for (e = 0, f = b.columns.length; f > e; e++)
+                    if (b.columns[e].isdetail) return g = b.getRowObj(d), h = b.getCellObj(d, b.columns[e]), $(g).next("tr.l-grid-detailpanel").show(), $(".l-grid-row-cell-detailbtn:first", h).addClass("l-open"), b.trigger("SysGridHeightChanged"), void 0
+        },
+        getParent: function (a) {
+            var d, b = this,
+                c = this.options;
+            return c.tree ? (d = b.getRow(a), d ? d["__pid"] in b.records ? b.records[d["__pid"]] : null : null) : null
+        },
+        getChildren: function (a, b) {
+            function g(a) {
+                var c, e, h;
+                if (a[d.tree.childrenName])
+                    for (c = 0, e = a[d.tree.childrenName].length; e > c; c++) h = a[d.tree.childrenName][c], "delete" != h[d.statusName] && (f.push(h), b && g(h))
+            }
+
+            var e, f, c = this,
+                d = this.options;
+            return d.tree ? (e = c.getRow(a)) ? (f = [], g(e), f) : null : null
+        },
+        isLeaf: function (a) {
+            var d, b = this;
+            return this.options, (d = b.getRow(a)) ? d["__hasChildren"] ? !1 : !0 : void 0
+        },
+        hasChildren: function (a) {
+            var c = this.options,
+                d = this.getRow(a);
+            if (d) return d[c.tree.childrenName] && d[c.tree.childrenName].length ? !0 : !1
+        },
+        existRecord: function (a) {
+            for (var b in this.records)
+                if (this.records[b] == a) return !0;
+            return !1
+        },
+        _removeSelected: function (a) {
+            var d, e, f, g, h, b = this,
+                c = this.options;
+            if (c.tree && (d = b.getChildren(a, !0)))
+                for (e = 0, f = d.length; f > e; e++) g = $.inArray(d[e], b.selected), -1 != g && b.selected.splice(g, 1);
+            h = $.inArray(a, b.selected), -1 != h && b.selected.splice(h, 1)
+        },
+        _getParentChildren: function (a) {
+            var e, b = this,
+                c = this.options,
+                d = b.getRow(a);
+            return e = c.tree && b.existRecord(d) && d["__pid"] in b.records ? b.records[d["__pid"]][c.tree.childrenName] : b.currentData[c.root]
+        },
+        _removeData: function (a) {
+            var d, e, b = this;
+            this.options, d = b._getParentChildren(a), e = $.inArray(a, d), -1 != e && d.splice(e, 1), b._removeSelected(a)
+        },
+        _addData: function (a, b, c, d) {
+            var g, h, e = this,
+                f = this.options;
+            e.currentData || (e.currentData = {}), e.currentData[f.root] || (e.currentData[f.root] = []), g = e.currentData[f.root], c ? (f.tree && (b ? g = b[f.tree.childrenName] : c["__pid"] in e.records && (g = e.records[c["__pid"]][f.tree.childrenName])), h = $.inArray(c, g), g.splice(-1 == h ? -1 : h + (d ? 0 : 1), 0, a)) : (f.tree && b && (g = b[f.tree.childrenName]), g.push(a))
+        },
+        _appendData: function (a, b, c, d) {
+            var e = this,
+                f = this.options;
+            a[f.statusName] = "update", e._removeData(a), e._addData(a, b, c, d)
+        },
+        appendRange: function (a, b, c, d) {
+            var g, e = this;
+            this.options, g = !1, $.each(a, function (a, f) {
+                f["__id"] && e.existRecord(f) ? (e.isLeaf(b) && e.upgrade(b), e._appendData(f, b, c, d), g = !0) : e.appendRow(f, b, c, d)
+            }), g && e.reRender()
+        },
+        appendRow: function (a, b, c, d) {
+            var e = this;
+            return this.options, $.isArray(a) ? (e.appendRange(a, b, c, d), void 0) : a["__id"] && e.existRecord(a) ? (e._appendData(a, b, c, d), e.reRender(), void 0) : (b && e.isLeaf(b) && e.upgrade(b), e.addRow(a, c, d ? !0 : !1, b), void 0)
+        },
+        upgrade: function (a) {
+            var e, b = this,
+                c = this.options,
+                d = b.getRow(a);
+            d && c.tree && (d[c.tree.childrenName] = d[c.tree.childrenName] || [], d["__hasChildren"] = !0, e = [b.getRowObj(d)], b.enabledFrozen() && e.push(b.getRowObj(d, !0)), $("> td > div > .l-grid-tree-space:last", e).addClass("l-grid-tree-link l-grid-tree-link-open"))
+        },
+        demotion: function (a) {
+            var e, f, g, h, b = this,
+                c = this.options,
+                d = b.getRow(a);
+            if (d && c.tree) {
+                if (e = [b.getRowObj(d)], b.enabledFrozen() && e.push(b.getRowObj(d, !0)), $("> td > div > .l-grid-tree-space:last", e).removeClass("l-grid-tree-link l-grid-tree-link-open l-grid-tree-link-close"), b.hasChildren(d))
+                    for (f = b.getChildren(d), g = 0, h = f.length; h > g; g++) b.deleteRow(f[g]);
+                d["__hasChildren"] = !1
+            }
+        },
+        collapseAll: function () {
+            var a = this;
+            this.options, $(a.rows).each(function (b, c) {
+                var d = a.getRowObj(c),
+                    e = $(".l-grid-tree-link", d);
+                e.hasClass("l-grid-tree-link-close") || a.toggle(c)
+            })
+        },
+        expandAll: function () {
+            var a = this;
+            this.options, $(a.rows).each(function (b, c) {
+                var d = a.getRowObj(c),
+                    e = $(".l-grid-tree-link", d);
+                e.hasClass("l-grid-tree-link-open") || a.toggle(c)
+            })
+        },
+        collapse: function (a) {
+            var d, e, b = this;
+            this.options, d = b.getRowObj(a), e = $(".l-grid-tree-link", d), e.hasClass("l-grid-tree-link-close") || b.toggle(a)
+        },
+        expand: function (a) {
+            var d, e, b = this;
+            this.options, d = b.getRowObj(a), e = $(".l-grid-tree-link", d), e.hasClass("l-grid-tree-link-open") || b.toggle(a)
+        },
+        toggle: function (a) {
+            function k(a) {
+                var c, d, e, f, g, h;
+                for (c = 0, d = a.length; d > c; c++) e = a[c], f = b.getChildren(e, !1), g = f && f.length ? !0 : !1, h = $([b.getRowObj(e["__id"])]), b.enabledFrozen() && (h = h.add(b.getRowObj(e["__id"], !0))), g ? $(".l-grid-tree-link", h).hasClass("l-grid-tree-link-close") ? h.show() : (h.show(), k(f)) : ($(".l-grid-tree-link", h).removeClass("l-grid-tree-link-close").addClass("l-grid-tree-link-open"), h.show())
+            }
+
+            function l() {
+                var a = [];
+                return i ? (a = b.getChildren(d, !1), k(a), b.trigger("treeExpanded", [d]), void 0) : (a = b.getChildren(d, !0), $(a).each(function () {
+                    $(b.getRowObj(this)).hide(), b.enabledFrozen() && $(b.getRowObj(this, !0)).hide()
+                }), b.trigger("treeCollapsed", [d]), void 0)
+            }
+
+            function m() {
+                h.removeClass("l-grid-tree-link-close").addClass("l-grid-tree-link-open"), g = $.inArray(d, b.collapsedRows), -1 != g && b.collapsedRows.splice(g, 1)
+            }
+
+            function o() {
+                h.addClass("l-grid-tree-link-close").removeClass("l-grid-tree-link-open"), g = $.inArray(d, b.collapsedRows), -1 == g && b.collapsedRows.push(d)
+            }
+
+            var b, d, e, g, h, i, j, n;
+            if (a) {
+                if (b = this, this.options, d = b.getRow(a), e = [b.getRowObj(d)], b.enabledFrozen() && e.push(b.getRowObj(d, !0)), d["__level"], h = $(".l-grid-tree-link:first", e), i = !0, b.collapsedRows = b.collapsedRows || [], j = h.hasClass("l-grid-tree-link-close")) {
+                    if (n = {
+                            update: function () {
+                                m(), l()
+                            }
+                        }, b.hasBind("treeExpand") && 0 == b.trigger("treeExpand", [d, n])) return !1;
+                    m()
+                } else {
+                    if (n = {
+                            update: function () {
+                                o(), l()
+                            }
+                        }, b.hasBind("treeCollapse") && 0 == b.trigger("treeCollapse", [d, n])) return !1;
+                    i = !1, o()
+                }
+                l()
+            }
+        },
+        _bulid: function () {
+            var a = this;
+            a._clearGrid(), a._initBuildHeader(), a._initHeight(), a._initFootbar(), a._buildPager(), a._setEvent()
+        },
+        _setColumns: function () {
+            var b = this;
+
+            b._initColumns();
+            b._initBuildGridHeader();
+            b._initBuildPopup();
+            // var gird1Width = $('.l-frozen .l-grid1').width();
+            // console.log($('.l-frozen .l-grid1').width())
+            // $('.l-grid2').css({
+            //     right: gird1Width,
+            //     left: '0px'
+            // });
+        },
+        _initBuildHeader: function () {
+            var a = this,
+                b = this.options;
+            b.title ? ($(".l-panel-header-text", a.header).html(b.title), b.headerImg && a.header.append("<img src='" + b.headerImg + "' />").addClass("l-panel-header-hasicon")) : a.header.hide(), b.toolbar ? $.fn.ligerToolBar && (a.toolbarManager = a.topbar.ligerToolBar(b.toolbar), 0 == a.topbar.height() ? a.topbar.parent().height(25) : a.topbar.parent().height(a.topbar.height())) : a.topbar.parent().remove()
+        },
+        _createColumnId: function (a) {
+            return null != a.id && "" != a.id ? a.id.toString() : "c" + (100 + this._columnCount)
+        },
+        _isColumnId: function (a) {
+            return a in this._columns
+        },
+        _initColumns: function () {
+            function c(a, b) {
+                for (var c in b) b[c] in a && delete a[b[c]]
+            }
+
+            function d(b, e, f, g) {
+                var h, i, j, k, l;
+                if (b.editorType && (b.editor = b.editor || {}, b.editor.type = b.editorType), c(b, ["__id", "__pid", "__previd", "__nextid", "__domid", "__leaf", "__leafindex", "__level", "__colSpan", "__rowSpan"]), e > a._columnMaxLevel && (a._columnMaxLevel = e), a._columnCount++, b["__id"] = a._createColumnId(b), b["__domid"] = a.id + "|hcell|" + b["__id"], a._columns[b["__id"]] = b, b.columns && b.columns.length || (b["__leafindex"] = a._columnLeafCount++), b["__level"] = e, b["__pid"] = f, b["__previd"] = g, !b.columns || !b.columns.length) return b["__leaf"] = !0, 1;
+                for (h = 0, i = -1, j = 0, k = b.columns.length; k > j; j++) l = b.columns[j], h += d(l, e + 1, b["__id"], i), i = l["__id"];
+                return b["__leafcount"] = h, h
+            }
+
+            var e, f, g, h, i, j, k, l, a = this,
+                b = this.options;
+            if (a._columns = {}, a._columnCount = 0, a._columnLeafCount = 0, a._columnMaxLevel = 1, b.columns) {
+                for (e = -1, b.rownumbers && (f = a.enabledGroup() ? !1 : b.frozen && b.frozenRownumbers, g = {
+                    isrownumber: !0,
+                    issystem: !0,
+                    width: b.rownumbersColWidth,
+                    frozen: f
+                }, d(g, 1, -1, e), e = g["__id"]), a.enabledDetail() && (h = a.enabledGroup() ? !1 : b.frozen && b.frozenDetail, g = {
+                    isdetail: !0,
+                    issystem: !0,
+                    width: b.detailColWidth,
+                    frozen: h
+                }, d(g, 1, -1, e), e = g["__id"]), a.enabledCheckbox() && (i = a.enabledGroup() ? !1 : b.frozen && b.frozenCheckbox, g = {
+                    ischeckbox: !0,
+                    issystem: !0,
+                    width: b.detailColWidth,
+                    frozen: i
+                }, d(g, 1, -1, e), e = g["__id"]), j = 0, k = b.columns.length; k > j; j++) g = b.columns[j], g && (d(g, 1, -1, e), e = g["__id"]);
+                for (l in a._columns) g = a._columns[l], g["__leafcount"] > 1 && (g["__colSpan"] = g["__leafcount"]), g["__leaf"] && g["__level"] != a._columnMaxLevel && (g["__rowSpan"] = a._columnMaxLevel - g["__level"] + 1);
+                a.columns = a.getColumns(), $(a.columns).each(function (b, c) {
+                    c.columnname = c.name, c.columnindex = b, c.type = c.type || "string", c.islast = b == a.columns.length - 1, c.isSort = 0 == c.isSort ? !1 : !0, c.frozen = c.frozen ? !0 : !1, c._width = a._getColumnWidth(c), c._hide = c.hide ? !0 : !1
+                })
+            }
+        },
+        _getColumnWidth: function (a) {
+            var d, e, f, g, b = this,
+                c = this.options;
+            return a._width ? a._width : (d = a.width || c.columnWidth, d && "auto" != d || (e = 0, f = 0, $(b.columns).each(function (a, d) {
+                var g = d.width || c.columnWidth,
+                    h = g && "auto" != g ? !1 : !0;
+                h ? e++ : f += parseInt(b._getColumnWidth(d)) + 1
+            }), d = parseInt((b.grid.width() - f) / e) - 1), "string" == typeof d && d.indexOf("%") > 0 && (g = 0, b.enabledDetail() && (g += c.detailColWidth), b.enabledCheckbox() && (g += c.checkboxColWidth), b.options.rownumbers && (g += b.options.rownumbersColWidth), a._width = d = parseInt(.01 * parseInt(d) * (b.grid.width() - g - b.columns.length / 2 - 1))), a.minWidth && d < a.minWidth && (d = a.minWidth), a.maxWidth && d > a.maxWidth && (d = a.maxWidth), d)
+        },
+        _createHeaderCell: function (a) {
+            var e, f, g, b = this,
+                c = this.options,
+                d = $("<td class='l-grid-hd-cell'><div class='l-grid-hd-cell-inner'><span class='l-grid-hd-cell-text'></span></div></td>");
+            return d.attr("id", a["__domid"]), a["__leaf"] || d.addClass("l-grid-hd-cell-mul"), a.columnindex == b.columns.length - 1 && d.addClass("l-grid-hd-cell-last"), a.isrownumber && (d.addClass("l-grid-hd-cell-rownumbers"), d.html("<div class='l-grid-hd-cell-inner'></div>")), a.ischeckbox && (d.addClass("l-grid-hd-cell-checkbox"), d.html("<div class='l-grid-hd-cell-inner'><div class='l-grid-hd-cell-text l-grid-hd-cell-btn-checkbox'></div></div>")), a.isdetail && (d.addClass("l-grid-hd-cell-detail"), d.html("<div class='l-grid-hd-cell-inner'><div class='l-grid-hd-cell-text l-grid-hd-cell-btn-detail'></div></div>")), a.heightAlign && $(".l-grid-hd-cell-inner:first", d).css("textAlign", a.heightAlign), a["__colSpan"] && d.attr("colSpan", a["__colSpan"]), a["__rowSpan"] ? (d.attr("rowSpan", a["__rowSpan"]), d.height(c.headerRowHeight * a["__rowSpan"]), e = (c.headerRowHeight * a["__rowSpan"] - c.headerRowHeight) / 2 - 5, $(".l-grid-hd-cell-inner:first", d).css("paddingTop", e)) : d.height(c.headerRowHeight), a["__leaf"] && (d.width(a["_width"]), d.attr("columnindex", a["__leafindex"])), f = d.height(), !a["__rowSpan"] && f > 10 && $(">div:first", d).height(f), a._hide && d.hide(), a.name && d.attr({
+                columnname: a.name
+            }), g = "", g = a.display && "" != a.display ? a.display : a.headerRender ? a.headerRender(a) : "&nbsp;", $(".l-grid-hd-cell-text:first", d).html(g), !a.issystem && a["__leaf"] && a.resizable !== !1 && $.fn.ligerResizable && c.allowAdjustColWidth && (b.colResizable[a["__id"]] = d.ligerResizable({
+                handles: "e",
+                onStartResize: function (a, c) {
+                    this.proxy.hide(), b.draggingline.css({
+                        height: b.body.height(),
+                        top: 0,
+                        left: c.pageX - b.grid.offset().left + parseInt(b.body[0].scrollLeft)
+                    }).show()
+                },
+                onResize: function (a, c) {
+                    b.colresizing = !0, b.draggingline.css({
+                        left: c.pageX - b.grid.offset().left + parseInt(b.body[0].scrollLeft)
+                    }), $("body").add(d).css("cursor", "e-resize")
+                },
+                onStopResize: function (c) {
+                    return b.colresizing = !1, $("body").add(d).css("cursor", "default"), b.draggingline.hide(), b.setColumnWidth(a, parseInt(a._width) + c.diffX), !1
+                }
+            })), b.trigger("headerCellBulid", [d, a]), d
+        },
+        _initBuildGridHeader: function () {
+            var c, d, e, f, g, h, i, a = this,
+                b = this.options;
+            if (a.gridtablewidth = 0, a.f.gridtablewidth = 0, a.colResizable) {
+                for (c in a.colResizable) a.colResizable[c].destroy();
+                a.colResizable = null
+            }
+            for (a.colResizable = {}, $("tbody:first", a.gridheader).html(""), $("tbody:first", a.f.gridheader).html(""), d = 1; d <= a._columnMaxLevel; d++) e = a.getColumns(d), f = d == a._columnMaxLevel, g = $("<tr class='l-grid-hd-row'></tr>"), h = $("<tr class='l-grid-hd-row'></tr>"), f || g.add(h).addClass("l-grid-hd-mul"), $("tbody:first", a.gridheader).append(g), $("tbody:first", a.f.gridheader).append(h), $(e).each(function (b, c) {
+                if ((c.frozen ? h : g).append(a._createHeaderCell(c)), c["__leaf"]) {
+                    var d = c["_width"];
+                    c.frozen ? a.f.gridtablewidth += (parseInt(d) ? parseInt(d) : 0) + 1 : a.gridtablewidth += (parseInt(d) ? parseInt(d) : 0) + 1
+                }
+            });
+            a._columnMaxLevel > 0 && (i = b.headerRowHeight * a._columnMaxLevel, a.gridheader.add(a.f.gridheader).height(i), b.rownumbers && b.frozenRownumbers && a.f.gridheader.find("td:first").height(i)), a._updateFrozenWidth(), $("div:first", a.gridheader).width(a.gridtablewidth + 40)
+        },
+        _initBuildPopup: function () {
+            var c, a = this,
+                b = this.options;
+            var f = window.location.href.split('#').length>1&&window.location.href.split('#').length[1];
+            $(":checkbox", a.popup).unbind(), $("tbody tr", a.popup).remove(), $(a.columns).each(function (b, c) {
+                var d, e, h;
+                //h = Cookies.get('column')?Cookies.get('column').indexOf(b)>0:true;
+                if(Cookies.get('column'+f)){
+                    //是否需要被选中
+                    h = c.islast?c.islast:(Cookies.get('column'+f).indexOf(b)>0);
+                    c.issystem || 0 != c.isAllowHide && (d = 'checked="checked"', !h && (d = ""), e = c.display, !c.islast && $("tbody", a.popup).append('<tr><td class="l-column-left"><input type="checkbox" ' + d + ' class="l-checkbox" columnindex="' + b + '"/></td><td class="l-column-right">' + e + "</td></tr>"))
+                    a.toggleCol(b, h, !0)
+                }else{
+                    c.issystem || 0 != c.isAllowHide && (d = 'checked="checked"', c._hide && (d = ""), e = c.display, !c.islast && $("tbody", a.popup).append('<tr><td class="l-column-left"><input type="checkbox" ' + d + ' class="l-checkbox" columnindex="' + b + '"/></td><td class="l-column-right">' + e + "</td></tr>"))
+                };
+                //c.issystem || 0 != c.isAllowHide && (d = 'checked="checked"', c._hide && (d = ""), e = c.display, !c.islast && $("tbody", a.popup).append('<tr><td class="l-column-left"><input type="checkbox" ' + d + ' class="l-checkbox" columnindex="' + b + '"/></td><td class="l-column-right">' + e + "</td></tr>"))
+            }), $.fn.ligerCheckBox && $("input:checkbox", a.popup).ligerCheckBox({
+                onBeforeClick: function (c) {
+                    return c.checked ? $("input:checked", a.popup).length <= b.minColToggle ? !1 : !0 : !0
+                }
+            }), b.allowHideColumn && ($("tr", a.popup).hover(function () {
+                $(this).addClass("l-popup-row-over")
+            }, function () {
+                $(this).removeClass("l-popup-row-over")
+            }), c = function () {
+                var r = $("input:checked", a.popup).length + 1 <= b.minColToggle ? !1 : (a.toggleCol(parseInt($(this).attr("columnindex")), this.checked, !0), void 0);
+                var arr = [];
+                $("input:checked", a.popup).each(function(g,f){
+                    arr.push($(f).attr("columnindex"));
+                })
+                Cookies.set('column'+f, arr);
+                var _width = 0;
+                $.each(a._columns,function(i,e){
+                    !e._hide&&!e.frozen&&(_width = _width+e._width+1);
+                });
+                $('.l-grid-body-inner').css('width', _width);
+                return r;
+            }, $.fn.ligerCheckBox ? $(":checkbox", a.popup).bind("change", c) : $(":checkbox", a.popup).bind("click", c))
+        },
+        _initHeight: function () {
+            var a = this,
+                b = this.options;
+            "auto" == b.height && (a.gridbody.height("auto"), a.f.gridbody.height("auto")), b.width && a.grid.width(b.width), a._onResize.call(a)
+        },
+        _initFootbar: function () {
+            var c, d, a = this,
+                b = this.options;
+            if (b.usePager) {
+                if (b.pagerRender) return a.toolbar.html(b.pagerRender.call(a)), void 0;
+                if (b.scrollToPage) return a.toolbar.hide(), void 0;
+                c = "", d = -1, $(b.pageSizeOptions).each(function (a, e) {
+                    var f = "";
+                    b.pageSize == e && (d = a), c += "<option value='" + e + "' " + f + " >" + e + "</option>"
+                }), $(".l-bar-selectpagesize", a.toolbar).append("<select name='rp'>" + c + "</select>"), -1 != d && ($(".l-bar-selectpagesize select", a.toolbar)[0].selectedIndex = d), b.switchPageSizeApplyComboBox && $.fn.ligerComboBox && $(".l-bar-selectpagesize select", a.toolbar).ligerComboBox({
+                    onBeforeSelect: function () {
+                        return b.url && a.isDataChanged && !confirm(b.isContinueByDataChanged) ? !1 : !0
+                    },
+                    width: 45
+                })
+            } else a.toolbar.hide()
+        },
+        _searchData: function (a, b) {
+            var e, f;
+            for (this.options, e = new Array, f = 0; f < a.length; f++) b(a[f], f) && (e[e.length] = a[f]);
+            return e
+        },
+        _clearGrid: function () {
+            var c, d, a = this;
+            this.options, a._fixRows();
+            for (c in a.rows) d = $(a.getRowObj(a.rows[c])), a.enabledFrozen() && (d = d.add(a.getRowObj(a.rows[c], !0))), d.unbind();
+            a.gridbody.html(""), a.f.gridbody.html(""), a.recordNumber = 0, a.records = {}, a.rows = [], a._fixRows(), a.selected = [], a.totalNumber = 0, a.editorcounter = 0
+        },
+        _fixRows: function () {
+            var c, a = this;
+            if (this.options, a.rows)
+                for (c in a.rows) $.isFunction(a.rows[c]) && delete a.rows[c]
+        },
+        _fillGridBody: function (a, b, c) {
+            var g, h, i, j, k, l, m, n, d = this,
+                e = this.options,
+                f = "scrollappend" == c ? [] : ['<div class="l-grid-body-inner"><table class="l-grid-body-table" cellpadding=0 cellspacing=0><tbody>'];
+            if (d.enabledGroup()) {
+                g = [], h = [], d.groups = h;
+                for (i in a) j = a[i], k = j[e.groupColumnName], l = $.inArray(k, g), -1 == l && (g.push(k), l = g.length - 1, h.push([])), h[l].push(j);
+                $(h).each(function (a, c) {
+                    1 == h.length && f.push('<tr class="l-grid-grouprow l-grid-grouprow-last l-grid-grouprow-first"'), a == h.length - 1 ? f.push('<tr class="l-grid-grouprow l-grid-grouprow-last"') : 0 == a ? f.push('<tr class="l-grid-grouprow l-grid-grouprow-first"') : f.push('<tr class="l-grid-grouprow"'), f.push(' groupindex"=' + a + '" >'), f.push('<td colSpan="' + d.columns.length + '" class="l-grid-grouprow-cell">'), f.push('<span class="l-grid-group-togglebtn">&nbsp;&nbsp;&nbsp;&nbsp;</span>'), e.groupRender ? f.push(e.groupRender(g[a], c, e.groupColumnDisplay)) : f.push(e.groupColumnDisplay + ":" + g[a]), f.push("</td>"), f.push("</tr>"), f.push(d._getHtmlFromData(c, b)), d.isTotalSummary() && f.push(d._getTotalSummaryHtml(c, "l-grid-totalsummary-group", b))
+                })
+            } else f.push(d._getHtmlFromData(a, b));
+            "scrollappend" == !c && f.push("</tbody></table></div>"), "scrollappend" == c ? (b ? d.f.gridbody : d.gridbody).find("tbody:first").append(f.join("")) : (b ? d.f.gridbody : d.gridbody).html(f.join("")), b && (d.f.gridbody.find(">l-jplace").remove(), d.f.gridbody.append('<div class="l-jplace"></div>')), e.usePager && e.scrollToPage && !e.scrollToAppend && (m = b ? d.f.gridbody.find("> .l-grid-body-inner") : d.gridbody.find("> .l-grid-body-inner"), n = m.find("> .l-scrollreplacetop"), n = n.length ? n : $('<div class="l-scrollreplacetop"></div>').prependTo(m), n.css("width", "80%").height(d.lastScrollTop), n = m.find("> .l-scrollreplacebottom"), n = n.length ? n : $('<div class="l-scrollreplacebottom"></div>').appendTo(m), n.css("width", "80%").height((e.pageCount - e.newPage) * d._getOnePageHeight())), d.enabledGroup() || d._bulidTotalSummary(b), $("> div:first", d.gridbody).width(d.gridtablewidth), d._onResize()
+        },
+        _showData: function (a) {
+            var d, e, f, b = this,
+                c = this.options;
+            if (b.changedCells = {}, d = b.currentData[c.root], c.usePager && ("server" == c.dataAction && b.data && b.data[c.record] ? c.total = b.data[c.record] : b.filteredData && b.filteredData[c.root] ? c.total = b.filteredData[c.root].length : b.data && b.data[c.root] ? c.total = b.data[c.root].length : d && (c.total = d.length), c.page = c.newPage, c.total || (c.total = 0), c.page || (c.page = 1), c.pageCount = Math.ceil(c.total / c.pageSize), c.pageCount || (c.pageCount = 1), c.scrollToPage || b._buildPager()), $(".l-bar-btnloading:first", b.toolbar).removeClass("l-bar-btnloading"), 0 != b.trigger("beforeShowData", [b.currentData])) {
+                if ("scrollappend" != a && b._clearGrid(), b.isDataChanged = !1, !d || !d.length) return b.gridview.addClass("l-grid-empty"), $(b.element).addClass("l-empty"), $("<div></div>").addClass("l-grid-body-inner").appendTo(b.gridbody).css({
+                    width: b.gridheader.find(">div:first").width(),
+                    height: b.gridbody.height()
+                }), c.pagerRender ? (b.toolbar.html(c.pagerRender.call(b)), void 0) : (b._onResize.ligerDefer(b, 50), void 0);
+                if (b.gridview.removeClass("l-grid-empty"), $(b.element).removeClass("l-empty"), $(".l-bar-btnload:first span", b.toolbar).removeClass("l-disabled"), b._updateGridData(), b.enabledFrozen() && b._fillGridBody(b.rows, !0, a), b._fillGridBody(b.rows, !1, a), b.trigger("SysGridHeightChanged"), "scroll" == a && b.trigger("sysScrollLoaded"), c.totalRender && ($(".l-panel-bar-total", b.element).remove(), $(".l-panel-bar", b.element).before('<div class="l-panel-bar-total">' + c.totalRender(b.data, b.filteredData) + "</div>")), c.mouseoverRowCssClass)
+                    for (e in b.rows) f = $(b.getRowObj(b.rows[e])), b.enabledFrozen() && (f = f.add(b.getRowObj(b.rows[e], !0))), f.bind("mouseover.gridrow", function () {
+                        b._onRowOver(this, !0)
+                    }).bind("mouseout.gridrow", function () {
+                        b._onRowOver(this, !1)
+                    });
+                if (b._fixHeight(), c.pagerRender) return b.toolbar.html(c.pagerRender.call(b)), void 0;
+                b.gridbody.trigger("scroll.grid"), b.trigger("afterShowData", [b.currentData]);
+                var _width = 0;
+                $.each(b._columns,function(i,e){
+                    !e._hide&&!e.frozen&&(_width = _width+e._width+1);
+                });
+                $('.l-grid-body-inner').css('width', _width);
+            }
+        },
+        _fixHeight: function () {
+            var c, d, e, f, g, h, i, j, a = this,
+                b = this.options;
+            if (!b.fixedCellHeight && b.frozen) {
+                for (e in a.columns) {
+                    if (f = a.columns[e], c && d) break;
+                    !f.frozen || c ? f.frozen || d || (d = f) : c = f
+                }
+                if (c && d)
+                    for (g in a.records) h = a.getCellObj(g, c), i = a.getCellObj(g, d), j = Math.max($(h).height(), $(i).height()), $(h).add(i).height(j)
+            }
+        },
+        _getRowDomId: function (a, b) {
+            return this.id + "|" + (b ? "1" : "2") + "|" + a["__id"]
+        },
+        _getCellDomId: function (a, b) {
+            return this._getRowDomId(a, b.frozen) + "|" + b["__id"]
+        },
+        _getHtmlFromData: function (a, b) {
+            var c, d, e, f, g, h, i, j, k;
+            if (!a) return "";
+            for (c = this, d = this.options, e = [], f = 0, g = a.length; g > f; f++) h = a[f], i = h["__id"], h && (e.push("<tr"), e.push(' id="' + c._getRowDomId(h, b) + '"'), e.push(' class="l-grid-row'), !b && c.enabledCheckbox() && d.isChecked && d.isChecked(h) ? (c.select(h), e.push(" l-selected")) : c.isSelected(h) ? e.push(" l-selected") : d.isSelected && d.isSelected(h) && (c.select(h), e.push(" l-selected")), 1 == h["__index"] % 2 && d.alternatingRow && e.push(" l-grid-row-alt"), d.rowClsRender && (j = d.rowClsRender(h, i), j && e.push(" " + j)), e.push('" '), d.rowAttrRender && e.push(d.rowAttrRender(h, i)), d.tree && c.collapsedRows && c.collapsedRows.length ? (k = function () {
+                for (var a = c.getParent(h); a;) {
+                    if (-1 != $.inArray(a, c.collapsedRows)) return !0;
+                    a = c.getParent(a)
+                }
+                return !1
+            }, k() && e.push(' style="display:none;" ')) : d.tree && d.tree.isExtend && (k = function () {
+                for (var a = c.getParent(h); a;) {
+                    if (0 == d.tree.isExtend(a)) return !0;
+                    a = c.getParent(a)
+                }
+                return !1
+            }, k() && e.push(' style="display:none;" ')), e.push(">"), $(c.columns).each(function (a, f) {
+                if (b == f.frozen) {
+                    if (e.push("<td"), e.push(' id="' + c._getCellDomId(h, this) + '"'), this.isrownumber) return e.push(' class="l-grid-row-cell l-grid-row-cell-rownumbers" style="width:' + this.width + 'px"><div class="l-grid-row-cell-inner"'), d.fixedCellHeight ? e.push(' style = "height:' + d.rowHeight + 'px;" ') : e.push(' style = "min-height:' + d.rowHeight + 'px;" '), e.push(">" + (parseInt(h["__index"]) + 1) + "</div></td>"), void 0;
+                    if (this.ischeckbox) return e.push(' class="l-grid-row-cell l-grid-row-cell-checkbox" style="width:' + this.width + 'px"><div class="l-grid-row-cell-inner"'), d.fixedCellHeight ? e.push(' style = "height:' + d.rowHeight + 'px;" ') : e.push(' style = "min-height:' + d.rowHeight + 'px;" '), e.push(">"), e.push('<span class="l-grid-row-cell-btn-checkbox"></span>'), e.push("</div></td>"), void 0;
+                    if (this.isdetail) return e.push(' class="l-grid-row-cell l-grid-row-cell-detail" style="width:' + this.width + 'px"><div class="l-grid-row-cell-inner"'), d.fixedCellHeight ? e.push(' style = "height:' + d.rowHeight + 'px;" ') : e.push(' style = "min-height:' + d.rowHeight + 'px;" '), e.push(">"), (!d.isShowDetailToggle || d.isShowDetailToggle(h)) && e.push('<span class="l-grid-row-cell-detailbtn"></span>'), e.push("</div></td>"), void 0;
+                    var g = this._width;
+                    e.push(' class="l-grid-row-cell '), c.changedCells[i + "_" + this["__id"]] && e.push("l-grid-row-cell-edited "), this.islast && e.push("l-grid-row-cell-last "), e.push('"'), e.push(' style = "'), e.push("width:" + g + "px; "), f._hide && e.push("display:none;"), e.push(' ">'), e.push(c._getCellHtml(h, f)), e.push("</td>")
+                }
+            }), e.push("</tr>"));
+            return e.join("")
+        },
+        _getCellHtml: function (a, b) {
+            var e, f, c = this,
+                d = this.options;
+            return b.isrownumber ? '<div class="l-grid-row-cell-inner">' + (parseInt(a["__index"]) + 1) + "</div>" : (e = [], e.push('<div class="l-grid-row-cell-inner"'), e.push(' style = "width:' + parseInt(b._width - 8) + "px;"), d.fixedCellHeight && e.push("height:" + d.rowHeight + "px;"), e.push("min-height:" + d.rowHeight + "px; "), b.align && e.push("text-align:" + b.align + ";"), f = c._getCellContent(a, b), e.push('">' + f + "</div>"), e.join(""))
+        },
+        _setValueByName: function (a, b, c) {
+            if (!a || !b) return null;
+            if (-1 == b.indexOf(".")) a[b] = c;
+            else try {
+                new Function("data,value", "data." + b + "=value;")(a, c)
+            } catch (d) {
+            }
+        },
+        _getValueByName: function (a, b) {
+            if (!a || !b) return null;
+            if (-1 == b.indexOf(".")) return a[b];
+            try {
+                return new Function("data", "return data." + b + ";")(a)
+            } catch (c) {
+                return null
+            }
+        },
+        _getCellContent: function (a, b) {
+            var f, g, h, i, c = this,
+                d = this.options;
+            return a && b ? b.isrownumber ? parseInt(a["__index"]) + 1 : (a["__id"], f = a["__index"], g = c._getValueByName(a, b.name), h = c._getValueByName(a, b.textField), i = "", b.render ? i = b.render.call(c, a, f, g, b) : d.formatters[b.type] ? i = d.formatters[b.type].call(c, g, b) : null != h ? i = h.toString() : null != g && (i = g.toString()), d.tree && (null != d.tree.columnName && d.tree.columnName == b.name || null != d.tree.columnId && d.tree.columnId == b.id) && (i = c._getTreeCellHtml(i, a)), i || "") : ""
+        },
+        _getTreeCellHtml: function (a, b) {
+            var i, c = b["__level"],
+                d = this,
+                e = this.options,
+                f = null == d.collapsedRows ? e.tree.isExtend(b) : -1 == $.inArray(b, d.collapsedRows || []),
+                g = e.tree.isParent(b),
+                h = "";
+            for (c = parseInt(c) || 1, i = 1; c > i; i++) h += "<div class='l-grid-tree-space'></div>";
+            return h += f && g ? "<div class='l-grid-tree-space l-grid-tree-link l-grid-tree-link-open'></div>" : g ? "<div class='l-grid-tree-space l-grid-tree-link l-grid-tree-link-close'></div>" : "<div class='l-grid-tree-space'></div>", h += "<span class='l-grid-tree-content'>" + a + "</span>"
+        },
+        _applyEditor: function (a) {
+            var l, n, o, p, q, s, t, u, v, w, x, y, z, A, B, C, D, b = this,
+                c = this.options,
+                d = a,
+                e = d.id.split("|"),
+                f = e[e.length - 1],
+                g = b._columns[f],
+                h = $(d).parent(),
+                i = b.getRow(h[0]),
+                j = i["__id"],
+                k = i["__index"];
+            if (g && g.editor && (l = g.name, g.columnindex, g.editor.type && c.editors[g.editor.type])) {
+                if (n = b._getValueByName(i, l), o = {
+                        record: i,
+                        value: n,
+                        column: g,
+                        rowindex: k
+                    }, g.textField && (o.text = b._getValueByName(i, g.textField)), 0 == b.trigger("beforeEdit", [o])) return !1;
+                b.lastEditRow = i, liger.lastEditGrid = b, p = c.editors[g.editor.type], q = $(d), $(d).offset(), s = $(d).width(), t = $(d).height(), u = $("<div class='l-grid-editor'></div>").appendTo(b.grid), v = 0, w = 0, x = q.position(), y = b.gridbody.position(), z = b.gridview2.position(), A = (c.toolbar ? b.topbar.parent().outerHeight() : 0) + (c.title ? b.header.outerHeight() : 0), v = x.left + y.left + z.left, w = x.top + y.top + z.top + A, q.html(""), b.setCellEditing(i, g, !0), B = window.ActiveXObject || "ActiveXObject" in window ? !0 : !1, C = 0 == $.browser.version.indexOf("8"), B ? (t -= C ? 1 : 2, w -= 1, v -= 1) : $.browser.mozilla ? (t -= 1, w -= 1, v -= 1) : $.browser.safari ? w -= 1 : t -= 1, v += c.editorLeftDiff || 0, w += c.editorTopDiff || 0, t += c.editorHeightDiff || 0, u.css({
+                    left: v,
+                    top: w
+                }).show(), g.textField && (o.text = b._getValueByName(i, g.textField)), D = b._createEditor(p, u, o, s, t - 1), b.editor = {
+                    editing: !0,
+                    editor: p,
+                    input: D,
+                    editParm: o,
+                    container: u
+                }, b.unbind("sysEndEdit"), b.bind("sysEndEdit", function () {
+                    var a = p.getValue(D, o);
+                    g.textField && p.getText && (o.text = p.getText(D, o)), p.getSelected && (o.selected = p.getSelected(D, o)), a != n && ($(d).addClass("l-grid-row-cell-edited"), b.changedCells[j + "_" + g["__id"]] = !0, o.value = a), g.editor.onChange && g.editor.onChange.call(D, o), b._checkEditAndUpdateCell(o) && g.editor.onChanged && g.editor.onChanged.call(D, o)
+                })
+            }
+        },
+        _checkEditAndUpdateCell: function (a) {
+            var d, b = this;
+            return this.options, 0 == b.trigger("beforeSubmitEdit", [a]) ? !1 : (d = a.column, a.text && d.textField && b._setValueByName(a.record, d.textField, a.text), b.updateCell(d, a.value, a.record), (d.render || b.enabledTotal()) && b.reRender({
+                column: d
+            }), b.reRender({
+                rowdata: a.record
+            }), !0)
+        },
+        _getCurrentPageData: function (a) {
+            var c = this.options,
+                d = {};
+            if (d[c.root] = [], !a || !a[c.root] || !a[c.root].length) return d[c.record] = 0, d;
+            for (d[c.record] = a[c.root].length, c.newPage || (c.newPage = 1), i = (c.newPage - 1) * c.pageSize; i < a[c.root].length && i < c.newPage * c.pageSize; i++) d[c.root].push(a[c.root][i]);
+            return d
+        },
+        _compareData: function (a, b, c, d) {
+            var e = this,
+                f = this.options,
+                g = a[c],
+                h = b[c];
+            return null == g && null != h ? 1 : null == g && null == h ? 0 : null != g && null == h ? -1 : f.sorters[d] ? f.sorters[d].call(e, g, h) : h > g ? -1 : g > h ? 1 : 0
+        },
+        _getTotalInfo: function (a, b) {
+            var f, g, h, i, j, k, l, d = this.options;
+            try {
+                if (!a.totalSummary) return null;
+                if (f = 0, g = 0, h = 0, i = 0, j = 0, b && b.length) {
+                    for (j = parseFloat(b[0][a.name]), i = parseFloat(b[0][a.name]), k = 0; k < b.length; k++) "delete" != b[k][d.statusName] && (g += 1, l = b[k][a.name], "string" == typeof l && (l = l.replace(/\$|\,/g, "")), l = parseFloat(l), l && (f += l, l > j && (j = l), i > l && (i = l)));
+                    h = 1 * f / b.length
+                }
+                return {
+                    sum: f,
+                    count: g,
+                    avg: h,
+                    min: i,
+                    max: j
+                }
+            } catch (m) {
+                return {}
+            }
+        },
+        _getTotalCellContent: function (a, b) {
+            var e, f, g, h, i, c = this;
+            return this.options, e = [], a.totalSummary && (f = function (a) {
+                for (var b = 0; b < i.length; b++)
+                    if (i[b].toLowerCase() == a.toLowerCase()) return !0;
+                return !1
+            }, g = c._getTotalInfo(a, b), a.totalSummary.render ? (h = a.totalSummary.render(g, a, c.data), e.push(h)) : a.totalSummary.type && g && (i = a.totalSummary.type.split(","), f("sum") && e.push("<div>Sum=" + g.sum.toFixed(2) + "</div>"), f("tsum") && e.push("<div>" + sum.toFixed(0) + "</div>"), f("count") && e.push("<div>Count=" + g.count + "</div>"), f("max") && e.push("<div>Max=" + g.max.toFixed(2) + "</div>"), f("min") && e.push("<div>Min=" + g.min.toFixed(2) + "</div>"), f("avg") && e.push("<div>Avg=" + g.avg.toFixed(2) + "</div>"))), e.join("")
+        },
+        _getTotalSummaryHtml: function (a, b, c) {
+            var f, d = this;
+            return this.options, f = [], b ? f.push('<tr class="l-grid-totalsummary ' + b + '">') : f.push('<tr class="l-grid-totalsummary">'), $(d.columns).each(function (b, e) {
+                if (this.frozen == c) {
+                    if (this.isrownumber) return f.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-rownumbers" style="width:' + this.width + 'px"><div>&nbsp;</div></td>'), void 0;
+                    if (this.ischeckbox) return f.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-checkbox" style="width:' + this.width + 'px"><div>&nbsp;</div></td>'), void 0;
+                    if (this.isdetail) return f.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-detail" style="width:' + this.width + 'px"><div>&nbsp;</div></td>'), void 0;
+                    f.push('<td class="l-grid-totalsummary-cell'), this.islast && f.push(" l-grid-totalsummary-cell-last"), f.push('" '), f.push('id="' + d.id + "|total" + d.totalNumber + "|" + e.__id + '" '), f.push('width="' + this._width + '" '), columnname = this.columnname, columnname && f.push('columnname="' + columnname + '" '), f.push('columnindex="' + b + '" '), f.push('><div class="l-grid-totalsummary-cell-inner"'), e.align && f.push(' style="text-Align:' + e.align + ';"'), f.push(">"), f.push(d._getTotalCellContent(e, a)), f.push("</div></td>")
+                }
+            }), f.push("</tr>"), c || d.totalNumber++, f.join("")
+        },
+        _bulidTotalSummary: function (a) {
+            var d, b = this,
+                c = this.options;
+            return b.isTotalSummary() ? b.currentData && 0 != b.currentData[c.root].length ? (d = $(b._getTotalSummaryHtml(b.currentData[c.root], null, a)), $("tbody:first", a ? b.f.gridbody : b.gridbody).append(d), a ? b.totalRow1 = d : b.totalRow2 = d, void 0) : !1 : !1
+        },
+        updateTotalSummary: function () {
+            var a = this;
+            this.options, a.reRender({
+                totalOnly: !0
+            })
+        },
+        _buildPager: function () {
+            var c, d, e, a = this,
+                b = this.options;
+            b.pagerRender || ($(".pcontrol input", a.toolbar).val(b.page), b.pageCount || (b.pageCount = 1), $(".pcontrol span", a.toolbar).html(b.pageCount), c = parseInt((b.page - 1) * b.pageSize) + 1, d = parseInt(c) + parseInt(b.pageSize) - 1, b.total || (b.total = 0), b.total < d && (d = b.total), b.total || (c = d = 0), 0 > c && (c = 0), 0 > d && (d = 0), e = b.pageStatMessage, e = e.replace(/{from}/, c), e = e.replace(/{to}/, d), e = e.replace(/{total}/, b.total), e = e.replace(/{pagesize}/, b.pageSize), $(".l-bar-text", a.toolbar).html(e), b.total || $(".l-bar-btnfirst span,.l-bar-btnprev span,.l-bar-btnnext span,.l-bar-btnlast span", a.toolbar).addClass("l-disabled"), b.hideLoadButton && ($(".l-bar-btnload:first", a.toolbar).parent().hide(), $(".l-bar-btnload:first", a.toolbar).parent().next().hide()), 1 == b.page ? ($(".l-bar-btnfirst span", a.toolbar).addClass("l-disabled"), $(".l-bar-btnprev span", a.toolbar).addClass("l-disabled")) : b.page > b.pageCount && b.pageCount > 0 && ($(".l-bar-btnfirst span", a.toolbar).removeClass("l-disabled"), $(".l-bar-btnprev span", a.toolbar).removeClass("l-disabled")), b.page == b.pageCount ? ($(".l-bar-btnlast span", a.toolbar).addClass("l-disabled"), $(".l-bar-btnnext span", a.toolbar).addClass("l-disabled")) : b.page < b.pageCount && b.pageCount > 0 && ($(".l-bar-btnlast span", a.toolbar).removeClass("l-disabled"), $(".l-bar-btnnext span", a.toolbar).removeClass("l-disabled")))
+        },
+        _getRowIdByDomId: function (a) {
+            var b = a.split("|"),
+                c = b[2];
+            return c
+        },
+        _getRowByDomId: function (a) {
+            return this.records[this._getRowIdByDomId(a)]
+        },
+        _isEditing: function (a) {
+            var c, b = this;
+            return a.hasClass("l-box-dateeditor") || a.hasClass("l-box-select") ? !0 : a.hasClass("l-dialog") && (c = [], a.find(".l-dialog").each(function () {
+                var a = $(this).attr("ligeruiid");
+                a && c.push(a)
+            }), b._editorIncludeCotrols(c)) ? !0 : !1
+        },
+        _getSrcElementByEvent: function (a) {
+            var f, g, h, i, j, b = this,
+                c = a.target || a.srcElement,
+                d = $(c).parents().add(c),
+                e = function (a) {
+                    for (var b = 0, c = d.length; c > b; b++)
+                        if ("string" == typeof a) {
+                            if ($(d[b]).hasClass(a)) return d[b]
+                        } else if ("object" == typeof a && d[b] == a) return d[b];
+                    return null
+                };
+            if (e("l-grid-editor")) return {
+                editing: !0,
+                editor: e("l-grid-editor")
+            };
+            if (-1 == d.index(this.element)) return b._isEditing(d) ? {
+                editing: !0
+            } : {
+                out: !0
+            };
+            if (f = !1, d.hasClass("l-grid-detailpanel") && b.detailrows)
+                for (g = 0, h = b.detailrows.length; h > g; g++)
+                    if (-1 != d.index(b.detailrows[g])) {
+                        f = !0;
+                        break
+                    }
+            return i = {
+                grid: e("l-panel"),
+                indetail: f,
+                frozen: e(b.gridview1[0]) ? !0 : !1,
+                header: e("l-panel-header"),
+                gridheader: e("l-grid-header"),
+                gridbody: e("l-grid-body"),
+                total: e("l-panel-bar-total"),
+                popup: e("l-grid-popup"),
+                toolbar: e("l-panel-bar")
+            }, i.gridheader && (i.hrow = e("l-grid-hd-row"), i.hcell = e("l-grid-hd-cell"), i.hcelltext = e("l-grid-hd-cell-text"), i.checkboxall = e("l-grid-hd-cell-checkbox"), i.hcell && (j = i.hcell.id.split("|")[2], i.column = b._columns[j])), i.gridbody && (i.row = e("l-grid-row"), i.cell = e("l-grid-row-cell"), i.checkbox = e("l-grid-row-cell-btn-checkbox"), i.groupbtn = e("l-grid-group-togglebtn"), i.grouprow = e("l-grid-grouprow"), i.detailbtn = e("l-grid-row-cell-detailbtn"), i.detailrow = e("l-grid-detailpanel"), i.totalrow = e("l-grid-totalsummary"), i.totalcell = e("l-grid-totalsummary-cell"), i.rownumberscell = $(i.cell).hasClass("l-grid-row-cell-rownumbers") ? i.cell : null, i.detailcell = $(i.cell).hasClass("l-grid-row-cell-detail") ? i.cell : null, i.checkboxcell = $(i.cell).hasClass("l-grid-row-cell-checkbox") ? i.cell : null, i.treelink = e("l-grid-tree-link"), i.editor = e("l-grid-editor"), i.row && (i.data = this._getRowByDomId(i.row.id)), i.cell && (i.editing = $(i.cell).hasClass("l-grid-row-cell-editing")), i.editor && (i.editing = !0), i.editing && (i.out = !1)), i.toolbar && (i.first = e("l-bar-btnfirst"), i.last = e("l-bar-btnlast"), i.next = e("l-bar-btnnext"), i.prev = e("l-bar-btnprev"), i.load = e("l-bar-btnload"), i.button = e("l-bar-button")), i
+        },
+        _editorIncludeCotrols: function (a) {
+            var d, e, f, b = this;
+            if (this.options, !a || !a.length) return !1;
+            if (b.editor && b.editor.input) {
+                if (b._controlIncludeCotrols(b.editor.input, a)) return !0
+            } else if (b.editors)
+                for (d in b.editors)
+                    if (b.editors[d])
+                        for (e in b.editors[d])
+                            if (f = b.editors[d][e], f && f.input && b._controlIncludeCotrols(f.input, a)) return !0;
+            return !1
+        },
+        _controlIncludeCotrols: function (a, b) {
+            var e, f;
+            if (this.options, !a || !a.includeControls || !a.includeControls.length) return !1;
+            for (e = 0; e < a.includeControls.length; e++)
+                if (f = a.includeControls[e], -1 != $.inArray(f.id, b)) return !0;
+            return !1
+        },
+        _getOnePageHeight: function () {
+            var b = this.options;
+            return (parseFloat(b.rowHeight || 24) + 1) * parseInt(b.pageSize)
+        },
+        _setEvent: function () {
+            var a = this,
+                b = this.options;
+            herfPath = window.location.href;
+            a.grid.bind("mousedown.grid", function (b) {
+                a._onMouseDown.call(a, b)
+            }), a.grid.bind("dblclick.grid", function (b) {
+                a._onDblClick.call(a, b)
+            }), a.grid.bind("contextmenu.grid", function (b) {
+//				return a._onContextmenu.call(a, b)
+            }), $(document).bind("mouseup.grid", function (b) {
+                a._onMouseUp.call(a, b)
+            }), $(document).bind("click.grid", function (b) {
+                a._onClick.call(a, b)
+                if (b.target.innerText == '...') {
+                    return a._onContextmenu.call(a, b)
+                }
+
+                //设置操作图标的改变
+                if (b.target.innerText == '操作' || b.target.className == 'cz_ico') {
+//TODO
+                    return a._onContextmenu.call(a, b)
+                }
+                
+                if(b.target.className!='l-grid-popup'){
+                    $('.cz_ico').css('background-image', 'url(../../../../../public/images/cz_down.png)')
+                    $('.l-grid-hd-cell-inner').removeClass('l-grid-cz')
+                }
+
+            }), $(window).bind("resize.grid", function () {
+                a._onResize.call(a)
+            }), $(document).bind("keydown.grid", function (b) {
+                b.ctrlKey && (a.ctrlKey = !0)
+            }), $(document).bind("keyup.grid", function () {
+                delete a.ctrlKey
+            }), a.gridbody.bind("scroll.grid", function () {
+                var e, f, g, c = a.gridbody.scrollLeft(),
+                    d = a.gridbody.scrollTop();
+                null != c && (a.gridheader[0].scrollLeft = c), null != d && (a.f.gridbody[0].scrollTop = d), b.scrollToPage && b.usePager && !a.loading && (e = a.gridbody.find(".l-grid-body-inner:first").height(), f = d + a.gridbody.height(), b.scrollToAppend ? b.newPage != b.pageCount && f >= e && a.reload(b.newPage + 1, "scrollappend") : (g = f >= e ? b.pageCount : Math.ceil(f / a._getOnePageHeight()), a.scrollLoading || (a.scrollLoading = !0, a.lastScrollTop = d, a.unbind("sysScrollLoaded"), a.bind("sysScrollLoaded", function () {
+                    a.gridbody.scrollTop(d), setTimeout(function () {
+                        a.scrollLoading = !1
+                    }, 500)
+                }), a.scrollLoading = !0, a.reload(g, "scroll")))), a.trigger("SysGridHeightChanged")
+            }), $("select", a.toolbar).change(function () {
+                return a.isDataChanged && "local" != b.dataAction && !confirm(b.isContinueByDataChanged) ? !1 : (b.newPage = 1, b.pageSize = this.value, a.loadData("local" != b.dataAction ? b.where : !1), void 0)
+            }), $("span.pcontrol :text", a.toolbar).blur(function () {
+                a.changePage("input")
+            }), $("div.l-bar-button", a.toolbar).hover(function () {
+                $(this).addClass("l-bar-button-over")
+            }, function () {
+                $(this).removeClass("l-bar-button-over")
+            }), $.fn.ligerDrag && b.colDraggable && (a.colDroptip = $("<div class='l-drag-coldroptip' style='display:none'><div class='l-drop-move-up'></div><div class='l-drop-move-down'></div></div>").appendTo("body"), a.gridheader.add(a.f.gridheader).ligerDrag({
+                revert: !0,
+                animate: !1,
+                proxyX: 0,
+                proxyY: 0,
+                proxy: function (b, c) {
+                    var e, f, d = a._getSrcElementByEvent(c);
+                    return d.hcell && d.column ? (e = $(".l-grid-hd-cell-text:first", d.hcell).html(), f = $("<div class='l-drag-proxy' style='display:none'><div class='l-drop-icon l-drop-no'></div></div>").appendTo("body"), f.append(e), f) : void 0
+                },
+                onRevert: function () {
+                    return !1
+                },
+                onRendered: function () {
+                    this.set("cursor", "default"), a.children[this.id] = this
+                },
+                onStartDrag: function (b, c) {
+                    var d, e;
+                    return 2 == c.button ? !1 : a.colresizing ? !1 : (this.set("cursor", "default"), d = a._getSrcElementByEvent(c), !d.hcell || !d.column || d.column.issystem || d.hcelltext ? !1 : -1 != $(d.hcell).css("cursor").indexOf("resize") ? !1 : (this.draggingColumn = d.column, a.coldragging = !0, e = a.grid.offset(), this.validRange = {
+                        top: e.top,
+                        bottom: e.top + a.gridheader.height(),
+                        left: e.left - 10,
+                        right: e.left + a.grid.width() + 10
+                    }, void 0))
+                },
+                onDrag: function (c, d) {
+                    var e, f, g, h, j, k, l, m, n, o, p, q, r, s;
+                    if (this.set("cursor", "default"), e = this.draggingColumn, !e) return !1;
+                    if (a.colresizing) return !1;
+                    if (null == a.colDropIn && (a.colDropIn = -1), f = d.pageX, g = d.pageY, h = !1, a.grid.offset(), j = this.validRange, f < j.left || f > j.right || g > j.bottom || g < j.top) return a.colDropIn = -1, a.colDroptip.hide(), this.proxy.find(".l-drop-icon:first").removeClass("l-drop-yes").addClass("l-drop-no"), void 0;
+                    for (k in a._columns)
+                        if (l = a._columns[k], e != l) {
+                            if (!l.issystem && (m = l["__level"] == e["__level"], n = m ? h ? !0 : !1 : !1, e.frozen != l.frozen && (n = l.frozen ? !1 : !0), -1 == a.colDropIn || a.colDropIn == k)) {
+                                if (o = document.getElementById(l["__domid"]), p = $(o).offset(), q = {
+                                        top: p.top,
+                                        bottom: p.top + $(o).height(),
+                                        left: p.left - 10,
+                                        right: p.left + 10
+                                    }, n && (r = $(o).width(), q.left += r, q.right += r), f > q.left && f < q.right && g > q.top && g < q.bottom) {
+                                    s = b.headerRowHeight, l["__rowSpan"] && (s *= l["__rowSpan"]), a.colDroptip.css({
+                                        left: q.left + 5,
+                                        top: q.top - 9,
+                                        height: s + 18
+                                    }).show(), a.colDropIn = k, a.colDropDir = n ? "right" : "left", this.proxy.find(".l-drop-icon:first").removeClass("l-drop-no").addClass("l-drop-yes");
+                                    break
+                                }
+                                -1 != a.colDropIn && (a.colDropIn = -1, a.colDroptip.hide(), this.proxy.find(".l-drop-icon:first").removeClass("l-drop-yes").addClass("l-drop-no"))
+                            }
+                        } else h = !0
+                },
+                onStopDrag: function () {
+                    var d = this.draggingColumn;
+                    a.coldragging = !1, -1 != a.colDropIn && (a.changeCol.ligerDefer(a, 0, [d, a.colDropIn, "right" == a.colDropDir]), a.colDropIn = -1), a.colDroptip.hide(), this.set("cursor", "default")
+                }
+            })), $.fn.ligerDrag && b.rowDraggable && (a.rowDroptip = $("<div class='l-drag-rowdroptip' style='display:none'></div>").appendTo("body"), a.gridbody.add(a.f.gridbody).ligerDrag({
+                revert: !0,
+                animate: !1,
+                proxyX: 0,
+                proxyY: 0,
+                proxy: function (c, d) {
+                    var f, g, e = a._getSrcElementByEvent(d);
+                    return e.row ? (f = b.draggingMessage.replace(/{count}/, c.draggingRows ? c.draggingRows.length : 1), b.rowDraggingRender && (f = b.rowDraggingRender(c.draggingRows, c, a)), g = $("<div class='l-drag-proxy' style='display:none'><div class='l-drop-icon l-drop-no'></div>" + f + "</div>").appendTo("body")) : void 0
+                },
+                onRevert: function () {
+                    return !1
+                },
+                onRendered: function () {
+                    this.set("cursor", "default"), a.children[this.id] = this
+                },
+                onStartDrag: function (b, c) {
+                    var d, e, f;
+                    if (2 == c.button) return !1;
+                    if (a.colresizing) return !1;
+                    if (!a.columns.length) return !1;
+                    if (this.set("cursor", "default"), d = a._getSrcElementByEvent(c), !d.cell || !d.data || d.checkbox) return !1;
+                    if (e = d.cell.id.split("|"), f = a._columns[e[e.length - 1]], !(d.rownumberscell || d.detailcell || d.checkboxcell || f == a.columns[0])) return !1;
+                    if (a.enabledCheckbox()) {
+                        if (this.draggingRows = a.getSelecteds(), !this.draggingRows || !this.draggingRows.length) return !1
+                    } else this.draggingRows = [d.data];
+                    this.draggingRow = d.data, this.set("cursor", "move"), a.rowdragging = !0, this.validRange = {
+                        top: a.gridbody.offset().top,
+                        bottom: a.gridbody.offset().top + a.gridbody.height(),
+                        left: a.grid.offset().left - 10,
+                        right: a.grid.offset().left + a.grid.width() + 10
+                    }
+                },
+                onDrag: function (c, d) {
+                    var f, g, h, i, j, k, l, m, n, o, p, q, r, e = this.draggingRow;
+                    if (!e) return !1;
+                    if (f = this.draggingRows ? this.draggingRows : [e], a.colresizing) return !1;
+                    if (null == a.rowDropIn && (a.rowDropIn = -1), g = d.pageX, h = d.pageY, i = !1, j = this.validRange, g < j.left || g > j.right || h > j.bottom || h < j.top) return a.rowDropIn = -1, a.rowDroptip.hide(), this.proxy.find(".l-drop-icon:first").removeClass("l-drop-yes l-drop-add").addClass("l-drop-no"), void 0;
+                    for (k in a.rows)
+                        if (l = a.rows[k], m = l["__id"], e == l && (i = !0), -1 == $.inArray(l, f) && (n = i ? !0 : !1, -1 == a.rowDropIn || a.rowDropIn == m)) {
+                            if (o = a.getRowObj(m), p = $(o).offset(), q = {
+                                    top: p.top - 4,
+                                    bottom: p.top + $(o).height() + 4,
+                                    left: a.grid.offset().left,
+                                    right: a.grid.offset().left + a.grid.width()
+                                }, g > q.left && g < q.right && h > q.top && h < q.bottom) {
+                                r = p.top, n && (r += $(o).height()), a.rowDroptip.css({
+                                    left: q.left,
+                                    top: r,
+                                    width: q.right - q.left
+                                }).show(), a.rowDropIn = m, a.rowDropDir = n ? "bottom" : "top", b.tree && h > q.top + 5 && h < q.bottom - 5 ? (this.proxy.find(".l-drop-icon:first").removeClass("l-drop-no l-drop-yes").addClass("l-drop-add"), a.rowDroptip.hide(), a.rowDropInParent = !0) : (this.proxy.find(".l-drop-icon:first").removeClass("l-drop-no l-drop-add").addClass("l-drop-yes"), a.rowDroptip.show(), a.rowDropInParent = !1);
+                                break
+                            }
+                            -1 != a.rowDropIn && (a.rowDropIn = -1, a.rowDropInParent = !1, a.rowDroptip.hide(), this.proxy.find(".l-drop-icon:first").removeClass("l-drop-yes  l-drop-add").addClass("l-drop-no"))
+                        }
+                },
+                onStopDrag: function () {
+                    var f, g, h, i, e = this.draggingRows;
+                    for (a.rowdragging = !1, f = 0; f < e.length; f++) g = e[f].children, g && (e = $.grep(e, function (a) {
+                        var c = -1 == $.inArray(a, g);
+                        return c
+                    }));
+                    -1 != a.rowDropIn && (b.tree ? (a.rowDropInParent ? i = a.getRow(a.rowDropIn) : (h = a.getRow(a.rowDropIn), i = a.getParent(h)), a.appendRange(e, i, h, "bottom" != a.rowDropDir), a.trigger("rowDragDrop", {
+                        rows: e,
+                        parent: i,
+                        near: h,
+                        after: "bottom" == a.rowDropDir
+                    })) : (a.moveRange(e, a.rowDropIn, "bottom" == a.rowDropDir), a.trigger("rowDragDrop", {
+                        rows: e,
+                        parent: i,
+                        near: a.getRow(a.rowDropIn),
+                        after: "bottom" == a.rowDropDir
+                    })), a.rowDropIn = -1), a.rowDroptip.hide(), this.set("cursor", "default")
+                }
+            }))
+        },
+        _onRowOver: function (a, b) {
+            var c, d, e, f;
+            l.draggable.dragging || (c = this, d = this.options, e = c.getRow(a), f = b ? "addClass" : "removeClass", b && c.editor.editing && $("tr." + d.mouseoverRowCssClass, c.gridview).removeClass(d.mouseoverRowCssClass), c.enabledFrozen() && $(c.getRowObj(e, !0))[f](d.mouseoverRowCssClass), $(c.getRowObj(e, !1))[f](d.mouseoverRowCssClass))
+        },
+        _onMouseUp: function (a) {
+            var d, b = this;
+            this.options, l.draggable.dragging && (d = b._getSrcElementByEvent(a), d.hcell && d.column ? b.trigger("dragdrop", [{
+                type: "header",
+                column: d.column,
+                cell: d.hcell
+            }, a]) : d.row && b.trigger("dragdrop", [{
+                type: "row",
+                record: d.data,
+                row: d.row
+            }, a]))
+        },
+        _onMouseDown: function () {
+            this.options
+        },
+        _onContextmenu: function (a) {
+            var e, f, b = this,
+                c = this.options,
+                d = b._getSrcElementByEvent(a);
+            if (d.row) {
+                // console.log(d)
+                if (c.whenRClickToSelect && b.select(d.data), b.hasBind("contextmenu")) return b.trigger("contextmenu", [{
+                    data: d.data,
+                    rowindex: d.data["__index"],
+                    row: d.row
+                }, a])
+            } else if (d.hcell) {
+                //判断点击操作
+                var background = document.getElementsByClassName("cz_ico")[0].style.backgroundImage
+                var url = 'url("../../../../../public/images/cz_down.png")'
+
+                if (url == background || '' == background) {
+
+                    $('.cz_ico').css('background-image', 'url(../../../../../public/images/cz_up.png)')
+                    $('.l-grid-hd-cell-inner').addClass('l-grid-cz')
+                    return c.allowHideColumn ? (e = $(d.hcell).attr("columnindex"),
+                        void 0 == e ? !0 : (f = a.pageX - b.body.offset().left + parseInt(b.body[0].scrollLeft),
+                        e == b.columns.length - 1 && (f -= 50),
+                            b.popup.css({
+                                // left: f - 165,
+                                // right:165-f,
+                                top: b.gridheader.height()
+                            }), b.popup.toggle(), !1)) : !0
+                } else {
+                    $('.l-grid-hd-cell-inner').removeClass('l-grid-cz')
+                    $('.l-grid-popup').hide()
+                    $('.cz_ico').css('background-image', 'url(../../../../../public/images/cz_down.png)')
+                }
+            }
+
+        },
+        _onDblClick: function (a) {
+            var d, b = this;
+            this.options, d = b._getSrcElementByEvent(a), d.row && b.trigger("dblClickRow", [d.data, d.data["__id"], d.row])
+        },
+        _onClick: function (a) {
+            var f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, b = a.target || a.srcElement,
+                c = this,
+                d = this.options,
+                e = c._getSrcElementByEvent(a);
+            if (e.out) return c.editor.editing && !$.ligerui.win.masking && c.endEdit(), d.allowHideColumn && c.popup.hide(), void 0;
+            if (!e.indetail && !e.editing)
+                if (c.editor.editing && c.endEdit(), d.allowHideColumn && (e.popup || c.popup.hide()), e.checkboxall) {
+                    if (f = $(e.hrow), g = f.hasClass("l-checked"), 0 == c.trigger("beforeCheckAllRow", [!g, c.element])) return !1;
+                    g ? f.removeClass("l-checked") : f.addClass("l-checked"), c.selected = [];
+                    for (h in c.records) g ? c.unselect(c.records[h]) : c.select(c.records[h]);
+                    c.trigger("checkAllRow", [!g, c.element])
+                } else if (e.hcelltext) {
+                    if (i = $(e.hcelltext).parent().parent(), !d.enabledSort || !e.column) return;
+                    if (0 == e.column.isSort) return;
+                    if (d.url && "local" != d.dataAction && c.isDataChanged && !confirm(d.isContinueByDataChanged)) return;
+                    if (j = $(".l-grid-hd-cell-sort:first", i), k = e.column.name, !k) return;
+                    j.length > 0 ? j.hasClass("l-grid-hd-cell-sort-asc") ? (j.removeClass("l-grid-hd-cell-sort-asc").addClass("l-grid-hd-cell-sort-desc"), i.removeClass("l-grid-hd-cell-asc").addClass("l-grid-hd-cell-desc"), c.trigger("ChangeSort", [k, "desc"]), c.changeSort(k, "desc")) : j.hasClass("l-grid-hd-cell-sort-desc") && (j.removeClass("l-grid-hd-cell-sort-desc").addClass("l-grid-hd-cell-sort-asc"), i.removeClass("l-grid-hd-cell-desc").addClass("l-grid-hd-cell-asc"), c.trigger("ChangeSort", [k, "asc"]), c.changeSort(k, "asc")) : (i.removeClass("l-grid-hd-cell-desc").addClass("l-grid-hd-cell-asc"), $(e.hcelltext).after("<span class='l-grid-hd-cell-sort l-grid-hd-cell-sort-asc'>&nbsp;&nbsp;</span>"), c.trigger("ChangeSort", [k, "asc"]), c.changeSort(k, "asc")), $(".l-grid-hd-cell-sort", c.gridheader).add($(".l-grid-hd-cell-sort", c.f.gridheader)).not($(".l-grid-hd-cell-sort:first", i)).remove()
+                } else if (e.detailbtn && d.detail)
+                    if (l = e.data, f = $([c.getRowObj(l, !1)]), c.enabledFrozen() && (f = f.add(c.getRowObj(l, !0))), h = l["__id"], $(e.detailbtn).hasClass("l-open")) d.detail.onCollapse && d.detail.onCollapse(l, $(".l-grid-detailpanel-inner:first", m)[0]), f.next("tr.l-grid-detailpanel").hide(), $(e.detailbtn).removeClass("l-open");
+                    else {
+                        if (m = f.next("tr.l-grid-detailpanel"), m.length > 0) return m.show(), d.detail.onExtend && d.detail.onExtend(l, $(".l-grid-detailpanel-inner:first", m)[0]), $(e.detailbtn).addClass("l-open"), c.trigger("SysGridHeightChanged"), void 0;
+                        for ($(e.detailbtn).addClass("l-open"), n = 0, o = 0; o < c.columns.length; o++) c.columns[o].frozen && n++;
+                        p = $("<tr class='l-grid-detailpanel'><td><div class='l-grid-detailpanel-inner' style='display:none'></div></td></tr>"), q = $("<tr class='l-grid-detailpanel'><td><div class='l-grid-detailpanel-inner' style='display:none'></div></td></tr>"), p.find("div:first").width(c.gridheader.find("div:first").width() - 50), p.attr("id", c.id + "|detail|" + h), c.detailrows = c.detailrows || [], c.detailrows.push(p[0]), c.detailrows.push(q[0]), r = $("div:first", p), r.parent().attr("colSpan", c.columns.length - n), f.eq(0).after(p), n > 0 && (q.find("td:first").attr("colSpan", n), f.eq(1).after(q)), d.detail.onShowDetail ? (d.detail.onShowDetail(l, r[0], function () {
+                            c.trigger("SysGridHeightChanged")
+                        }), $("div:first", q).add(r).show().height(d.detail.height || d.detailHeight)) : d.detail.render && (r.append(d.detail.render()), r.show()), c.trigger("SysGridHeightChanged")
+                    }
+                else if (e.groupbtn) {
+                    for (s = $(e.grouprow), t = !0, $(e.groupbtn).hasClass("l-grid-group-togglebtn-close") ? ($(e.groupbtn).removeClass("l-grid-group-togglebtn-close"), s.hasClass("l-grid-grouprow-last") && $("td:first", s).width("auto")) : (t = !1, $(e.groupbtn).addClass("l-grid-group-togglebtn-close"), s.hasClass("l-grid-grouprow-last") && $("td:first", s).width(c.gridtablewidth)), u = s.next(".l-grid-row,.l-grid-totalsummary-group,.l-grid-detailpanel"); ;) {
+                        if (0 == u.length) break;
+                        t ? (u.show(), u.hasClass("l-grid-detailpanel") && !u.prev().find("td.l-grid-row-cell-detail:first span.l-grid-row-cell-detailbtn:first").hasClass("l-open") && u.hide()) : u.hide(), u = u.next(".l-grid-row,.l-grid-totalsummary-group,.l-grid-detailpanel")
+                    }
+                    c.trigger(t ? "groupExtend" : "groupCollapse"), c.trigger("SysGridHeightChanged")
+                } else if (e.treelink) c.toggle(e.data);
+                else if (e.row && c.enabledCheckbox()) {
+                    if (v = d.selectRowButtonOnly ? !0 : !1, d.enabledEdit && (v = !0), "a" == b.tagName.toLowerCase()) return;
+                    if ((e.checkbox || !v) && 0 != d.selectable) {
+                        if (f = $(e.row), g = f.hasClass("l-selected"), 0 == c.trigger("beforeCheckRow", [!g, e.data, e.data["__id"], e.row])) return !1;
+                        if (w = g ? "unselect" : "select", c[w](e.data), d.tree && d.autoCheckChildren)
+                            for (x = c.getChildren(e.data, !0), o = 0, y = x.length; y > o; o++) c[w](x[o]);
+                        c.trigger("checkRow", [!g, e.data, e.data["__id"], e.row])
+                    }
+                    !e.checkbox && e.cell && d.enabledEdit && d.clickToEdit && c._applyEditor(e.cell)
+                } else if (e.row && !c.enabledCheckbox() && 0 != d.selectable)
+                    if (e.cell && d.enabledEdit && d.clickToEdit && c._applyEditor(e.cell), $(e.row).hasClass("l-selected")) {
+                        if (!d.allowUnSelectRow) return $(e.row).addClass("l-selected-again"), void 0;
+                        c.unselect(e.data)
+                    } else c.select(e.data);
+                else if (e.toolbar)
+                    if (e.first) {
+                        if (0 == c.trigger("toFirst", [c.element])) return !1;
+                        c.changePage("first")
+                    } else if (e.prev) {
+                        if (0 == c.trigger("toPrev", [c.element])) return !1;
+                        c.changePage("prev")
+                    } else if (e.next) {
+                        if (0 == c.trigger("toNext", [c.element])) return !1;
+                        c.changePage("next")
+                    } else if (e.last) {
+                        if (0 == c.trigger("toLast", [c.element])) return !1;
+                        c.changePage("last")
+                    } else if (e.load) {
+                        if ($("span", e.load).hasClass("l-disabled")) return !1;
+                        if (0 == c.trigger("reload", [c.element])) return !1;
+                        if (d.url && c.isDataChanged && !confirm(d.isContinueByDataChanged)) return !1;
+                        c.loadData(d.where)
+                    }
+        },
+        select: function (a) {
+            var g, h, i, b = this,
+                c = this.options,
+                d = b.getRow(a),
+                e = d["__id"],
+                f = b.getRowObj(e);
+            if (c.rowSelectable && 0 != b.trigger("beforeSelectRow", [d, e, f])) {
+                if (g = b.getRowObj(e, !0), !b.enabledCheckbox() && !b.ctrlKey || c.isSingleCheck) {
+                    for (h in b.selected) i = b.selected[h], i["__id"] in b.records && ($(b.getRowObj(i)).removeClass("l-selected l-selected-again"), b.enabledFrozen() && $(b.getRowObj(i, !0)).removeClass("l-selected l-selected-again"));
+                    b.selected = []
+                }
+                f && $(f).addClass("l-selected"), g && $(g).addClass("l-selected"), b.selected[b.selected.length] = d, b.trigger("selectRow", [d, e, f])
+            }
+        },
+        unselect: function (a) {
+            var d, e, f, g, b = this;
+            this.options, d = b.getRow(a), e = d["__id"], f = b.getRowObj(e), g = b.getRowObj(e, !0), $(f).removeClass("l-selected l-selected-again"), b.enabledFrozen() && $(g).removeClass("l-selected l-selected-again"), b._removeSelected(d), b.trigger("unSelectRow", [d, e, f])
+        },
+        isSelected: function (a) {
+            var d, e, b = this;
+            this.options, d = b.getRow(a);
+            for (e in b.selected)
+                if (b.selected[e] == d) return !0;
+            return !1
+        },
+        arrayToTree: function (a, b, c) {
+            function o(a) {
+                return "string" == typeof a && (a = a.replace(/[.]/g, "").toLowerCase()), a
+            }
+
+            var g, h, i, j, k, l, m, n, e = this.options,
+                f = "children";
+            if (e.tree && (f = e.tree.childrenName), !a || !a.length) return [];
+            for (g = [], h = {}, i = a.length, j = 0; i > j; j++) k = a[j], l = o(k[b]), h[l] = k;
+            for (j = 0; i > j; j++) m = a[j], l = o(m[c]), n = h[l], n ? (n[f] = n[f] || [], n[f].push(m)) : g.push(m);
+            return g
+        },
+        _onResize: function () {
+            var c, d, e, f, g, h, a = this,
+                b = this.options;
+            b.height && "auto" != b.height ? (c = $(window).height(), d = 0, e = null, "string" == typeof b.height && b.height.indexOf("%") > 0 ? (f = a.grid.parent(), b.inWindow ? (e = c, e -= parseInt($("body").css("paddingTop")), e -= parseInt($("body").css("paddingBottom"))) : e = f.height(), d = .01 * e * parseInt(b.height), (b.inWindow || "body" == f[0].tagName.toLowerCase()) && (d -= a.grid.offset().top - parseInt($("body").css("paddingTop")))) : d = parseInt(b.height), d += b.heightDiff, a.windowHeight = c, a._setHeight(d)) : a._updateHorizontalScrollStatus.ligerDefer(a, 10), a.enabledFrozen() && (g = a.gridview1.width(), h = a.gridview.width(), 0 >= h - g ? a.gridview2.css({
+                width: "auto"
+            }) : a.gridview2.css({
+                width: h - g
+            })), a.trigger("SysGridHeightChanged")
+        },
+        showFilter: function () {
+            function e() {
+                var b = [];
+                return $(a.columns).each(function () {
+                    var a = {
+                            name: this.name,
+                            display: this.display
+                        },
+                        c = "int" == this.type || "number" == this.type || "float" == this.type,
+                        d = "date" == this.type;
+                    c && (a.type = "number"), d && (a.type = "date"), this.editor && (a.editor = this.editor), b.push(a)
+                }), b
+            }
+
+            function f() {
+                var b = d.getData();
+                "server" == a.options.dataType ? g(b) : h(b)
+            }
+
+            function g(b) {
+                b && b.rules && b.rules.length ? a.setParm("where", JSON.stringify(b)) : a.removeParm("where"), a.loadData()
+            }
+
+            function h(b) {
+                a.loadData($.ligerFilter.getFilterFunction(b))
+            }
+
+            var c, d, a = this;
+            return this.options, a.winfilter ? (a.winfilter.show(), void 0) : (c = $('<div id="' + a.id + '_filtercontainer"></div>').width(380).height(120).hide(), d = c.ligerFilter({
+                fields: e()
+            }), d.addRule($(d.element.firstChild)), a.winfilter = $.ligerDialog.open({
+                width: 420,
+                height: 208,
+                target: c,
+                isResize: !0,
+                top: 50,
+                buttons: [{
+                    text: "确定",
+                    onclick: function (a, b) {
+                        f(), b.hide()
+                    }
+                }, {
+                    text: "取消",
+                    onclick: function (a, b) {
+                        b.hide()
+                    }
+                }]
+            }))
+        }
+    }), $.ligerui.controls.Grid.prototype.enabledTotal = $.ligerui.controls.Grid.prototype.isTotalSummary, $.ligerui.controls.Grid.prototype.add = $.ligerui.controls.Grid.prototype.addRow, $.ligerui.controls.Grid.prototype.update = $.ligerui.controls.Grid.prototype.updateRow, $.ligerui.controls.Grid.prototype.append = $.ligerui.controls.Grid.prototype.appendRow, $.ligerui.controls.Grid.prototype.getSelected = $.ligerui.controls.Grid.prototype.getSelectedRow, $.ligerui.controls.Grid.prototype.getSelecteds = $.ligerui.controls.Grid.prototype.getSelectedRows, $.ligerui.controls.Grid.prototype.getCheckedRows = $.ligerui.controls.Grid.prototype.getSelectedRows, $.ligerui.controls.Grid.prototype.getCheckedRowObjs = $.ligerui.controls.Grid.prototype.getSelectedRowObjs, $.ligerui.controls.Grid.prototype.setOptions = $.ligerui.controls.Grid.prototype.set, $.ligerui.controls.Grid.prototype.reload = $.ligerui.controls.Grid.prototype.loadData, $.ligerui.controls.Grid.prototype.refreshSize = $.ligerui.controls.Grid.prototype._onResize, $.ligerui.controls.Grid.prototype.append = $.ligerui.controls.Grid.prototype.appendRange
+}(jQuery);

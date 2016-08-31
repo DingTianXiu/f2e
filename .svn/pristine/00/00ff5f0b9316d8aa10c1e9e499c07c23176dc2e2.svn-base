@@ -1,0 +1,17 @@
+<!-- 自定义内容 -->
+<div class="diy" id="diySearch">
+    <p class="reset clear"><a href="javascript:;" ng-click="delftSelected()">默认</a><a href="javascript:;" ng-click="resetSelecttd()">重置</a></p>
+    <h3 style="border-bottom:none;">已选择：</h3>
+    <div class="label clear" id="selected">
+        <a href="javascript:;" name="{{item.code}}" ng-click="selectedOptionUpdate(item)" ng-repeat="item in selectedOption" ng-if="item.isSelected==1">{{item.name}}<img class="fr" src="./public/images/close2.png" alt="" /></a>
+    </div>
+    <h3 style="border-bottom:none;">未选择：</h3>
+    <div class="no clear">
+        <a href="javascript:;" name="{{item.code}}" ng-click="selectedOptionUpdate(item)" ng-repeat="item in selectedOption" ng-if="item.isSelected==0">{{item.name}}<img class="fr" src="./public/images/add.png" alt="" /></a>
+    </div>
+    <hr />
+    <div class="submit fr">
+        <a href="javascript:;" class="a1" ng-click="diySearchConfirm()">确定</a><a href="javascript:;" class="a2" ng-click="closeDiySearch()">取消</a>
+
+    </div>
+</div>

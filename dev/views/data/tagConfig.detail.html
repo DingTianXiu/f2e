@@ -1,0 +1,101 @@
+<div ng-controller="tagDetailCtrl">
+  <div class="bq_wrap mar-left">
+    <h2 class="tag-detail-title mar-no">标签源详情 <i class="back" ui-sref="g.data.tagconfig">返回</i></h2>
+    <div class="amend modifyTag">
+      <div class="list-amend list-tag">
+        <span class="amend-tips">标签表信息</span>
+        <div class="iamend">
+          <ul class="auditUl auditUl-class">
+            <li>
+              <label>标签数据类型：</label><em>运营商标签</em>
+            </li>
+            <li class="se-li">
+              <label>数据来源：</label>
+              <em>
+                <select name="dataSource" id="dataSource" class="cus-select" disabled="true" ng-model="initDataTableData.dataSource" ng-options="m.id as m.name for m in dataTableListData.dataSourceList">
+                </select>
+              </em>
+            </li>
+            <li class="se-li">
+              <label>更新周期：</label>
+              <em>
+                <select name="refreshCycle" id="refreshCycle" class="cus-select" disabled="true" ng-model="initDataTableData.refreshCycle" ng-options="m.id as m.name for m in dataTableListData.refreshCycleList"></select>
+              </em>
+            </li>
+            <li class="se-li">
+              <label>数据库：</label>
+              <em>
+                <select disabled="true" class="cus-select">
+                  <option>{{initDataTableData.metaDbName}}</option>
+                </select>
+              </em>
+              
+            </li>
+            <li>
+              <label>数据表：</label>
+              <em>{{initDataTableData.metaTableName}}</em>
+            </li>
+            <li class="textLi">
+              <label>表说明：</label>
+              <textarea readonly="readonly" class="text-over" ng-mouseenter="hover = true" ng-mouseleave="hover = false">{{initDataTableData.comment}}</textarea>
+              <p class="text-detail" ng-show="hover">{{initDataTableData.comment}}</p>
+            </li>
+            <li>
+              <label>附件：</label>
+              <em>
+                <a href="{{initDataTableData.attachmentFileUrl}}" class="link-blue" target="_blank"><span ng-bind="initDataTableData.attachmentFileName"></span></a>
+              </em>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="list-amend list-tag">
+        <span class="amend-tips">字段标签信息</span>
+        <div class="iamend">
+          <div class="amend-table">
+            <p>主键类型</p>
+            <table class="latitude-tab">
+              <tr>
+                <th>字段名</th>
+                <th>主键名称</th>
+              </tr>
+              <tr ng-repeat="item in keyTableData">
+                <td title="{{item.metaColumnName}}">{{item.metaColumnName}}</td>
+                <td title="{{item.tagName}}">{{item.tagName}}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="amend-table">
+            <p>标签类型</p>
+            <table class="label-tab">
+              <tr>
+                <th>字段名</th>
+                <th>标签中文名</th>
+                <th>标签英文名</th>
+                <th>标签等级</th>
+                <th>标签类目</th>
+                <th>是否为事实标签</th>
+                <th>枚举值</th>
+                <th>质量</th>
+                <th>统计口径</th>
+              </tr>
+              <tr ng-repeat="item in tagTableData">
+                <td title="{{item.metaColumnName}}">{{item.metaColumnName}}</td>
+                <td title="{{item.name}}">{{item.name}}</td>
+                <td title="{{item.code}}">{{item.code}}</td>
+                <td title="{{item.labelLevelName}}">{{item.labelLevelName}}</td>
+                <td title="{{item.categoryPath}}">{{item.categoryPath}}</td>
+                <td title="{{item.isFactName}}">{{item.isFactName}}</td>
+                <td title="{{item.enumValue}}">{{item.enumValue}}</td>
+                <td title="{{item.labelQualityPer}}">{{item.labelQualityPer}}</td>
+                <td title="{{item.description}}">{{item.description}}</td>
+              </tr>
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

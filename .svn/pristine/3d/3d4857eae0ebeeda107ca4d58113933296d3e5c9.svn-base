@@ -1,0 +1,43 @@
+<div class="" ng-controller="tagConfigCtrl" id="windowLoad">
+  <div ng-include="'/views/data/tagConfig.advanceSearch.html'"></div>
+  <!-- 高级查询弹窗页 -->
+  <div ng-include="'/views/data/tagConfig.Customfield.html'"></div>
+  <!-- 自定义查询弹窗页 -->
+  <div ng-if="checkPermission('metatable.pageview')">
+
+    <form action="" class="search tag_search">
+        <div>
+          <select name="" id="mySelect" ng-options="m.id as m.name for m in mySelectOption" ng-model="$parent.mySelect">
+          </select>
+          <input class="text" type="text" placeholder="请输入关键词1111111" id="mySelectVal" ng-model="$parent.mySelectVal">
+          <input class="sub1" type="button" value="搜索" ng-click="mySelectClick()">
+          <input class="sub2" id="sub2" type="button" value="高级搜索" ng-click="advancedSearch()">
+         <!--  <input class="sub2" id="sub3" type="button" value="自定义字段" ng-click="diySearch()"> -->
+        </div>
+        <a href="javascript:;" ui-sref="g.data.createTag" ng-if="checkPermission('metatable.newmeta')" class="fr add-tag">新增标签源</a>
+    </form>
+    <div class="tables_wrap" style="margin-top: 70px;">
+      
+      <!--<div class="clear" id="tables_con_show"></div>-->
+      <div>
+
+      </div>
+
+      <div class="bottomPage">
+        <span class="cz-select" ng-click="getSelectedRows()">选择</span>
+        <div class="some-select">
+          <span class="cz-close" ng-click="cancelSelect()">取消选择</span>
+          <span class="cz-btn" ng-click="setRowsStop()">停用</span>
+          <span class="cz-btn" ng-click="setRowsStart()">启用</span>
+          <span class="cz-btn" ng-click="delRows()">删除</span>
+        </div>
+        <div class="tcdPageCode"></div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="!checkPermission('metatable.pageview')">
+    <div class="page-forbid">
+      你无权查看该页面
+    </div>
+  </div>
+</div>

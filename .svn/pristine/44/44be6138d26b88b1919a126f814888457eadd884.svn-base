@@ -1,0 +1,165 @@
+<div ng-controller="createTagFieldCtrl as th">
+  <div class="bq_wrap creat-bq" >
+    <ul class="clear creat-step" ng-if="currentState!=='g.data.modifyTag' && currentState!=='g.data.auditTag' && currentState!=='g.data.tagdetail'">
+        <li>
+          <h3>1</h3>
+          <div>
+            <p>Step1</p>
+            <p>设置标签表</p>
+          </div>
+        </li>
+        <li>...</li>
+        <li class="on">
+          <h3>2</h3>
+          <div>
+            <p>Step2</p>
+            <p>设置标签表</p>
+          </div>
+        </li>
+        <li>...</li>
+        <li>
+          <h3>3</h3>
+          <div>
+            <p>Step3</p>
+            <p>完成</p>
+          </div>
+        </li>
+    </ul>
+    <div class="clearfix" style="margin-top: 20px;padding-bottom: 30px;" ng-class="{'mar-left': currentState =='g.data.createTagField'}">
+      
+      <table style="width: 100%" class="tag-table">
+        <tr>
+          <td width=250 style="vertical-align:top;">
+            <div class="fieldbox" style="overflow-y:auto;">
+              <table>
+                <tbody>
+                  <tr>
+                    <th colspan="3">字段名（User）</th>
+                  </tr>
+                  <tr ng-repeat="m in fieldListData" on-finish-render-filters ng-class="{'field-on': pageData.rowIndex==$index}" class="list-tr" ng-click='backfillField($index)'>
+                    <td><span ng-bind="m.metaColumnName" title="{{m.metaColumnName}}" class="field-txt-overflow"></span></td>
+                    <td class="hidden">
+                      <input type="hidden" name="isSuccess" value="{{m.isSuccess}}">
+                    </td>
+                    <td ng-if="m.type == null">
+                      <i class="ico-right"></i>
+                    </td>
+                    <td ng-if="m.type == '22'">
+                      <span ng-click='backfillField($index)' class="tagTips">标签</span><i class="ico-right"></i>
+                    </td>
+                    <td ng-if="m.type == '23'">
+                      <span ng-click='backfillField($index)' class="tagTips">主键</span><i class="ico-right"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+          <td style="vertical-align:top;">
+            <p class="tag-name" ng-show="currentState !='g.data.auditTag' || currentState !='g.data.tagdetail'">你将为<em>{{tagName}}</em>设置标签/主键</p>
+            <ul class="editTag">
+              <li>
+                <label>主键或标签</label>
+                <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" ng-change="changeDataType();" ng-model="fieldDetailData.type" ng-options="m.id as m.name for m in droplistData.typeList" class="ng-pristine ng-valid ng-not-empty ng-touched">
+                </select>
+              </li>
+            </ul>
+            <form name="typePForm" class="clear">
+              <ul class="editTag">
+                <li ng-show="fieldDetailData.type == 23">
+                  <label>主键名称</label>
+                  <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="" id="" ng-model="fieldDetailData.tag" ng-options="m.id as m.name for m in droplistData[fieldDetailData.type].tagList" class="ng-pristine ng-valid ng-not-empty ng-touched" ng-focus=""></select>
+                  <input type="hidden" name="type" value="23">
+                </li>
+              </ul> 
+            </form>
+            <form name="typeLabelForm" novalidate class="clear">
+              <ul class="editTag"  ng-show="fieldDetailData.type == 22">
+                <li>
+                  <label>标签中文名</label>
+                  <input readonly="readonly" type="text" ng-model="getLabelCodeName.chineseName" name="labelname" class="text-input disable-text ">
+                </li>
+                <li>
+                  <label>标签英文名</label>
+                  <input readonly="readonly" type="text" name="code" ng-model="getLabelCodeName.codeName" class="text-input disable-text ">
+                </li>
+                <li>
+                  <label>标签等级</label>
+                  <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="labelLevel" ng-model="fieldDetailData.labelLevel" ng-options="m.id as m.name for m in droplistData.labelLevelList" required ng-class="{'ng-error':(typeLabelForm.description.$dirty || fieldsubmitted)  && typeLabelForm.labelLevel.$error.required}">
+                  </select>
+                  <p class="left">
+                    <span ng-show="(typeLabelForm.description.$dirty || fieldsubmitted)  && typeLabelForm.labelLevel.$error.required" class="color-red" >请选择标签等级</span>
+                  </p>
+                </li>
+                <li id="categoryLi">
+                  <label>标签类目</label>
+                    <my-ligerui-combo-box ng-model="comboBoxOption" root-text="类目" combo-box-id="createSelectCategory" div-class="category"/>
+                    <h4 class="quality-tips" id="creatCategory">{{pathName}}</h4>
+                </li>
+                <li>
+                  <label>是否为事实标签</label>
+                  <input type="radio" name="isFact" ng-model="fieldDetailData.isFact" value="y" ng-disabled="currentState=='g.data.tagdetail'"><span>是</span>
+                  <input type="radio" name="isFact" ng-model="fieldDetailData.isFact" value="n" ng-disabled="currentState=='g.data.tagdetail'" ng-checked="true" required><span>否</span>
+                  <p class="left">
+                    <span class="color-red" ng-show="submited && createtagform.isFact.$error.maxlength" class="color-red">是否为事实标签必填</span>
+                  </p>
+                </li>
+                <li>
+                  <label>枚举值</label>
+                  <input type="radio" name="enumType" ng-model="fieldDetailData.enumType" value="y" ng-disabled="currentState=='g.data.tagdetail'" ><span class="enumer-span">有限枚举</span>
+                  <input type="radio" name="enumType" ng-model="fieldDetailData.enumType" value="n" ng-disabled="currentState=='g.data.tagdetail'" ng-checked="true" ><span>无限枚举</span>
+                </li>
+                <li ng-show="fieldDetailData.enumType == 'y'">
+                  <input placeholder="请输入枚举值" type="text" id="enumeration" ng-model="fieldDetailData.enumValue"
+                         ng-disabled="currentState=='g.data.tagdetail'" name="enumValue"
+                         ng-required=" boolean == true" class="text-input"
+                         ng-class="{'ng-error':(typeLabelForm.description.$dirty || fieldsubmitted)  && typeLabelForm.enumValue.$error.required}">
+                  <p class="left">
+                    <span ng-show="typeLabelForm.enumValue.$error.required" class="color-red" >请输入枚举值</span>
+                  </p>
+                </li>
+                <li>
+                  <label>标签质量</label>
+                  <input placeholder="输入非空值数" type="text" class="quality" ng-model="fieldDetailData.labelTotal" ng-disabled="currentState=='g.data.tagdetail'" required name="labelTotal" ng-class="{'ng-error':(typeLabelForm.description.$dirty || fieldsubmitted)  && typeLabelForm.labelTotal.$error.required}">
+                  <span class="symbol">/</span>
+                  <input placeholder="测试人群总量" type="text" class="quality" ng-model="fieldDetailData.labelNonNull" ng-disabled="currentState=='g.data.tagdetail'" required name="labelNonNull" ng-class="{'ng-error':(typeLabelForm.description.$dirty || fieldsubmitted)  && typeLabelForm.labelNonNull.$error.required}">
+                  <span ng-if="fieldDetailData.labelQuality != null">%<span class="symbol">={{fieldDetailData.labelQuality | number:2}}</span></span>
+                  <span  class="color-red" ng-show="(typeLabelForm.labelTotal.$dirty || typeLabelForm.labelNonNull.$dirty ||fieldsubmitted )  && (typeLabelForm.labelTotal.$error.required || typeLabelForm.labelNonNull.$error.required) ||tooltipBool==false">{{tooltip}}</span>
+                  <h4 class="quality-tips">非空值数/测试人群总量=非空值率</h4>
+                </li>
+                <li class="tag-instructions">
+                  <label>统计口径</label>
+                  <textarea ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" class="comment" ng-model="fieldDetailData.description" required  name="description" ng-class="{'ng-error':(typeLabelForm.description.$dirty || fieldsubmitted)&& typeLabelForm.description.$error.required }"></textarea>
+                  <em class="textLength"><em ng-class="{'warning-red':maxLength == false}">{{textLength}}</em>/200</em>
+                  <p>
+                    <span ng-show="(typeLabelForm.description.$dirty || fieldsubmitted)  && typeLabelForm.description.$error.required" class="color-red">统计口径为必填项</span>
+                    <span ng-show="maxLength == false" class="color-red">统计口径200</span>
+                  </p>
+                </li>
+              </ul>
+            </form>
+          </td>
+        </tr>
+      </table>
+      
+    </div>
+  </div>
+  <div class="submit tag-submit"  ng-if="currentState!=='g.data.auditTag' && currentState!=='g.data.tagdetail'">
+    <div class="btn-center">
+      <a href="javascript:;" class="a2" ng-click="cancelTag()">取消</a>
+      <a href="javascript:;" class="a1" style="padding: 0 10px" ng-click="saveLabel();">{{step}}</a>
+      <span>已完成(<em>{{completeNum}}</em>/<em>{{fieldListData.length}}</em>)</span>
+    </div>
+    
+  </div>
+  <div class="mask">
+      <div class="mask-bg"></div>
+      <div class="imask">
+        <p>标签设置未完成，你要取消吗？</p>
+        <div>
+          <button class="btn-gray-a" ui-sref="g.data.tagconfig">取消</button>
+          <button class="btn-blue" ng-click="next()">继续设置</button>
+        </div>
+      </div>
+    </div>
+</div>

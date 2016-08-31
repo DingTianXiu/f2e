@@ -1,0 +1,36 @@
+<div class="tables_wrap" ng-controller="permissionsConfigCtrl">
+  <div ng-if="checkPermission('permissions.permissions.pageview')">
+    <input type="hidden" ng-model="closeOpen" id="closeOpen" ng-click="callbackOpen()">
+    <!-- 会点函数触发 -->
+    <form action="" class="search">
+      <a href="javascript:;" ng-click="addPermissions('permission')"  ng-if="checkPermission('permissions.permissions.addmenu')">添加权限</a>
+      <a href="javascript:;" ng-click="addPermissions('page')"  ng-if="checkPermission('permissions.permissions.addpage')">添加页面</a>
+      <a href="javascript:;" ng-click="addPermissions('menu_group')"  ng-if="checkPermission('permissions.permissions.addpermission')">添加菜单组</a>
+    </form>
+    <div class="tables_con1 clear group_table permissionsDiv" id="permissionsId">
+      <table style="width:100%" class="fc-table">
+        <tr>
+          <td class="fc-table-fix">
+            <div class="group">
+              <h4>菜单 </h4>
+              <my-ligerui-tree ng-model="myTreeOption" root-text="权限"></my-ligerui-tree>
+            </div>
+          </td>
+          <td class="fc-table-main">
+            <!--<my-ligerui-list ng-model="listModel"></my-ligerui-list>-->
+            <div  id="tables_con_show"> </div>
+            <div class="bottomPage">
+              <!-- <span class="cz-select">选择</span> -->
+              <div class="tcdPageCode"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div ng-if="!checkPermission('permissions.permissions.pageview')">
+    <div class="page-forbid">
+      你无权查看该页面
+    </div>
+  </div>
+</div>

@@ -1,0 +1,603 @@
+app.run(['$rootScope', '$state', '$stateParams', '$templateCache', '$compile',
+    function ($rootScope, $state, $stateParams, $templateCache, $compile) {
+        /**
+         * 转换特殊字符
+         */
+        $rootScope.checkListPermission = function (item) {
+            if (permissionCodes && permissionCodes.indexOf(item) > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        /**
+         * 弹窗默认配置
+         * @param options
+         * @returns {*|Window}
+         */
+        $rootScope.layerOpen = function (options) {
+            //默认配置
+            var option = {
+                type: options.type == undefined ? 1 : options.type,//弹窗类型
+                maxmin: options.maxmin == undefined ? true : options.maxmin,//显示最大化最小化按钮
+                shadeClose: options.shadeClose == undefined ? true : options.shadeClose,//开启点击遮罩关闭
+                area: options.area == undefined ? ['740px', '620px'] : options.area//弹窗大小([宽,高])
+            };
+
+            return layer.open($.extend(true, option, options));
+        }
+
+        /**
+         * 标签表管理
+         * 默认自定义查询标签配置
+         * @type {*[]}
+         */
+        $rootScope.defaultQueryViewColumn = [{
+            name: '表名',
+            code: 'metaTableName',
+            isSelected: '1'
+        }, {
+            name: '数据库名',
+            code: 'metaDbName',
+            isSelected: '1'
+        }, {
+            name: '标签数据类型',
+            code: 'dataCategory',
+            isSelected: '1'
+        }, {
+            name: '数据源',
+            code: 'dataSource',
+            isSelected: '1'
+        }, {
+            name: '表状态',
+            code: 'available',
+            isSelected: '0'
+        }, {
+            name: '审核状态',
+            code: 'modifyStatus',
+            isSelected: '1'
+        }, {
+            name: '使用状态',
+            code: 'useStatus',
+            isSelected: '1'
+        }, {
+            name: '更新周期',
+            code: 'refreshCycle',
+            isSelected: '1'
+        }, {
+            name: '已部署脚本',
+            code: 'scriptFileName',
+            isSelected: '1'
+        }, {
+            name: '附件',
+            code: 'attachmentFileName',
+            isSelected: '1'
+        }, {
+            name: '待审核脚本',
+            code: 'waitAuditScriptFileName',
+            isSelected: '0'
+        }, {
+            name: '部署服务器',
+            code: 'deployServer',
+            isSelected: '0'
+        }, {
+            name: '部署目录',
+            code: 'deployPath',
+            isSelected: '0'
+        }, {
+            name: '启动命令',
+            code: 'startScriptFileName',
+            isSelected: '0'
+        }, {
+            name: '表说明',
+            code: 'comment',
+            isSelected: '1'
+        }, {
+            name: '使用项目',
+            code: '',
+            isSelected: '1'
+        }, {
+            name: '创建人',
+            code: 'createdUserName',
+            isSelected: '0'
+        }, {
+            name: '修改人',
+            code: 'modifiedUserName',
+            isSelected: '0'
+        }, {
+            name: '创建时间',
+            code: 'created',
+            isSelected: '0'
+        }, {
+            name: '修改时间',
+            code: 'modified',
+            isSelected: '0'
+        }];
+
+        /**
+         * 标签表管理
+         * 高级搜索下拉默认配置
+         */
+        $rootScope.defaultAdvancedSearchSelect = {
+            refreshCycle: [//更新周期
+                ['天', '天'], ['小时', '小时'], ['周', '周'], ['半月', '半月'], ['月', '月'], ['年', '年'], ['永远不', '永远不'], ['分钟', '分钟']
+            ], modifyStatus: [//审核状态
+                ['wait_audit', '待审核'], ['audit_pass', '审核通过'], ['audit_not_pass', '审核未通过'], ['deployed', '已部署']
+            ], useStatus: [//使用状态
+                ['y', '启用'], ['n', '停用']
+            ], mySelect: [//页面普通下拉框
+                ['metaTableName', '表名'], ['metaDbName', '数据库名']/*, ['dataCategory', '标签数据类型','select'], ['dataSource', '数据源','select'], ['modifyStatus', '审核状态','select']*/
+            ]
+        };
+
+        /**
+         * 标签中心
+         * 自定义搜索默认配置
+         * @type {{name: string, code: string, isSelected: string}[]}
+         */
+        $rootScope.defaultQueryViewColumnByCenter = [{
+            name: '标签中文名',
+            code: 'name',
+            isSelected: '1'
+        }, {
+            name: '标签英文名',
+            code: 'code',
+            isSelected: '1'
+        }, {
+            name: '标签识别',
+            code: 'tag',
+            isSelected: '1'
+        }, {
+            name: '标签数据类型',
+            code: 'dataCategory',
+            isSelected: '1'
+        }, {
+            name: '标签类型',
+            code: 'type',
+            isSelected: '1'
+        }, {
+            name: '审核状态',
+            code: 'modifyStatus',
+            isSelected: '1'
+        }, {
+            name: '使用状态',
+            code: 'useStatus',
+            isSelected: '1'
+        }, {
+            name: '一级类目',
+            code: 'categoryL1',
+            isSelected: '1'
+        }, {
+            name: '二级类目',
+            code: 'categoryL2',
+            isSelected: '1'
+        }, {
+            name: '统计口径',
+            code: 'description',
+            isSelected: '0'
+        }, {
+            name: '数据库',
+            code: 'metaDbName',
+            isSelected: '0'
+        }, {
+            name: '标签表',
+            code: 'metaTableName',
+            isSelected: '0'
+        }, {
+            name: '字段名',
+            code: 'metaColumnName',
+            isSelected: '0'
+        }, {
+            name: '更新周期',
+            code: 'refreshCycle',
+            isSelected: '1'
+        }, {
+            name: '数据源',
+            code: 'dataSource',
+            isSelected: '1'
+        }, {
+            name: '创建人',
+            code: 'createdUserName',
+            isSelected: '1'
+        }, {
+            name: '修改人',
+            code: 'modifiedUserName',
+            isSelected: '0'
+        }, {
+            name: '创建时间',
+            code: 'created',
+            isSelected: '0'
+        }, {
+            name: '修改时间',
+            code: 'modified',
+            isSelected: '0'
+        }];
+
+        /**
+         * 标签中心
+         * 高级搜索下拉默认配置
+         */
+        $rootScope.defaultAdvancedSearchSelectByCenter = {
+
+            refreshCycle: [//更新周期
+                ['天', '天'], ['小时', '小时'], ['周', '周'], ['半月', '半月'], ['月', '月'], ['年', '年'], ['永远不', '永远不'], ['分钟', '分钟']
+            ], modifyStatus: [//审核状态
+                ['wait_audit', '待审核'], ['audit_pass', '审核通过'], ['audit_not_pass', '审核未通过'], ['deployed', '已部署']
+            ], useStatus: [//使用状态
+                ['y', '启用'], ['n', '停用']
+            ], dataCategory: [//标签数据类型
+
+                ['dmb', '舆情标签', {
+                    dataSource: [//数据源
+                        ['data_source_weibo', '微博'], ['data_source_admonitor', 'admonitor']]
+                }],
+                ['operator', '运营商标签', {
+                    dataSource: [//数据源
+                        ['data_source_zjct', '浙江电信'], ['data_source_zjcm', '浙江移动'], ['data_source_shct', '上海电信']]
+                }]
+            ], mySelect: [//页面搜索下拉
+                ['name', '标签中文名'], ['code', '标签英文名'], ['metaTableName', '标签表']/*, ['categoryL1', '一级类目'], ['categoryL2', '二级类目'], ['modifyStatus', '审核状态'], ['tag', '标签识别']*/
+            ]
+
+        };
+
+        /**
+         * 可视化控件
+         * 高级搜索下拉默认配置
+         */
+        $rootScope.defaultAdvancedSearchSelectByPlugins = {
+
+            refreshCycle: [//更新周期
+                ['天', '天'], ['小时', '小时'], ['周', '周'], ['半月', '半月'], ['月', '月'], ['年', '年'], ['永远不', '永远不'], ['分钟', '分钟']
+            ], modifyStatus: [//审核状态
+                ['wait_audit', '待审核'], ['audit_not_pass', '审核未通过']
+            ], useStatus: [//使用状态
+                ['y', '启用'], ['n', '停用']
+            ], dataCategory: [//标签数据类型
+
+                ['dmb', '舆情标签', {
+                    dataSource: [//数据源
+                        ['data_source_weibo', '微博'], ['data_source_admonitor', 'admonitor']]
+                }],
+                ['operator', '运营商标签', {
+                    dataSource: [//数据源
+                        ['data_source_zjct', '浙江电信'], ['data_source_zjcm', '浙江移动'], ['data_source_shct', '上海电信']]
+                }]
+            ], mySelect: [//页面搜索下拉
+                ['targetId', 'ID'], ['name', '控件名称'], ['widgetCatName', '控件分类'], ['modifyStatus', '审核状态']/*, ['categoryL1', '一级类目'], ['categoryL2', '二级类目'], ['modifyStatus', '审核状态'], ['tag', '标签识别']*/
+            ]
+
+        };
+
+        /**
+         * 可视化控件已审核
+         * 高级搜索下拉默认配置
+         */
+        $rootScope.defaultAdvancedSearchSelectByPluginsDone = {
+
+            refreshCycle: [//更新周期
+                ['天', '天'], ['小时', '小时'], ['周', '周'], ['半月', '半月'], ['月', '月'], ['年', '年'], ['永远不', '永远不'], ['分钟', '分钟']
+            ], modifyStatus: [//审核状态
+                ['wait_audit', '待审核'], ['audit_pass', '审核通过'], ['audit_not_pass', '审核未通过']
+            ], useStatus: [//使用状态
+                ['y', '启用'], ['n', '停用']
+            ], dataCategory: [//标签数据类型
+
+                ['dmb', '舆情标签', {
+                    dataSource: [//数据源
+                        ['data_source_weibo', '微博'], ['data_source_admonitor', 'admonitor']]
+                }],
+                ['operator', '运营商标签', {
+                    dataSource: [//数据源
+                        ['data_source_zjct', '浙江电信'], ['data_source_zjcm', '浙江移动'], ['data_source_shct', '上海电信']]
+                }]
+            ], mySelect: [//页面搜索下拉
+                ['id', 'ID'], ['name', '控件名称'], ['widgetCatName', '控件分类']/*, ['categoryL1', '一级类目'], ['categoryL2', '二级类目'], ['modifyStatus', '审核状态'], ['tag', '标签识别']*/
+            ]
+
+        };
+
+        //资源管理列表标题
+        $rootScope.tagSourceConfigColumns = {
+            headerRowHeight: 35,
+            columns: [{
+                display: 'ID', name: 'id'
+            }, {
+
+                display: '中文名称',
+                name: 'name',
+                render: function (rowdata) {
+                    return '<span title="' + $rootScope.escapeHtml(rowdata.name) + '">' + $rootScope.escapeHtml(rowdata.name) + '</span>';
+                }
+            }, {
+                display: '英文名称',
+                name: 'code',
+                render: function (rowdata) {
+                    var html = $rootScope.escapeHtml(rowdata.code)
+                    return '<span title="' + html + '">' + html + '</span>';
+                }
+            }, {
+                display: '父节点',
+                name: 'parentId'
+            }, {
+                display: '状态',
+                name: 'status',
+                editor: {
+                    type: 'select',
+                    data: [{available: 'y', text: '启用'}, {available: 'n', text: '停用'}],
+                    valueField: 'available'
+                },
+                render: function (item) {
+                    if (item.status == 'y') return '启用';
+                    return '停用';
+                }
+            }, {
+                display: '说明',
+                name: 'comment',
+                render: function (item) {
+                    var val = ''
+                    if (item.comment != null) {
+                        val = item.comment;
+                    }
+                    val = $rootScope.escapeHtml(val);
+                    return '<span title="' + val + '">' + val + '</span>';
+                }
+            }, {
+                display:"操作<i class='cz_ico'>",
+                isSort: false,
+                align: 'center',
+                width: 200,
+                frozen: true,
+                render: function (rowdata, rowindex, value) {
+                    // var h = "";
+                    // if ($rootScope.checkListPermission('resourceslabel.modify')) {
+                    //     h += "<a href='javascript:updateSources(" + rowdata.id + ',"' + rowdata.name + '"' + ")'>编辑</a> ";
+                    // }
+                    // if ($rootScope.checkListPermission('resourceslabel.set')) {
+                    //     if (rowdata.isLeaf == 'n') {
+                    //         h += "<span>已设为资源组</span> ";
+                    //     } else {
+                    //         h += "<a href='javascript:settingSources(" + rowdata.id + ',"' + rowdata.name + '"' + ")'>&nbsp;&nbsp;&nbsp;设为资源组</a> ";
+                    //     }
+                    // }
+                    return "<a >...</a>";
+                }
+            }]
+        }
+
+        //权限配置列表标题
+        $rootScope.permissionsConfigColumns = {
+            headerRowHeight: 35,
+            columns: [{
+                display: '序号', name: 'id'
+            }, {
+                display: '中文名称',
+                name: 'name',
+                render: function (item) {
+                    return '<span title="' + $rootScope.escapeHtml(item.name) + '">' + $rootScope.escapeHtml(item.name) + '</span>';
+                }
+            }, {
+                display: '英文名称',
+                name: 'code',
+                width: 350,
+                render: function (item) {
+                    return '<span title="' + $rootScope.escapeHtml(item.code) + '">' + $rootScope.escapeHtml(item.code) + '</span>';
+                }
+            }, {
+                display: '父节点',
+                name: 'parentId'
+            }, {
+                display: '状态',
+                name: 'status',
+                editor: {
+                    type: 'select',
+                    data: [{available: 'y', text: '启用'}, {available: 'n', text: '停用'}],
+                    valueField: 'available'
+                },
+                render: function (item) {
+                    if (item.status == 'y') return '启用';
+                    return '停用';
+                }
+            }, {
+                display: '说明/接口URL',
+                name: 'comment',
+                render: function (item) {
+                    var val = '';
+                    if (item.comment != null) {
+                        val = item.comment;
+                    }
+                    if (item.url == null) {
+                        return '<span title="' + $rootScope.escapeHtml(val) + '">' + $rootScope.escapeHtml(val) + '</span>';
+                    } else {
+                        return '<span title="' + $rootScope.escapeHtml(item.url) + '">' + $rootScope.escapeHtml(item.url) + '</span>';
+                    }
+
+                    ;
+                }
+            }, {
+                display:"操作<i class='cz_ico'>",
+                frozen:true,
+                isSort: false, width: 200, render: function (rowdata, rowindex, value) {
+                    // var h = "";
+                    // if ($rootScope.checkListPermission('permissions.permissions.modifypermission')) {
+                    //     h += "<a href='javascript:updatePermissions(" + rowdata.id + ")'>编辑</a> ";
+                    // }
+                    /*if ($rootScope.checkListPermission('permissions.permissions.delpermission')) {
+                     h += "<a href='javascript:delPermissions(" + rowdata.id + ',"' + rowdata.name + '"' + ")'>删除</a> ";
+                     }*/
+
+                    return "<a >...</a>";
+                }
+            }]
+        }
+
+        //用户管理列表标题
+        $rootScope.userColumns = {
+            headerRowHeight: 35,
+            columns: [{
+                display: '姓名',
+                name: 'userName',
+                render: function (item) {
+                    return '<span title="' + item.userName + '">' + item.userName + '</span>';
+                }
+            }, {
+                display: '部门',
+                name: 'departName',
+                render: function (item) {
+                    return '<span title="' + item.departName + '">' + item.departName + '</span>';
+                }
+            }, {
+                display: '职务',
+                name: 'job',
+                render: function (item) {
+                    return '<span title="' + item.job + '">' + item.job + '</span>';
+                }
+            }, {
+                display: '用户名',
+                name: 'loginName',
+                render: function (item) {
+                    return '<span title="' + item.loginName + '">' + item.loginName + '</span>';
+                }
+            }, {
+                display: '邮箱',
+                name: 'email',
+                width: 200,
+                render: function (item) {
+                    return '<span title="' + item.email + '">' + item.email + '</span>';
+                }
+            }, {
+                display: '手机号',
+                name: 'mobile',
+                render: function (item) {
+                    return '<span title="' + item.mobile + '">' + item.mobile + '</span>';
+                }
+            }, {
+                display: '角色',
+                name: 'roleName',
+                render: function (item) {
+                    if (item.roleName == null) {
+                        return '基础权限';
+                    }
+                    return '<span title="' + item.roleName + '">' + item.roleName + '</span>';
+                }
+            }, {
+                display: "操作<i class='cz_ico'>",
+                frozen:true,
+                isSort: false, width: 200, render: function (rowdata, rowindex, value) {
+
+                    // var datas = rowdata.userName + "&" + rowdata.loginName + "&" + rowdata.departName + "&" + rowdata.job + "&" + rowdata.userId + "&" + rowdata.roleId;
+                    // var h = "";
+                    // if ($rootScope.checkListPermission('permissions.client.modifyrole')) {
+                    //     h += "<a href='javascript:updataUserRoleData(\"" + datas + "\")'>修改角色</a> ";
+                    // }
+                    return "<a >...</a>";
+                }
+            }]
+        }
+
+        /**
+         * 用户管理
+         * 普通下拉值
+         */
+        $rootScope.defaultUserSelect = {
+            userSelect: [//页面查询 下拉条件
+                ['userName', '用户名'], ['roleName', '角色名'], ['departName', '部门']
+            ]
+        };
+
+
+        /**
+         * 新增权限类型
+         */
+        $rootScope.addPermissionsType = {
+            permission: {code: 'permission', name: '权限'},//添加权限
+            page: {code: 'page', name: '页面'},//添加页面
+            menu_group: {code: 'menu_group', name: '菜单组'}//添加菜单组
+        }
+
+        /**
+         * 数据权限配置类型
+         */
+        $rootScope.dataCategory = [
+            {code: 5, name: '舆情标签'}, {code: 6, name: '运营商标签'}
+        ]
+
+        //立即加载$watch中变化的值
+        $rootScope.safeApply = function (fn) {
+            var phase = this.$root.$$phase;
+            if (phase == '$apply' || phase == '$digest') {
+                if (fn && (typeof(fn) === 'function')) {
+                    fn();
+                }
+            } else {
+                this.$apply(fn);
+            }
+        }
+
+        /**
+         * 转换特殊字符
+         */
+        $rootScope.escapeHtml = function (s) {
+            s = String(s === null ? "" : s);
+            return s.replace(/&(?!\w+;)|["'<>\\]/g, function (s) {
+                switch (s) {
+                    case "&":
+                        return "&amp;";
+                    case "\\":
+                        return "\\\\";
+                    case '"':
+                        return '&quot;';
+                    case "'":
+                        return '&#39;';
+                    case "<":
+                        return "&lt;";
+                    case ">":
+                        return "&gt;";
+                    default:
+                        return s;
+                }
+            });
+        }
+
+        //================================转换树结构数据特殊字符str================================
+        /**
+         * 转换树形结构中的特殊字符
+         */
+        $rootScope.treeDataUtil = function (treeData) {
+            if (!treeData) {
+                return;
+            }
+            $.each(treeData.children, function (index, item) {
+                item.name = $rootScope.escapeHtml(item.name);
+                delete item.url;
+                delete item.comment;
+                if (item.children != null && item.children.length != 0) {
+                    item.children = $rootScope.treeDataUtilChilden(item.children);
+                }
+            });
+            return treeData;
+        }
+
+        /**
+         * 遍历树子节点
+         * @param treeData
+         */
+        $rootScope.treeDataUtilChilden = function (treeData) {
+            if (!treeData) {
+                return;
+            }
+            $.each(treeData, function (index, item) {
+                item.name = $rootScope.escapeHtml(item.name);
+                delete item.url;
+                delete item.comment;
+                if (item.children != null && item.children.length != 0) {
+                    item.children = $rootScope.treeDataUtilChilden(item.children);
+                }
+            });
+            return treeData;
+
+        }
+        //================================转换树结构数据特殊字符str================================
+
+
+    }]);

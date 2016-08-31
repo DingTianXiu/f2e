@@ -1,0 +1,46 @@
+<div ng-controller="pluginsPreCtrl" id="windowLoad">
+  <div ng-include="'/views/plugins/plugins.pre.advanceSearch.html'"></div><!-- 高级查询弹窗页 -->
+  <!--标签中心-->
+  <div class="tabs">
+    <ul class="clear plugin-tabs">
+      <li class="on"><a href="javascript:;" ui-sref="g.plugins.pre">待审核可视化控件</a></li>
+      <li><a href="javascript:;" ui-sref="g.plugins.done">已审核可视化控件</a></li>
+    </ul>
+  </div>
+  <form action="" class="search tag_search">
+    <a href="javascript:;" ui-sref="g.plugins.addplugins" style="padding:0 10px;width:auto;">新建可视化控件</a>
+    <div class="sear-bar">
+      <!-- <select name="" id="mySelect" ng-model="searchList.currentVal" ng-change="getDownlistValue()">
+      </select> -->
+       
+      <select name="" id="mySelect" style="margin-right:10px;" ng-model="searchList.currentVal" ng-options="m[0] as m[1] for m in searchList.list" ng-change="getDownlistValue()">
+      </select>
+      <select name="" id="modifyStatusS" ng-if="!isInput">
+        <option value="wait_audit">待审核</option>
+        <option value="audit_not_pass">审核未通过</option>
+      </select>
+
+      <input class="text" ng-if="isInput" type="text" placeholder="请输入关键词" id="mySelectVal" ng-model="$parent.mySelectVal"/>
+      <!-- <div class="mySelectCss"  id="selectId"></div> -->
+      <input class="sub1" id="selectId" type="button" value="搜索">
+      <input class="sub2" id="sub2" type="button" value="高级搜索" ng-click="advancedSearch()"/>
+      </div>
+    </form>
+  
+  <div class="tables_wrap" style="margin-top: 15px;">
+    
+    <div class="tables_con1 no-last-col-color clear" id="tables_con_show" >
+
+    
+  </div>
+   <div class="bottomPage">
+     <span class="cz-select" ng-click="getSelectedRows()">选择</span>
+     <div class="some-select">
+       <span class="cz-close" ng-click="cancelSelect()">取消选择</span>
+       <span class="cz-btn" ng-click="delRows()">删除</span>
+     </div>
+      <div class="tcdPageCode"></div>
+    </div>   
+
+</div>
+  </div>

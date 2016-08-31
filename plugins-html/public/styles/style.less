@@ -1,0 +1,54 @@
+//sourcemap: true,compress: false,main: ./main.less
+
+.clearfix {
+  display: block;
+  zoom: 1;
+
+  &:after {
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+
+@base: #f04615;
+@width: 0.5;
+
+.class {
+  width: percentage(@width); // returns `50%`
+  color: saturate(@base, 5%);
+  background-color: spin(lighten(@base, 25%), 8);
+}
+#bundle {
+  .button {
+    display: block;
+    border: 1px solid black;
+    background-color: grey;
+    &:hover {
+      background-color: white
+    }
+  }
+}
+
+#header a {
+  color: orange;
+  #bundle  .button;
+}
+@media print {
+  .screenClass:extend(.selector) {} // extend inside media
+  .selector { // this will be matched - it is in the same media
+    color: black;
+  }
+}
+.selector { // ruleset on top of style sheet - extend ignores it
+  color: red;
+}
+@media screen {
+  .selector {  // ruleset inside another media - extend ignores it
+    color: blue;
+  }
+}

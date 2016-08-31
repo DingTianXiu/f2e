@@ -1,0 +1,52 @@
+<div class="high_search_no x-m" id="clientConfigModify" ng-controller="clientConfigModifyCtrl">
+  <table class="mx-table">
+  <tr>
+    <th width=130>
+      姓名
+    </th>
+    <td>
+      {{option.userName}}
+    </td>
+  </tr>
+  <tr>
+    <th width=130>
+      用户名
+    </th>
+    <td>
+      {{option.loginName}}
+    </td>
+  </tr>
+  <tr>
+    <th width=130>
+      部门
+    </th>
+    <td>
+      <select class="x-m-select" name="type" id="departName" disabled="true"></select>
+    </td>
+  </tr>
+  <tr>
+    <th width=130>
+      职务
+    </th>
+    <td>
+      <select class="x-m-select" name="type" id="job" disabled="true"></select>
+    </td>
+  </tr>
+  <tr>
+    <th width=130>
+      角色
+    </th>
+    <td>
+      <my-ligerui-combo-box ng-model="comboBoxOption" label-text="" combo-box-id="createSelectRole" root-text="角色"/>
+    </td>
+  </tr>
+  <tr>
+    <th width=130>
+    </th>
+    <td class="submit fr">
+      <a href="javascript:;" class="a1" ng-click="formatOpen()">确定</a><a href="javascript:;" class="a2"
+                                                                         ng-click="closeOpen()">取消</a>
+    </td>
+  </tr>
+  </table>
+</div>

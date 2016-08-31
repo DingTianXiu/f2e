@@ -1,0 +1,69 @@
+<script>
+  $(function (){
+    $("#layout1").ligerLayout({
+      leftWidth: 270,
+      topHeight: 25,
+      space :0
+    });
+    $(".l-layout .l-layout-collapse-left").append('<div class="left_nav_2"><h4 class="logo"><a href="#/welcome"><img src="./public/images/logo_in_left.png" alt=""></a></h4><ul class="nav_in_l"><li class="l-label"><a href="#/tagconfig"><em class="iconfont">&#xe612;</em><br>标签</a><div class="right-nav-p part-1"><h3>可视化控件</h3><ul><li><a href="javascript:;" ui-sref="g.data.tagconfig"><em class="iconfont">&#xe61b;</em>标签源</a></li><li><a href="javascript:;" ui-sref="g.data.tagcenter"><em class="iconfont">&#xe61c;</em>标签集</a></li><li><a href="javascript:;" ui-sref="g.data.tagshow"><em class="iconfont">&#xe61a;</em>标签展台</a></li></ul></div></li><li class="l-visua"><a href="#/plugins/prelist"><em class="iconfont">&#xe613;</em><br>可视化</a><div class="right-nav-p part-2"><h3>可视化</h3><ul><li><a href="javascript:;" ui-sref="g.plugins.pre"><em class="iconfont">&#xe60e;</em>控件源</a></li><li><a href="javascript:;" ui-sref="g.plugins.exampleList"><em class="iconfont">&#xe60e;</em>控件集</a></li><li><a href="javascript:;" ui-sref="g.plugins.showcase"><em class="iconfont">&#xe60f;</em>控件展台</a></li></ul></div></li><li class="l-manag"><a href="#/tagsourceconfig"><em class="iconfont">&#xe614;</em><br>管理</a><div class="right-nav-p part-3"><h3>管理</h3><ul><li><a href="javascript:;" ui-sref="g.setting.source"><em class="iconfont">&#xe612;</em>资源管理</a></li><li><a href="javascript:;" ui-sref="g.setting.roleConfig"><em class="iconfont">&#xe617;</em>角色配置</a></li><li><a href="javascript:;" ui-sref="g.setting.permissionsConfig"><em class="iconfont">&#xe617;</em>页面权限配置</a></li><li><a href="javascript:;" ui-sref="g.setting.clientConfig"><em class="iconfont">&#xe617;</em>用户组</a></li></ul></div></li></ul><div class="logout"></div></div>');
+  });
+</script>
+<div class="">
+    <div class="main index" id="layout1">
+      <div class="main_top" position="top">
+        <ul>
+          <li><a href="#">亿商</a></li>
+          <li><a href="#">BOSS</a></li>
+          <li class="personalDisplay">
+            <a href="javascript:void(0)">{{userInfo.realName}}</a>
+            <div class="showBox">
+              <div class="info">
+                  <div class="imgContainer">
+                    <img src="./public/images/user.png">
+                  </div>
+                  <ul class="personalMsg">
+                    <li class="realName">{{userInfo.realName}}</li>
+                    <li class="email">{{userInfo.userInfo.email}}</li>
+                    <li>
+                      <!--<a href="javascript:void(0)">账号信息</a>-->
+                      <a href="javascript:void(0)" ng-click="logOut()">退出</a>
+                    </li>
+                  </ul>
+              </div>
+            </div>
+          </li>
+          <li class="special"><a href="#">更多产品</a></li>
+        </ul>
+
+
+      </div>
+    	    <div class="main_left fl" position="left">
+      <div class="left_nav_2"  position="left">
+        <h4 class="logo"><a href="#/welcome"><img src="./public/images/logo_in_left.png" alt=""></a></h4>
+        <ul class="nav_in_l">
+          <li class="li"><a href="#/tagconfig"><em class="iconfont">&#xe607;</em><br>标签</a></li>
+          <li><a href="#/plugins/prelist"><em class="iconfont">&#xe609;</em><br>可视化</a></li>
+          <li><a href="#/apiList"><em class="iconfont">&#xe614;</em><br>API</a></li>
+          <li><a href="#/tagsourceconfig"><em class="iconfont">&#xe608;</em><br>管理</a></li>
+
+        </ul>
+        <div class="logout">
+            
+        </div>
+      </div>
+      
+      
+    </div>
+		<!-- <img src="./public/images/welcome.png" alt=""  class="welcome"/> -->
+		<div class="welc_img" position="center">
+			<img src="./public/images/welcome_font.png" alt=""  class="wel_top"/>
+			<img src="./public/images/welcome_new.png" alt=""  class="welcome"/>
+		</div>
+        <!-- <div class="bg-content">
+            <a class="content-data" href="javascript:;"></a>
+            <a class="content-vis" href="javascript:;"></a>
+            <a class="content-compent" href="javascript:;"></a>
+        </div> -->
+	</div>
+</div>
+

@@ -1,0 +1,47 @@
+<!--实例预览-->
+<div class="" ng-controller="previewexample.pluginsCtrl">
+	<div class="bq_wrap">
+		<h2>实例名称：{{initDataTableData.name}}</h2>
+		<div class="main_right">
+			<div class="step" style="border:none;">
+				<div class="step-left">
+					<div class="example">
+						<div class="iexample">
+							<h2 class="step-title title-mr">样式示例</h2>
+							<div class="shadow-div">
+								<textarea class="example" name="sampleStyle" class="iexample-text" cols="30" rows="10" ng-model="initDataTableData.sampleStyle" required ng-maxlength="200"></textarea>
+							</div>
+						</div>
+						<div class="iexample">
+							<h2 class="step-title title-mr">数据示例</h2>
+							<div class="shadow-div" style="border-bottom: 1px solid #d9d9d9;">
+								<textarea class="example" name="sampleData" class="iexample-text" cols="30" rows="10" ng-model="initDataTableData.sampleData" required ng-maxlength="200"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="step-right step3">
+					<div class="tabs" style="margin-top: 0px;">
+						<ul class="clear">
+							<li ng-class="{'on': aClick2}">
+								<a href="javascript:;" ng-click="previewClick()">控件预览图</a>
+							</li>
+							<li ng-class="{'on': aClick1}">
+								<a href="javascript:;" ng-click="thumbnailClick()">控件缩略图</a>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="preview-box" id="preview">
+						 <p class="preview-no" style="top: 0px;">控件预览图大小不得大于 380*450px,否则将只显示部分图像</p>
+						<iframe ng-src="{{initTempData.previewChartUrl}}" id="chartPreviewIframe" scroll="no" frameborder="0" width="380" height="450"></iframe>
+					</div>
+					<div class="preview-box" id="thumbnail" style="display: none;">
+						<img ng-src="{{initTempData.thumbnail}}" alt="缩略图" />
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

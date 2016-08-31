@@ -1,0 +1,25 @@
+<div class="">
+  <!--标签管理-->
+  <!-- 中间主体内容 -->
+  <div class="main clear">
+    <div class="main_left fl">
+      <div class="nav2">
+        <p ng-click="leftNav.tagconfig = !leftNav.tagconfig"><a href="javascript:;"><span ng-class="{active:leftNav.tagconfig}"></span>标签管理</a></p>
+        <div class="nav_con" ng-show="leftNav.tagconfig">
+          <p ng-class="{on: $state.includes('g.data.tagconfig') || $state.includes('g.data.createTag') || $state.includes('g.data.modifyTag')  || $state.includes('g.data.auditTag') || $state.includes('g.data.tagdetail') || $state.includes('g.data.createTagField')}">
+            <a href="javascript:;" ui-sref="g.data.tagconfig"><span class="con1"></span>标签表管理</a>
+          </p>
+          <p ng-class="{on: $state.includes('g.data.tagcenter') || $state.includes('g.data.tagcenterpre')}">
+            <a href="javascript:;" ui-sref="g.data.tagcenter"><span class="con2"></span>标签中心</a>
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="main_right">
+      <!--右侧内容-->
+      <div class="" ui-view></div>
+    </div>
+  </div>
+</div>

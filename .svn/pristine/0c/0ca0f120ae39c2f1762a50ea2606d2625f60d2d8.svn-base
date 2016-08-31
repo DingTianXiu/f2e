@@ -1,0 +1,158 @@
+<div ng-controller="modifyTagCtrl">
+  <form  name="modifyTagForm" novalidate>
+
+
+    <div class="bq_wrap">
+      <h2>修改{{initDataTableData.metaTableName}}表信息</h2>
+      <div class="amend">
+        <div class="list-amend">
+          <p>数据表信息</p>
+
+          <div class="">
+            <div class="m-table-bd">
+              <div class="mx-table-border-hd">
+                <table class="mx-table" style="width: 800px;">
+                  <tr>
+                    <th width=140>
+                      标签类型
+                    </th>
+                    <td colspan="3">
+                      运营商标签
+                      <input type="hidden" ng-model="initDataTableData.dataCategory">
+                    </td>
+                  </tr>
+                  <tr>
+                    <th width=140>
+                      数据库名
+                    </th>
+                    <td>
+                      <!-- <select ng-change="changeDbs()" name="metaDbId" class="cus-select" id="metaDbId" ng-model="initDataTableData.metaDbId" ng-options="m.id as m.name for m in dataTableListData.metaDbIdList"> -->
+                      <select disabled="true" class="cus-select" style="width: 170px">
+                        <option>{{initDataTableData.metaDbName}}</option>
+                      </select>
+                    </td>
+                    <th width=140>
+                      表名
+                    </th>
+                    <td>
+                      <!-- <select name="metaTableId" id="metaTableId" class="cus-select" ng-model="initDataTableData.metaTableId" ng-options="m.id as m.name for m in dataTableListData.metaTableIdList"></select><span class="color-red">*</span> -->
+                      <select name="metaTableId" id="metaTableId" class="cus-select" disabled="true">
+                        <option>{{initDataTableData.metaTableName}}</option>
+                      </select><span class="color-red">*</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th width=140>
+                      数据源
+                    </th>
+                    <td>
+                      <select name="dataSource" id="dataSource" style="width: 170px" class="cus-select" ng-model="initDataTableData.dataSource" ng-options="m.id as m.name for m in dataTableListData.dataSourceList"></select><span class="color-red">*</span>
+                    </td>
+                    <th width=140>
+                      更新周期
+                    </th>
+                    <td>
+                      <select name="refreshCycle" id="refreshCycle" class="cus-select" ng-model="initDataTableData.refreshCycle" ng-options="m.id as m.name for m in dataTableListData.refreshCycleList"></select><span class="color-red">*</span>
+                  </tr>
+                  <tr>
+                    <th width=140>
+                      脚本
+                    </th>
+                    <td>
+                      <div class="btn-upload" ng-show="upload.uploadScrpit.status === 0">
+                        <div class="btn-upload-style">
+                          上传文件
+                        </div>
+                        <input type="file" id="uploaderScriptid" class="btn-upload-file" nv-file-select uploader="uploaderScript" />
+                      </div>
+                      <input type="hidden" name="scriptFileUid" ng-if="iniData.dataCategory == 5" ng-model="initDataTableData.scriptFileUid">
+                      <input type="hidden" name="scriptFileUid" ng-if="iniData.dataCategory == 6" required ng-model="initDataTableData.scriptFileUid">
+                      <span class="loading-status" ng-show="upload.uploadScrpit.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+                      <div ng-show="upload.uploadScrpit.status === 2" class="uploaded-status">
+                        <span ng-bind="upload.uploadScrpit.fileName" class="field-txt-overflow" style="width: 160px;line-height:22px;height:22px;"></span><a href="javascript:;" class="link-blue fl" style="line-height:22px;" ng-click="delUploadScrpit();">删除</a>
+                      </div>
+                      <span ng-if="iniData.dataCategory == 6" ng-show="submited && createtagform.scriptFileUid.$error.required" class="color-red">脚本为必填项</span>
+                      <!-- <div class="select-button" ngf-select="uploadScrpit($file)" ng-show="!upload.uploadScrpit.status && !upload.uploadScrpit.progress">选择文件</div>
+                    <input type="hidden" name="scriptFileUid" ng-model="initDataTableData.scriptFileUid">
+                    <span class="loading-status" ng-show="upload.uploadScrpit.progress && !upload.uploadScrpit.status"><i class="loading-22"></i> <span>正在上传中...</span></span>
+                    <div ng-show="upload.uploadScrpit.status" class="uploaded-status">
+                      <span ng-bind="upload.uploadScrpit.fileName"></span><a href="javascript:;" class="link-blue" ng-click="delUploadScrpit();">删除</a>
+                    </div> -->
+                    </td>
+                    <th width=140>
+                      其他附件
+                    </th>
+                    <td>
+                      <div class="btn-upload" ng-show="upload.uploadAttachment.status === 0">
+                        <div class="btn-upload-style">
+                          上传文件
+                        </div>
+                        <input type="file" id="uploaderAttachmentid" class="btn-upload-file" nv-file-select uploader="uploaderAttachment" />
+                      </div>
+                      <!-- <div class="select-button" ngf-select="uploadAttachment($file)" ng-show="!upload.uploadAttachment.status && !upload.uploadAttachment.progress">选择文件</div> -->
+                      <input type="hidden" name="attachmentFileId" ng-model="initDataTableData.attachmentFileUid">
+
+                      <span class="loading-status" ng-show="upload.uploadAttachment.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+                      <div ng-show="upload.uploadAttachment.status === 2" class="uploaded-status">
+                        <span ng-bind="upload.uploadAttachment.fileName" class="field-txt-overflow" style="width: 160px;line-height:22px;height:22px;"></span><a href="javascript:;" class="link-blue fl" style="line-height:22px;" ng-click="delAttachment();">删除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th width=140>
+                      表说明<span class="color-red">*</span>
+                    </th>
+                    <td colspan="3">
+                      <textarea name="comment" id="" class="mx-textarea" style="width:600px;" cols="30" rows="10"required  ng-maxlength="200" ng-model="initDataTableData.comment"></textarea>
+                      <p>
+                        <span ng-show="(modifyTagForm.comment.$dirty ||submited )&& modifyTagForm.comment.$error.required" class="color-red">表说明为必填项</span>
+                        <span ng-show="(modifyTagForm.comment.$dirty ||submited )&& modifyTagForm.comment.$error.maxlength" class="color-red">表说明最大长度为200</span>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="list-amend">
+          <p>字段信息</p>
+          <div ng-include="pageData.loadingFieldPage"></div>
+        </div>
+        <div class="list-amend">
+          <div class="reset1">
+            <div class="sql_infos">
+              <div>
+                <p>审核状态：
+                  <select disabled="ture">
+                    <option ng-if="initDataTableData.modifyStatus=='wait_audit'">待审核</option>
+                    <option ng-if="initDataTableData.modifyStatus=='audit_pass'">审核通过</option>
+                    <option ng-if="initDataTableData.modifyStatus=='audit_not_pass'">审核未通过</option>
+                    <option ng-if="initDataTableData.modifyStatus=='deployed'">已部署</option>
+                  </select>
+                </p>
+              </div>
+              <div>
+                <p>审核意见：<em ng-bind="initDataTableData.auditComment">---</em></p>
+              </div>
+              <div style="height:136px;">
+                <p class="area area1"><b>修改意见备注：<i class="color-red">*</i></b>
+                  <textarea cols="30" rows="10" ng-model="initDataTableData.modifyComment" name="modifyComment" required  ng-maxlength="200"></textarea>
+                  <p style="left:235px;top:123px">
+                    <span ng-show="(modifyTagForm.modifyComment.$dirty || submited) && modifyTagForm.modifyComment.$error.required" class="color-red">意见备注为必填项</span>
+                    <span ng-show="(modifyTagForm.modifyComment.$dirty || submited)&& modifyTagForm.modifyComment.$error.maxlength" class="color-red">意见备注最大长度为200</span>
+                  </p>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="submit permiss-fr" style="padding-bottom:40px">
+      <a href="javascript:;" class="a2" ui-sref="g.data.tagconfig">取消</a><a href="javascript:;" class="a1 amend-sub" ng-click="modifyTagSave();" >提交审核</a>
+    </div>
+  </form>
+</div>

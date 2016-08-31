@@ -1,0 +1,33 @@
+<div ng-controller="tagCenterCtrl">
+  <div ng-if="checkPermission('metacenter.pageview')">
+    <div ng-include="'/views/data/tagCenter.advanceSearch.html'"></div>
+    <!-- 高级查询弹窗页 -->
+    <div ng-include="'/views/data/tagConfig.Customfield.html'"></div>
+    <!-- 自定义查询弹窗页 -->
+    <!--标签中心-->
+    <div class="tabs">
+      <ul class="clear">
+        <li class="on"><a href="javascript:;" ui-sref="g.data.tagcenter">已部署标签</a></li>
+        <li><a href="javascript:;" ui-sref="g.data.tagcenterpre">未上线标签</a></li>
+      </ul>
+    </div>
+    <div class="tables_wrap">
+      <form action="" class="search">
+        <select name="" id="mySelect" ng-options="m.id as m.name for m in mySelectOption" ng-model="$parent.mySelect">
+        </select>
+        <input class="text" type="text" placeholder="请输入关键词" id="mySelectVal" ng-model="$parent.mySelectVal" />
+        <input class="sub1" type="submit" value="搜索" ng-click="mySelectClick()" />
+        <input class="sub2" id="sub2" type="button" value="高级搜索" ng-click="advancedSearch()" />
+        <input class="sub2" id="sub3" type="button" value="自定义字段" ng-click="diySearch()" />
+        <a href="javascript:;" class="fr" ui-sref="g.data.createTag" ng-if="checkPermission('metatable.newmeta')">+新建标签</a>
+      </form>
+      <div class="tables_con1 clear" id="tables_con_show">
+      </div>
+    </div>
+  </div>
+  <div ng-if="!checkPermission('metacenter.pageview')">
+    <div class="page-forbid">
+      你无权查看该页面
+    </div>
+  </div>
+</div>

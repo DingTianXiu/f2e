@@ -1,0 +1,177 @@
+<div class="main_right">
+            <div class="bq_wrap">
+                <h2>修改xxx表信息</h2>
+                <div class="amend">
+                   <div class="list-amend">
+                        </div>
+                        <div class="m-table-mod">
+                          <div class="m-table-hd">
+                            <select name="category" ng-change="changeCat();" class="cus-select" ng-model="iniData.dataCategory" ng-options="m.id as m.name for m in iniData.categoryList">
+                              </select>
+                          </div>
+                          <div class="m-table-bd">
+                            <div class="mx-table-border-hd">
+                              <table class="mx-table" style="width: 800px;">
+                                <tr>
+                                  <th width=140>
+                                    数据库名
+                                  </th>
+                                  <td>
+                                    <select ng-change="changeDbs()" name="metaDbId" class="cus-select" id="metaDbId" ng-model="iniData.metaDbId" ng-options="m.id as m.name for m in iniData.metaDbIdList">
+                                      <option></option>
+                                    </select><span style="margin-right: 30px" class="color-red">*</span>表名
+                                    <select name="metaTableId" id="metaTableId" class="cus-select" ng-model="iniData.metaTableId" ng-options="m.id as m.name for m in iniData.metaTableIdList"></select><span class="color-red">*</span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+
+                          <table class="mx-table" style="width: 800px;">
+                            <tr>
+                              <th width=140>
+                                数据源
+                              </th>
+                              <td>
+                                <select name="dataSource" id="dataSource" class="cus-select" ng-model="iniData.dataSource" ng-options="m.id as m.name for m in iniData.dataSourceList"></select><span class="color-red">*</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th width=140>
+                                更新周期
+                              </th>
+                              <td>
+                                <select name="refreshCycle" id="refreshCycle" class="cus-select" ng-model="iniData.refreshCycle" ng-options="m.id as m.name for m in iniData.refreshCycleList"></select><span class="color-red">*</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th width=140>
+                                脚本
+                              </th>
+                              <td>
+                                <div class="select-button" ngf-select="uploadScrpit($file)" ng-show="!upload.uploadScrpit.status">选择文件</div>
+                                <input type="hidden" name="scriptFileUid" ng-model="iniData.scriptFileUid">
+                                <i class="loading-22" ng-show="upload.uploadScrpit.progress && !upload.uploadScrpit.status"></i>
+                                <div ng-show="upload.uploadScrpit.status" class="uploaded-status">
+                                  <span ng-bind="upload.uploadScrpit.fileName"></span><a href="javascript:;" class="link-blue" ng-click="delUploadScrpit();">删除</a>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th width=140>
+                                其他附件
+                              </th>
+                              <td>
+                                <div class="select-button" ngf-select="uploadAttachment($file)" ng-show="!upload.uploadAttachment.status">选择文件</div>
+                                <input type="hidden" name="attachmentFileId" ng-model="iniData.attachmentFileId">
+                                <i class="loading-22" ng-show="upload.uploadAttachment.progress && !upload.uploadAttachment.status"></i>
+                                <div ng-show="upload.uploadAttachment.status" class="uploaded-status">
+                                  <span ng-bind="upload.uploadAttachment.fileName" ></span><a href="javascript:;" class="link-blue" ng-click="delAttachment();">删除</a>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th width=140>
+                                表说明
+                              </th>
+                              <td>
+                                <textarea name="comment" id="" class="mx-textarea" cols="30" rows="10" ng-model="iniData.comment"></textarea>
+                              </td>
+                            </tr>
+                          </table>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="list-amend">
+                       <p>字段信息</p>
+                       <div class="reset1">
+                            <div class="sql_info">
+                                <div><p>数据类型<select name="" id=""></select><span>*</span></p></div>
+                            </div>
+                            <div class="sql_infos">
+                               <div><p>标签中文名<input type="text" /><span>*</span></p></div>
+                               <div><p>标签英文名<input type="text" /><span>*</span></p></div>
+                               <div><p>标签识别<select name="" id=""></select><span>*</span></p></div>
+                               <div><p>一级类目<select name="" id=""></select><span>*</span></p></div>
+                               <div><p>二级类目<select name="" id=""></select><span>*</span></p></div>
+                               <div style="height:136px;"><p class="area area1"><b>统计口径</b><textarea name="" id="" cols="30" rows="10"></textarea><span>*</span></p></div>
+                               <div>
+                                   <p style="margin-right:42px;"><a href="javascript:;">保存</a></p>
+                               </div>
+                            </div>
+                            <div class="table">
+                                <table>
+                                    <tr>
+                                        <th>字段</th>
+                                        <th>设置</th>
+                                    </tr>
+                                    <tr>
+                                        <td>标签中文名</td>
+                                        <td>已设置为标签</td>
+                                    </tr>
+                                    <tr>
+                                        <td>标签英文名</td>
+                                        <td>已设置为维度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>标签识别</td>
+                                        <td style="color:#58aff3;">未设置</td>
+                                    </tr>
+                                    <tr style="background:#a8bad2;color:#fff;">
+                                        <td>标签类型</td>
+                                        <td>未设置</td>
+                                    </tr>
+                                    <tr>
+                                        <td>审核状态</td>
+                                        <td>已设置为标签</td>
+                                    </tr>
+                                    <tr>
+                                        <td>使用状态</td>
+                                        <td style="color:#58aff3;">未设置</td>
+                                    </tr>
+                                    <tr>
+                                        <td>一级类目</td>
+                                        <td>已设置为标签</td>
+                                    </tr>
+                                    <tr>
+                                        <td>统计口径</td>
+                                        <td>已设置为维度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>审核状态</td>
+                                        <td>已设置为标签</td>
+                                    </tr>
+                                    <tr>
+                                        <td>使用状态</td>
+                                        <td>已设置为维度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>一级类目</td>
+                                        <td>已设置为标签</td>
+                                    </tr>
+                                    <tr>
+                                        <td>二级类目</td>
+                                        <td>已设置为维度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>统计口径</td>
+                                        <td>已设置为维度</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-amend">
+                        <div class="reset1">
+                            <div class="sql_infos">
+                               <div><p>数据库名<select name="" id="" disabled="ture"></select></p></div>
+                               <div><p>审核意见：<em>飒沓大幅</em></p></div>
+                               <div style="height:136px;"><p class="area area1"><b>修改意见备注</b><textarea name="" id="" cols="30" rows="10"></textarea></p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit permiss-fr">
+                <a href="javascript:;" class="a2">取消</a><a href="javascript:;" class="a1 amend-sub">提交审核</a>
+            </div>
+        </div>

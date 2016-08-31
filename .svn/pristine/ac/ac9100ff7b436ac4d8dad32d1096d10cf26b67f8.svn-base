@@ -1,0 +1,57 @@
+<script>
+    $(function (){
+        $("#layout1").ligerLayout({
+            leftWidth: 270,
+            space :0
+        });
+        $(".l-layout .l-layout-collapse-left").append('<div class="left_nav_2"><h4 class="logo"><a href="#/welcome"><img src="./public/images/logo_in_left.png" alt=""></a></h4><ul class="nav_in_l"><li class="l-label"><a href="#/tagconfig"><em class="iconfont">&#xe607;</em><br>标签</a><div class="right-nav-p part-1"><h3 id="id">标签管理<em class="iconfont" onclick="window.location.reload()">&#xe615;</em></h3><ul><li><a href="javascript:;" ui-sref="g.data.tagconfig"><em class="iconfont">&#xe60b;</em>标签源</a></li><li><a href="javascript:;" ui-sref="g.data.tagcenter"><em class="iconfont">&#xe60a;</em>标签集</a></li><li><a href="javascript:;" ui-sref="g.data.tagshow"><em class="iconfont">&#xe60c;</em>标签展台</a></li></ul></div></li><li class="l-visua"><a href="#/plugins/prelist"><em class="iconfont">&#xe609;</em><br>可视化</a><div class="right-nav-p part-2"><h3>可视化<em class="iconfont" ui-sref="g.plugins.pre">&#xe615;</em></h3><ul><li><a href="javascript:;" ui-sref="g.plugins.pre"><em class="iconfont">&#xe60e;</em>控件源</a></li><li><a href="javascript:;" ui-sref="g.plugins.exampleList"><em class="iconfont">&#xe60d;</em>控件集</a></li><li><a href="javascript:;" ui-sref="g.plugins.showcase"><em class="iconfont">&#xe60f;</em>控件展台</a></li></ul></div></li><li class="l-manag"><a href="#/tagsourceconfig"><em class="iconfont">&#xe608;</em><br>管理</a><div class="right-nav-p part-3"><h3>管理<em class="iconfont" ui-sref="g.setting.source">&#xe615;</em></h3><ul><li><a href="javascript:;" ui-sref="g.setting.source"><em class="iconfont">&#xe612;</em>资源管理</a></li><li><a href="javascript:;" ui-sref="g.setting.roleConfig"><em class="iconfont">&#xe617;</em>角色配置</a></li><li><a href="javascript:;" ui-sref="g.setting.permissionsConfig"><em class="iconfont">&#xe617;</em>页面权限配置</a></li><li><a href="javascript:;" ui-sref="g.setting.clientConfig"><em class="iconfont">&#xe617;</em>用户组</a></li></ul></div></li></ul><div class="logout"></div></div>');
+    });
+</script>
+<div class="">
+  <!--标签管理-->
+  <!-- 中间主体内容 -->
+  <div class="main clear" id="layout1">
+    <div class="main_left fl" position="left">
+      <div class="left_nav_2">
+        <h4 class="logo"><a href="#/welcome"><img src="./public/images/logo_in_left.png" alt=""></a></h4>
+        <ul class="nav_in_l">
+          <li class="current"><a href="#/tagconfig"><em class="iconfont ">&#xe607;</em><br>标签</a></li>
+          <li><a href="#/plugins/prelist"><em class="iconfont">&#xe609;</em><br>可视化</a></li>
+          <li><a href="#/tagsourceconfig"><em class="iconfont">&#xe608;</em><br>管理</a></li>
+        </ul>
+        <div class="logout">
+
+
+        </div>
+      </div>
+      <div class="nav2 nav2_spec">
+        <!-- ng-click="leftNav.tagconfig = !leftNav.tagconfig" --> 
+        <p class="l-title">
+            <a href="javascript:;">
+                <!-- <span ng-class="{active:leftNav.tagconfig}"></span> -->
+                标签管理
+            </a>
+            <em class="iconfont">&#xe615;</em>
+        </p>
+        <div class="nav_con" ng-show="leftNav.tagconfig">
+          <p ng-class="{on: $state.includes('g.data.tagconfig') || $state.includes('g.data.createTag') || $state.includes('g.data.modifyTag')  || $state.includes('g.data.auditTag') || $state.includes('g.data.tagdetail') || $state.includes('g.data.createTagField')}">
+            <a href="javascript:;" ui-sref="g.data.tagconfig"><span class="iconfont">&#xe60b;</span>标签源</a>
+          </p>
+          <p ng-class="{on: $state.includes('g.data.tagcenter') || $state.includes('g.data.tagcenterpre')}">
+     <!--        <a href="javascript:;" ui-sref="g.data.tagcenter"><span class="iconfont">&#xe612;</span>标签中心</a> -->
+            <a href="javascript:;" ui-sref="g.data.tagcenter"><span class="iconfont">&#xe60a;</span>标签集</a>
+          </p>
+          <p ng-class="{on: $state.includes('g.data.tagshow')}">
+            <a href="javascript:;" ui-sref="g.data.tagshow"><span class="iconfont">&#xe60c;</span>标签展台</a>
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="main_right"  position="center">
+      <!--右侧内容-->
+      <div class="" ui-view></div>
+    </div>
+  </div>
+</div>

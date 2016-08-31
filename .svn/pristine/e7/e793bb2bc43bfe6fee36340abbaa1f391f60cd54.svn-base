@@ -1,0 +1,85 @@
+<div ng-controller="auditPluginsCtrl">
+	<div class="bq_wrap">
+		<h2>审核控件</h2>
+        <p class="pluginsName">{{pageData.currentSample}}</p>
+		<p class="change-tips">修改说明：{{formData.modifyComment}}</p>
+		<form name="createtagform" novalidate>
+			<div class="">
+				<!--setp3-->
+				<div class="step-3" style="padding-top:20px;">
+					<div class="st3-bd clear">
+						<div class=" step-left">
+							<dl class="code-box" style="border-bottom:none;">
+								<dt>样式示例</dt>
+								<dd>
+									<div class="cb-h">
+										<textarea ui-codemirror ui-codemirror-opts="editorReadonlyOptions" class="input-txt" rows="8" ng-model="sampleData[pageData.currentSampleIndex].sampleStyle" cols="40" style="width:390px;height:90px"></textarea>
+									</div>
+								</dd>
+							</dl>
+							<dl class="code-box" style="margin-bottom:25px;">
+								<dt>数据示例</dt>
+								<dd>
+									<div class="cb-h">
+										<textarea ui-codemirror ui-codemirror-opts="editorReadonlyOptions" class="input-txt" rows="8" cols="40" ng-model="sampleData[pageData.currentSampleIndex].sampleData" style="width:390px;height:90px"></textarea>
+									</div>
+								</dd>
+							</dl>
+
+						</div>
+						<div class="p-preview step-left">
+							<div class="tabs" style="margin-top:0;">
+								<ul class="clear">
+									<li ng-class="{'on': tempShowData.previewTabIndex ===0}">
+										<a href="javascript:;" ng-click="tempShowData.previewTabIndex=0">控件预览图</a>
+									</li>
+									<li ng-class="{'on': tempShowData.previewTabIndex === 1}">
+										<a href="javascript:;" ng-click="tempShowData.previewTabIndex=1">控件缩略图</a>
+									</li>
+								</ul>
+							</div>
+							<div class="preview-box" ng-show="tempShowData.previewTabIndex ===0">
+								<!-- <p  class="preview-no">控件预览图大小不得大于 380*450px,否则将只显示部分图像</p> -->
+								<iframe ng-src="{{pageData.previewChartUrl}}" id="chartPreviewIframe" scroll="no" frameborder="0" width="380" height="450"></iframe>
+							</div>
+							<div class="preview-box" ng-show="tempShowData.previewTabIndex === 1">
+								<img ng-src="{{exchangeThumbnailUrl(formData.thumbnailFileUid)}}" alt="预览图" />
+							</div>
+						</div>
+						
+					</div>
+
+				</div>
+
+			</div>
+		</form>
+	</div>
+	<ul class="amend-other audit-bottom" style="clear: both;">
+	    <li>
+	      <label>审核结果：</label>
+	      <input type="radio" name="boolStatus" value="y" ng-model="auditData.boolStatus"/><span style="color: #000;">通过</span>
+	      <input type="radio" name="boolStatus" value="n" ng-model="auditData.boolStatus"/><span style="color: #000;">未通过</span>
+	    </li>
+	    <li style="position: relative">
+	      <label>审核意见：</label>
+	      <textarea  ng-model="auditData.comment" class="comment" ></textarea>
+	      <em class="textLength"><em ng-class="{'warning-red':maxLength == false}">{{textLength}}</em>/200</em>
+	    </li>
+	    <li>
+			<a href="javascript:;"  ng-click="cancelTag()" class="btn-gray-a">取消</a>
+			<a href="javascript:;" ng-click="auditWidget();" class="btn-blue">提交</a>
+	    </li>
+	</ul>
+	<div class="mask">
+	    <div class="mask-bg"></div>
+	    <div class="imask">
+	      <p>你当前审核结果不会保存，你要取消吗？</p>
+
+	      <div>
+	        <button class="btn-gray-a" ui-sref="g.plugins.pre">取消</button>
+	        <button class="btn-blue" ng-click="next()">继续审核</button>
+	      </div>
+	      
+	    </div>
+	 </div>
+</div>

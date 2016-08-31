@@ -1,0 +1,53 @@
+<div class="high_search_no x-m" id="permissionsConfigAdd" ng-controller="permissionsConfigAddByPageCtrl">
+  <form name="typeLabelForm" novalidate>
+    <table class="mx-table">
+      <tr>
+        <th width=90>
+          页面英文名<span class="color-red">*</span>
+        </th>
+        <td>
+          <input type="text" value="abc" class="mx-text" ng-model="option.code" name="code" ng-pattern="/^\w+$/" required ng-maxlength="50" />
+          <span ng-show="(typeLabelForm.code.$dirty || submited) && typeLabelForm.code.$error.required" class="color-red">页面英文名为必填项</span>
+          <span ng-show="(typeLabelForm.code.$dirty || submited) && typeLabelForm.code.$error.pattern" class="color-red">页面英文名不能有非法字符</span>
+          <span ng-show="(typeLabelForm.code.$dirty || submited) && typeLabelForm.code.$error.maxlength" class="color-red">页面英文名最大长度为50</span>
+        </td>
+      </tr>
+      <tr>
+        <th width=90>
+          页面中文名<span class="color-red">*</span>
+        </th>
+        <td>
+          <input type="text" value="标签一级类目" class="mx-text" ng-model="option.name" name="name" required ng-maxlength="20" />
+          <span ng-show="(typeLabelForm.name.$dirty || submited) && typeLabelForm.name.$error.required" class="color-red">页面中文名为必填项</span>
+          <span ng-show="(typeLabelForm.name.$dirty || submited) && typeLabelForm.name.$error.maxlength" class="color-red">页面中文名最大长度为20</span>
+        </td>
+      </tr>
+      <tr>
+        <th width=90>
+          父节点<span class="color-red">*</span>
+        </th>
+        <td>
+          <my-ligerui-combo-box ng-model="comboBoxOption" root-text="权限" combo-box-id="createSelectRole" />
+        </td>
+      </tr>
+      <tr>
+        <th width=90>
+          接口URL<span class="color-red">*</span>
+        </th>
+        <td>
+          <textarea ng-model="option.url" class="mx-text" style="height:80px;" name="url" id="url" cols="30" required ng-maxlength="200" rows="10" name="url"></textarea>
+          <span ng-show="(typeLabelForm.url.$dirty || submited) && typeLabelForm.url.$error.required" class="color-red">URL为必填项</span>
+          <span ng-show="(typeLabelForm.url.$dirty || submited) && typeLabelForm.url.$error.maxlength" class="color-red">URL最大长度为200</span>
+        </td>
+      </tr>
+      <tr>
+        <th width=90>
+
+        </th>
+        <td class="submit">
+          <a href="javascript:;" class="a1" ng-click="formatOpen()">确定</a><a href="javascript:;" class="a2" ng-click="closeOpen()">取消</a>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>

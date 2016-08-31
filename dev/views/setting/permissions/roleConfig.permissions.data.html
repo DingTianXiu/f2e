@@ -1,0 +1,34 @@
+<div class="permiss-content" ng-controller="roleConfigPermissionsDataCtrl">
+  <table class="fc-table" style="width:100%">
+    <tr>
+      <td class="fc-table-fix">
+        <div class="group">
+          <div class="res_label" id="groupTree">
+
+          </div>
+          <div class="res_label" id="groupTree1">
+
+          </div>
+        </div>
+      </td>
+      <td class="fc-table-main">
+        <div class="permiss-list">
+          <h2>数据表</h2>
+
+          <ul>
+            <li ng-repeat="item in checkBoxsOption">
+              <label>
+                <input type="checkbox" ng-model="item.checkedStatus" ng-checked="item.checkedStatus==true" value="{{item.id}}" /><span>{{item.name}}</span></label>
+            </li>
+          </ul>
+        </div>
+        <div class="submit permiss-fr">
+          <a href="javascript:;" ng-click="goPage()" class="a2">取消</a><a href="javascript:;" class="a1" ng-click="formatData();">确定</a>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+
+
+</div>

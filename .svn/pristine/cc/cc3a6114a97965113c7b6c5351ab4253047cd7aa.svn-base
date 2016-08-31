@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>数据-标签管理-新建标签4</title>
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="css/style.css" />
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body>
+	<!-- 头部导航 -->
+	<div class="header">
+		<h1 class="logo fl">
+			<img src="images/logo.png" alt="" />WLGF
+		</h1>
+		<ul class="fl top_nav">
+            <li class="fl"><a href="javascript:;">数据<img src="images/down.png" alt="" /></a></li>
+            <li class="fl" id="li2"><a href="javascript:;">可视化<img src="images/down.png" alt="" /></a><div class="li2_con"><p><a href="javascript:;">可视化管理</a></p>
+                <p class="focus"><a href="javascript:;">可视化实例</a></p></div></li>
+            
+            <li class="fl"><a href="javascript:;">构件<img src="images/down.png" alt="" /></a></li>
+        </ul>
+		<div class="fr info">
+            <p class="pic fl"><img src="images/user.png" alt="" /></p>
+            <p class="name fl">welcome<span> user name</span></p>
+            <p class="fr"><a href="javascript:;"><img src="images/down.png" alt="" /></a></p>
+            <div class="login_out">
+                <a href="javascript:;">退出</a>
+            </div>
+        </div>
+		<div class="fr btns">
+			<a href="javascript:;"><img src="images/ico1.png" alt="" /></a>
+			<a href="javascript:;"><img src="images/ico2.png" alt="" /></a>
+
+		</div>
+		
+	</div>
+	<!-- 中间主体内容 -->
+	<div class="main clear">
+		<div class="main_left fl">
+            <div class="nav1">
+                <p><a href="javascript:;"><img src="images/1.png" alt="" />元数据管理</a></p>
+                <div class="nav_con" style="display:none;">
+                     <p class="on"><a href="javascript:;"><img src="images/ico3.png" alt="" />标签表管理</a></p> 
+                     <p><a href="javascript:;"><img src="images/ico4.png" alt="" />标签中心</a></p>          
+                </div>
+            </div>
+            <div class="nav2">
+                <p><a href="javascript:;"><img src="images/2.png" alt="" />标签管理</a></p>
+                <div class="nav_con">
+                    <p class="on"><a href="javascript:;"><img src="images/ico3.png" alt="" />标签表管理</a></p>
+                    <p><a href="javascript:;"><img src="images/ico4.png" alt="" />标签中心</a></p>
+                </div>
+            </div>
+            
+        </div>
+		<div class="main_right fr">
+            
+			<div class="bq_wrap">
+				<p class="bq1"><select name="" id=""><option value="">运营商标签</option></select></p>
+				<p class="bq2 clear">
+                    <a class="fl zd" href="javascript:;">1数据表信息</a><img class="fl" src="images/ico5.png" alt="" />
+                    <a class="fl " href="javascript:;">2字段设置</a>
+                </p>
+                <div class="reset1">
+                    <h2><a class="fr" href="javascript:;"><img src="images/save.png" alt="" /></a></h2>
+                    <div class="sql_info">
+                        <div><p>数据类型<select name="" id=""></select><span>*</span></p></div>
+                    </div>
+                    <div class="sql_infos">
+                       <div><p>标签中文名<input type="text" /><span>*</span></p></div>
+                       <div><p>标签英文名<input type="text" /><span>*</span></p></div>
+                       <div><p>标签识别<select name="" id=""></select><span>*</span></p></div>
+                       <div><p>一级类目<select name="" id=""></select><span>*</span></p></div>
+                       <div><p>二级类目<select name="" id=""></select><span>*</span></p></div>
+                       <div><p class="area area1"><b>统计口径</b><textarea name="" id="" cols="30" rows="10"></textarea><span>*</span></p></div>
+                    </div>
+
+                    <div class="table">
+                        <table>
+                        <tr>
+                            <th>字段</th>
+                            <th>设置</th>
+                        </tr>
+                        <tr>
+                            <td>标签中文名</td>
+                            <td>已设置为标签</td>
+                        </tr>
+                        <tr>
+                            <td>标签英文名</td>
+                            <td>已设置为维度</td>
+                        </tr>
+                        <tr>
+                            <td>标签识别</td>
+                            <td>未设置</td>
+                        </tr>
+                        <tr>
+                            <td>标签类型</td>
+                            <td>未设置</td>
+                        </tr>
+                        <tr>
+                            <td>审核状态</td>
+                            <td>已设置为标签</td>
+                        </tr>
+                        <tr>
+                            <td>使用状态</td>
+                            <td>未设置</td>
+                        </tr>
+                        <tr>
+                            <td>一级类目</td>
+                            <td>已设置为标签</td>
+                        </tr>
+                        <tr>
+                            <td>统计口径</td>
+                            <td>已设置为维度</td>
+                        </tr>
+                        <tr>
+                            <td>审核状态</td>
+                            <td>已设置为标签</td>
+                        </tr>
+                        <tr>
+                            <td>使用状态</td>
+                            <td>已设置为维度</td>
+                        </tr>
+                        <tr>
+                            <td>一级类目</td>
+                            <td>已设置为标签</td>
+                        </tr>
+                        <tr>
+                            <td>二级类目</td>
+                            <td>已设置为维度</td>
+                        </tr>
+                        <tr>
+                            <td>统计口径</td>
+                            <td>已设置为维度</td>
+                        </tr>
+                    </table>
+                    </div>
+
+                </div>
+			</div>
+            
+		</div>
+
+	</div>
+
+    <!-- 遮罩 -->
+    <div class="mask"></div>
+    <!-- 高级搜索 -->
+    <div class="high_search">
+        <h3>高级搜索<a class="fr close" href="javascript:;"><img src="images/close.png" alt="" /></a></h3>
+        <div class="clear"><p class="fl p1">表名<input type="text" /></p><p class="fl p2">数据库名<input type="text" /></p><p class="fl p3">标签类型<input type="text" /></p></div>
+        <div class="clear"><p class="fl p1">数据源<input type="text" /></p><p class="fl p2">审核状态<select name="" id=""></select></p><p class="fl p3">使用状态<select name="" id=""></select></p></div>
+        <div class="clear"><p class="fl p1">更新周期<select name="" id=""></select></p><p class="fl p2">已部署脚本<input type="text" /></p><p class="fl p3">待审核脚本<input type="text" /></p></div>
+        <div class="clear"><p class="fl p1">原附件<input type="text" /></p><p class="fl p2">部署服务器<input type="text" /></p><p class="fl p3">部署目录<input type="text" /></p></div>
+        <div class="clear"><p class="fl p1">启动命令<input type="text" /></p><p class="fl p2">表说明<input type="text" /></p><p class="fl p3">使用项目<input type="text" /></p></div>
+        <div class="clear"><p class="fl p1">创建人<input type="text" /></p><p class="fl p2">修改人<input type="text" /></p></div>
+        <div class="clear date1"><p class="fl p4">创建时间<input type="text" />至<input type="text" /><img src="images/date.png" class="calender1" alt="" /><img src="images/date.png" class="calender2" alt="" /></p></div>
+        <div class="clear date2"><p class="fl p4">修改时间<input type="text" />至<input type="text" /><img src="images/date.png" class="calender1" alt="" /><img src="images/date.png" class="calender2" alt="" /></p></div>
+        <hr />
+        <div class="submit fr">
+            <a href="javascript:;" class="a1">确定</a><a href="javascript:;" class="a2">取消</a>
+        </div>
+    </div>
+    
+    <!-- 自定义内容 -->
+    <div class="diy">
+        <h3>自定义字段<a class="fr close" href="javascript:;"><img src="images/close.png" alt="" /></a></h3>
+        <p class="reset clear"><a href="javascript:;">默认</a><a href="javascript:;">重置</a></p>
+        <h3 style="border-bottom:none;">已选择：</h3>
+        <div class="label clear">
+            <a href="javascript:;">标签类型<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">数据源<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">表状态<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">审核状态<img class="fr" src="images/close2.png" alt="" /></a>
+            <a href="javascript:;">使用状态<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">更新周期<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">原附件<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">已部署脚本<img class="fr" src="images/close2.png" alt="" /></a>
+            <a href="javascript:;">待审核脚本<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">部署服务器<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">部署目录<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">启动命令<img class="fr" src="images/close2.png" alt="" /></a>
+            <a href="javascript:;">表说明<img class="fr" src="images/close2.png" alt="" /></a><a href="javascript:;">使用项目<img class="fr" src="images/close2.png" alt="" /></a>
+        </div>
+        <h3 style="border-bottom:none;">未选择：</h3>
+        <div class="no clear">
+                 <a href="javascript:;">创建人<img class="fr" src="images/add.png" alt="" /></a><a href="javascript:;">修改人<img class="fr" src="images/add.png" alt="" /></a><a href="javascript:;">创建时间<img class="fr" src="images/add.png" alt="" /></a><a href="javascript:;">修改时间<img class="fr" src="images/add.png" alt="" /></a>
+            </div>
+        <hr />
+        <div class="submit fr">
+            <a href="javascript:;" class="a1">确定</a><a href="javascript:;" class="a2">取消</a>
+            
+        </div>
+    </div>
+    
+
+
+
+
+
+
+</body>
+</dtml>

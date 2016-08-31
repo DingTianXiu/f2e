@@ -1,0 +1,75 @@
+<div ng-controller="dialogDeployCtrl">
+  <form name="deployForm" novalidate>
+    <table class="dialog-table">
+      <tr>
+        <th>
+          部署服务器<span class="color-red">*</span>
+        </th>
+        <td>
+          <select name="deployServer" id="deployServer" class="cus-select" ng-model="iniData.deployServer" ng-options="m.id as m.name for m in iniData.deployServerList"></select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          部署目录<span class="color-red">*</span>
+        </th>
+        <td>
+          <input type="text" class="cus-text" name="deployPath" ng-model="iniData.deployPath" required ng-maxlength="100" />
+          <span>
+            <span ng-show="(deployForm.deployPath.$dirty || submited) && deployForm.deployPath.$error.required" class="color-red">部署目录为必填项</span>
+            <span ng-show="(deployForm.deployPath.$dirty || submited) && deployForm.deployPath.$error.maxlength" class="color-red">部署目录最大长度为100</span>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <th width=140>
+          启动命令<span class="color-red">*</span>
+        </th>
+        <td>
+          <div class="btn-upload" ng-show="upload.uploadScrpit.status === 0">
+            <div class="btn-upload-style">
+              上传文件
+            </div>
+            <input type="file" id="uploaderStartScriptid" class="btn-upload-file" nv-file-select uploader="uploaderStartScript" />
+          </div>
+          <input type="hidden" name="startScriptFileUid" ng-model="iniData.startScriptFileUid" required>
+          <span class="loading-status" ng-show="upload.uploadScrpit.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+          <div ng-show="upload.uploadScrpit.status === 2" class="uploaded-status">
+            <span ng-bind="upload.uploadScrpit.fileName"></span><a href="javascript:;" class="link-blue" ng-click="delUploadScrpit();">删除</a>
+          </div>
+          <span>
+            <span ng-show="(deployForm.startScriptFileUid.$dirty || submited) && deployForm.startScriptFileUid.$error.required" class="color-red">启动命令为必填项</span>
+          </span>
+        </td>
+      </tr>
+
+
+    </table>
+  </form>
+  <div class="submit bushu-btn">
+    <a href="javascript:;" ng-click="closeWindow()">取消</a><a class="as" href="javascript:;" ng-click="saveCreateTag()">部署</a>
+  </div>
+  <toaster-container toaster-options="{'position-class': 'toast-center'}"></toaster-container>
+</div>
+<!--<div ng-controller="dialogDeployCtrl" class="dialog-deploy">-->
+<!--<p>-->
+<!--<label>部署服务器</label>-->
+<!--<select name="deployServer" id="deployServer" class="cus-select" ng-model="iniData.deployServer" ng-options="m.id as m.name for m in iniData.deployServerList"></select><span class="color-red">*</span>-->
+<!--</p>-->
+<!--<p>-->
+<!--<label>部署目录</label>-->
+<!--<input type="text" class="cus-text" name="deployPath"  ng-model="iniData.deployPath" >-->
+<!--</p>-->
+<!--<div class="text-select">-->
+<!--<label>启动命令</label>-->
+<!--<div class="iselect">-->
+<!--<div class="select-button" ngf-select="uploadScrpit($file)" ng-show="!upload.uploadScrpit.status">选择文件</div>-->
+<!--<input type="hidden" name="scriptFileUid" ng-model="iniData.scriptFileUid">-->
+<!--<i class="loading-22" ng-show="upload.uploadScrpit.progress && !upload.uploadScrpit.status"></i>-->
+<!--<div ng-show="upload.uploadScrpit.status" class="uploaded-status">-->
+<!--<span ng-bind="upload.uploadScrpit.fileName"></span><a href="javascript:;" class="link-blue" ng-click="delUploadScrpit();">删除</a>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->

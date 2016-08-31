@@ -1,0 +1,110 @@
+<!-- 标签展台 -->
+<div ng-controller="showTagCtrl">
+  <div class="bq_wrap">
+    <h2>标签展台</h2>
+    <div class="amend bottom-none mar-left">
+      <div class="list-amend">
+          <div class="tag-show-table">
+            <p>标签报表</p>
+            <table class="show-tab">
+              <tr>
+                <th title="所有标签数">总标签数<i></i></th>
+                <th title="状态为已上线的标签数">已上线标签数<i></i></th>
+                <th title="已上线标签中一级标签数">一级标签数<i></i></th>
+                <th title="已上线标签中二级标签数">二级标签数<i></i></th>
+                <th title="已上线标签中事实标签占比">事实标签占比<i></i></th>
+                <th title="已上线标签中平均非空值率">平均非空值率<i></i></th>
+              </tr>
+               <tr>
+                <td>{{dataInfo.allCount}}</td>
+                <td>{{dataInfo.onlineCount}}</td>
+                <td>{{dataInfo.levelFCount}}</td>
+                <td>{{dataInfo.levelSCount}}</td>
+                <td>{{(dataInfo.factCount*100).toFixed(2)}}%</td>
+                <td>{{dataInfo.notNullCuont.toFixed(2)}}%</td>
+              </tr> 
+            </table>
+            <p>全集标签图</p>
+            <div class="clear">
+            	<div class="left show-tree">
+            		<my-ligerui-tree ng-model="myTreeOption" root-text="类目"></my-ligerui-tree>
+            	</div>
+            	<div class="left">
+                <table  class="tag-table">
+                  <tr>
+                    <td style="vertical-align:top;">
+                      <ul class="editTag">
+                        <li>
+                          <label>主键或标签</label>
+                          <select ng-disabled="currentState=='g.data.tagshow'" ng-change="changeDataType();" ng-model="detailData.type" ng-options="m.id as m.name for m in droplistData.typeList" class="ng-pristine ng-valid ng-not-empty ng-touched">
+                          </select>
+                        </li>
+                      </ul>
+                      <form name="typePForm">
+                        <ul class="editTag">
+                          <li ng-show="detailData.type == 23">
+                            <label>主键名称</label>
+                            <select ng-disabled="currentState=='g.data.tagshow'" name="" id="" ng-model="detailData.tag" ng-options="m.id as m.name for m in droplistData[detailData.type].tagList" class="ng-pristine ng-valid ng-not-empty ng-touched" style=""></select>
+                            <input type="hidden" name="type" value="23">
+                          </li>
+                        </ul> 
+                      </form>
+                      <form name="typeLabelForm">
+                        <ul class="editTag"  ng-show="detailData.type == 22">
+                          <li>
+                            <label>标签中文名</label>
+                            <input readonly="readonly" type="text" ng-model="getLabelCodeName.chineseName" name="labelname" class="text-input disable-text ">
+                          </li>
+                          <li>
+                            <label>标签英文名</label>
+                            <input readonly="readonly" type="text" name="code" ng-model="getLabelCodeName.codeName" class="text-input disable-text ">
+                          </li>
+                          <li>
+                            <label>标签等级</label>
+                            <select ng-disabled="currentState=='g.data.tagshow'" name="labelLevel" ng-model="detailData.labelLevel" ng-options="m.id as m.name for m in droplistData.labelLevelList" >
+                          </select>
+                          </li>
+                          <li id="categoryLi">
+                            <label>标签类目</label>
+                              <my-ligerui-combo-box ng-model="comboBoxOption" root-text="类目" combo-box-id="createSelectCategory" div-class="category" ng-disabled="currentState=='g.data.tagshow'"/>
+                              <h4 class="quality-tips">{{pathName}}</h4>
+                          </li>
+                          <li>
+                            <label>是否为事实标签</label>
+                            <input type="radio" name="" ng-model="detailData.isFact" value="y" ng-disabled="currentState=='g.data.tagshow'"><span>是</span>
+                            <input type="radio" name="" ng-model="detailData.isFact" value="n" ng-disabled="currentState=='g.data.tagshow'"><span>否</span>
+                          </li>
+                          <li>
+                            <label>枚举值</label>
+                            <input type="radio" name="" ng-model="detailData.enumType" value="y" ng-disabled="currentState=='g.data.tagshow'"><span class="enumer-span">有限枚举</span>
+                            <input type="radio" name="" ng-model="detailData.enumType" value="n" ng-disabled="currentState=='g.data.tagshow'"><span>无限枚举</span>
+                          </li>
+                          <li ng-show="detailData.enumType == 'y'">
+                            <input placeholder="请输入枚举值" type="text" id="enumeration" ng-model="detailData.enumValue" readonly="readonly" name="enumValue" ng-required=" boolean == true">
+                          </li>
+                          <li>
+                            <label>标签质量</label>
+                            <input placeholder="输入非空值数" type="text" class="quality" ng-model="detailData.labelTotal" readonly="readonly" required name="labelTotal">
+                            <span class="symbol">/</span>
+                            <input placeholder="测试人群总量" type="text" class="quality" ng-model="detailData.labelNonNull" readonly="readonly" required name="labelNonNull">
+                            <span ng-if="detailData.labelQuality != null">%<span class="symbol">={{detailData.labelQuality | number:2}}</span></span>
+                            <h4 class="quality-tips">非空值数/测试人群总量=非空值率</h4>
+                          </li>
+                          <li class="tag-instructions">
+                            <label>统计口径</label>
+                            <textarea readonly="readonly" class="comment" ng-model="detailData.description" required ng-maxlength="200" name="description"></textarea>
+                            <em class="textLength"><em>{{detailData.description.length}}</em>/200</em>
+                          </li>
+                        </ul>
+                      </form>
+                    </td>
+                  </tr>
+                </table>
+            	</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

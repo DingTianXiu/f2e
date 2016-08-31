@@ -1,0 +1,58 @@
+<div ng-controller="previewPluginCtrl">
+  <div class="bq_wrap">
+    <div class="x-head clear">
+      <span class="fr"><label>实例名称：</label>
+        <select name="currentSample" id="currentSample" class="cus-select" ng-change="changeSampleVal();" ng-model="pageData.currentSampleId" ng-options="m.id as m.name for m in sampleData"></select>
+      </span>
+      <strong style="float:left;">预览控件：{{formData.name}}</strong>
+    </div>
+    <form name="createtagform" novalidate>
+      <div class="m-table-mod">
+        <!--setp3-->
+        <div class="step-3" style="padding-top:20px;">
+          <div class="st3-bd clear">
+            <div class="p-code">
+              <dl class="code-box" style="border-bottom:none;">
+                <dt>样式示例</dt>
+                <dd>
+                  <div class="cb-h">
+                    <textarea ui-codemirror ui-codemirror-opts="editorReadonlyOptions" class="input-txt" rows="8" ng-model="sampleData[pageData.currentSampleIndex].sampleStyle" cols="40" style="width:390px;height:90px"></textarea>
+                  </div>
+                </dd>
+              </dl>
+              <dl class="code-box" style="margin-bottom:25px;">
+                <dt>数据示例</dt>
+                <dd>
+                  <div class="cb-h">
+                    <textarea ui-codemirror ui-codemirror-opts="editorReadonlyOptions" class="input-txt" rows="8" cols="40" ng-model="sampleData[pageData.currentSampleIndex].sampleData" style="width:390px;height:90px"></textarea>
+                  </div>
+                </dd>
+              </dl>
+
+            </div>
+            <div class="p-preview">
+              <div class="tabs" style="margin-top:0;">
+                <ul class="clear">
+                  <li ng-class="{'on': tempShowData.previewTabIndex ===0}">
+                    <a href="javascript:;" ng-click="tempShowData.previewTabIndex=0">控件预览图</a>
+                  </li>
+                  <li ng-class="{'on': tempShowData.previewTabIndex === 1}">
+                    <a href="javascript:;" ng-click="tempShowData.previewTabIndex=1">控件缩略图</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="preview-box" ng-show="tempShowData.previewTabIndex ===0">
+                <p style="font-size:12px;text-align:left;color:#999;height:20px;line-height:20px;">控件预览图大小不得大于 380*450px,否则将只显示部分图像</p>
+                <iframe ng-src="{{pageData.previewChartUrl}}" id="chartPreviewIframe" scroll="no" frameborder="0" width="380" height="450"></iframe>
+              </div>
+              <div class="preview-box" ng-show="tempShowData.previewTabIndex === 1">
+                  <img ng-src="{{exchangeThumbnailUrl(formData.thumbnailFileUid)}}" alt="预览图" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

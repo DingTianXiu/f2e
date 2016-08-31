@@ -1,0 +1,160 @@
+<div ng-controller="modifyExamplePluginsCtrl">
+	<div class="bq_wrap">
+		<h2>修改可视化实例</h2>
+		<form name="modExampleform" novalidate>
+			<ul class="clear creat-step">
+		        <li ng-class="{'on': step ==1 }">
+		          <h3>1</h3>
+		          <div>
+		            <p>Step1</p>
+		            <p>设置控件信息</p>
+		          </div>
+		        </li>
+		        <li>...</li>
+		        <li ng-class="{'on': step ==2 }">
+		          <h3>2</h3>
+		          <div>
+		            <p>Step2</p>
+		            <p>设置控件样式</p>
+		          </div>
+		        </li>
+		        <li>...</li>
+		        <li ng-class="{'on': step ==3 }">
+		          <h3>3</h3>
+		          <div>
+		            <p>Step3</p>
+		            <p>完成</p>
+		          </div>
+		        </li>
+		    </ul>
+			<div class="">
+				<!--第一步-->
+				<div class="m-table-bd step1">
+					<ul class="editTag creat-tag-ul">
+			            <li>
+			              <label>ID</label>
+			              <input type="text"  class="text-input disable-text" ng-model="initDataTableData.id"  name="targetId"/>
+			            </li>
+			            <li>
+			              <label>实例名称</label>
+			              <input type="text" value="" class="text-input" ng-model="initDataTableData.name" name="name" maxlength="20" required ng-class="{'ng-error':submited && createtagform.name.$error.required}"/>
+			              <p class="left">
+			                <span class="color-red" ng-show="submited && createtagform.name.$error.maxlength" class="color-red">限20个字符</span>
+			                <span class="color-red" ng-show="submited && createtagform.name.$error.required" class="color-red">控件名称必填</span>
+			              </p>
+			              <span class="color-red">*</span>
+			            </li>
+			            <li>
+			              <label>控件名称</label>
+			              <select name="widgetId" ng-change="widgetChange()" id="widgetId" class="cus-select" ng-model="initDataTableData.widgetId" ng-options="m.id as m.name for m in dataTableListData.widgetList"></select>
+			              <span class="color-red">*</span>
+			            </li>
+			            <li>
+			              <label>实例缩略图</label>
+			              <div class="btn-upload" ng-show="upload.uploadAttachment.status === 0">
+			                <div class="btn-upload-style">
+			                  上传文件
+			                </div>
+			                <input type="file" id="thumbnailFileUid" class="btn-upload-file" nv-file-select uploader="uploaderAttachment"/>
+			                <span ng-show="submited && createtagform.attachmentFileId.$error.required" class="color-red flie-must-ico">缩略图必填</span>
+			                <span class="color-red flie-must-ico" ng-class="{'flie-ico-fail':submited && createtagform.attachmentFileId.$error.required}" >仅支持jpg,png,gif文件*</span>
+			              </div>
+			              <input type="hidden" name="attachmentFileId" ng-model="iniData.attachmentFileUid">
+
+						  <span class="loading-status" ng-show="upload.uploadAttachment.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+						  <div ng-show="upload.uploadAttachment.status === 2" class="uploaded-status">
+						  <span ng-bind="upload.uploadAttachment.fileName"></span><a href="javascript:;" class="link-blue  file-delet" ng-click="delAttachment();">删除</a>
+						 </div>
+			            </li>
+			            <li class="posit">
+			              <label>实例说明</label>
+			              <textarea  name="comment"  class="mx-textarea"  ng-model="initDataTableData.comment" required  ng-class="{'ng-error':submited && createtagform.comment.$error.required}"></textarea>
+			              <p class="left">
+			                <span ng-show="submited && initDataTableData.comment.$error.required" class="color-red">实例说明为必填项</span>
+			                <span ng-show="maxLength == false" class="color-red">实例说明最大长度为200</span>
+			              </p>
+			              <span class="color-red">*</span>
+			              <em class="textLength"><em ng-class="{'warning-red':maxLength == false}">{{textLength}}</em>/200</em>
+			            </li>
+			            <li>
+			              <div class="btn-center">
+			                <a href="javascript:;"  ng-click="cancelTag()" class="btn-gray-a">取消</a>
+							<a href="javascript:;" class="btn-blue" href="javascript:;" ng-click="firstStep()">完成</a>
+			              </div>          
+			            </li>
+			          </ul>
+
+				</div>
+				
+				 <div class="mask">
+			        <div class="mask-bg"></div>
+			        <div class="imask">
+			          <p>标准控件修改未完成，你要取消吗？</p>
+
+			        <div>
+			           <button class="btn-gray-a" ui-sref="g.plugins.exampleList">取消</button>
+			           <button class="btn-blue" ng-click="next()">继续</button>
+			        </div>
+			          
+			     </div>
+      </div>
+				<!--第二步-->
+				<div class="step2" style="display: none;">
+					<!-- <div class="step"> -->
+						<div class="step-left">
+							<div class="example">
+								<div class="iexample shili">
+									<h2 class="step-title title-mr ">样式示例</h2>
+									<div class="shili-btn">
+										<a href="javascript:;" class="reset" ng-click="resetCode()">重置</a>
+										<a href="javascript:;" class="run" ng-click="previewExamp()">运行</a>
+									</div>
+									<div class="shadow-div" style="border-bottom: 1px solid #d9d9d9;"><textarea   name="sampleStyle" class="iexample-text" ng-model="initDataTableData.sampleStyle"></textarea></div>
+								</div>
+								<div class="iexample" >
+									<h2 class="step-title title-mr" style="border-right: 1px solid #dcdcdc;">数据示例</h2>
+									<div class="shadow-div" style="border-bottom: 1px solid #d9d9d9;">
+										<textarea  name="sampleData" id="" class="iexample-text" cols="30" rows="10" ng-model="initDataTableData.sampleData" required ng-maxlength="200"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="step-right">
+							<div class="example">
+								<p class="tab clear">
+									<a class="tab1" ng-class="{'unactive':aClick1}" href="javascript:;" ng-click="previewClick()">实例预览图</a>
+									<a class="tab2" ng-class="{'unactive':aClick2}" href="javascript:;" ng-click="thumbnailClick()">实例缩略图</a>
+								</p>
+								<div class="preview-box" id="preview">
+									<p class="preview-no">控件预览图大小不得大于 380*450px,否则将只显示部分图像</p>		
+									<iframe id="previewIfrom" ng-src="{{initTempData.previewChartUrl}}" scroll="no" frameborder="0" width="380" height="450"style="margin-top:20px;margin-left: 1px;"></iframe>
+								</div>
+								<div class="preview-box" id="thumbnail" style="display: none;">
+									<img ng-src="{{initTempData.thumbnail}}" alt="缩略图" />
+								</div>
+							</div>
+						</div>
+<!-- 					</div> -->
+					<div class="tag-submit pad-left">
+						<button class="btn-gray-a" href="javascript:;" ng-click="backSecStep()" style="padding-left: 20px;">取消</button>
+						<button class="btn-blue" href="javascript:;" ng-click="secondStep()">完成</button>
+					</div>
+
+				</div>
+				<!--第三步-->
+				<div class="step step3" style="display: none;">
+					<div class="success-tips">
+						<img src="../../public/images/addInstance_ico.png">
+						<p>恭喜您，可视化控件实例“{{initDataTableData.name}}” </p>
+						<p>修改完成，谢谢！</p>
+					</div>
+
+					<div class="mx-ft" style="margin-left: 48%;">
+						<button class="next-step" href="javascript:;" ng-click="backExampleList()">确定</button>
+					</div>
+				</div>
+
+			</div>
+		</form>
+	</div>
+</div>

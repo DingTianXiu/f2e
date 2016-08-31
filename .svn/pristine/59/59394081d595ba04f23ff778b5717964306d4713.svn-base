@@ -1,0 +1,277 @@
+/**
+ * Created by Administrator on 2016/3/17 0017.
+ */
+app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', 'dataService', '$compile',
+    function ($scope, globalConfig, $rootScope, dataService, $compile) {
+
+        /**
+         * 页面初始化
+         */
+        $scope.queryAll = function () {
+
+            $scope.initTree();//初始化树形菜单
+            $scope.idOption = 1;//设置树形菜单默认选中值
+            
+            $scope.queryList();//加载页面列表
+        }
+        // var treeHeight = ;
+
+        //初始化树结构高度
+
+        $(".tables_con1 .group").css("height",window.height-70 );
+
+        /**
+         * 初始化树形菜单
+         */
+        $scope.initTree = function () {
+            $rootScope.safeApply(function () {
+                    $scope.myTreeOption = {
+                        url: 'resGetTree',
+                        parms: {rootId: 0},
+                        fun: $scope.queryList
+                    }
+                }
+            );
+        }
+        /**
+         * 新增资源组弹窗
+         */
+        $scope.addSources = function () {
+            $scope.closeAddOpen = $rootScope.layerOpen({
+                type: 2,
+                title: '添加资源',
+                content: '/index.html#/dialog/tagSourceConfig/add/'+ $scope.idOption
+            });
+        }
+
+        /**
+         * 关闭弹窗事件
+         */
+        $scope.closeAddSources = function () {
+            layer.close($scope.closeAddOpen);
+        }
+
+        /**
+         * 弹窗回调函数
+         */
+        $scope.callbackOpen = function () {
+            $scope.initTree();//刷新树结构;
+            var data = $("#closeOpen").val();//获取返回值
+            if(data!=''){
+                $scope.queryList(data);//根据返回数据刷新页面
+            }else{
+                $(".l-bar-button.l-bar-btnload").click();//刷新页面
+            }
+        }
+        var menu;
+
+        function getLigerMenu(items) {
+            menu = $.ligerMenu({
+                width: 100,
+                items: items
+            });
+        }
+
+        function itemclick(item) {
+            if (item.text == '编辑') {
+                updateSources($scope.parm.id,$scope.parm.name,item.title)
+            } else if (item.text == '设为资源组') {
+                settingSources($scope.parm.id,$scope.parm.name)
+            }
+        };
+        /**
+         * 加载列表
+         */
+        $scope.queryList = function (id) {
+            var test={};
+            var H = document.documentElement.clientHeight;
+
+            var val = {
+                pageSize: Math.floor((H - 250) / 40),
+            };
+            if(null==id){
+                test={parentId:1,withUnuse:true}
+            }else {
+                test={parentId:id.data.id,withUnuse:true}
+            }
+            $.extend(val, test);
+            dataService.getData('queryByParentId',val).success(function (rs) {
+
+            $("#tables_con_show").ligerGrid({
+                columns: $rootScope.tagSourceConfigColumns.columns,
+                cssClass: "ligerClass",
+                isScroll: false,
+                enabledSort: false,
+                headerRowHeight: 45,
+                rowHeight: 40,
+                pageParmName: 'pageNum',
+                pagesizeParmName: 'pageSize',
+                width: "auto", //默认列宽度
+                columnWidth: 160,
+                alternatingRow: false, //单双行差异去除
+                data: {
+                    Rows: rs.data
+                },
+                record: rs.total,
+                onAfterShowData: function (data) {
+                    var gird1Width = $('.l-frozen .l-grid1').width();
+                    $('.l-grid2').css({right: gird1Width,left: '0px',width:'auto'});
+                    $('.l-panel-bar').remove();
+                    if(rs.data==''||rs.data==null){
+                        $('.fc-table-fix').append("<div class='no_data'><p>暂时没有数据</p></div>")
+                    }
+
+                },
+                onBeforeShowData: function (data) {
+                    if(rs.data==''||rs.data==null){
+                        $('.l-grid2').css('left','0px')
+                    }
+                },
+                onContextmenu: function (parm, e) {
+                    console.log(parm.data);
+                    $scope.parm = parm.data;
+                    var isLeaf  = parm.data['isLeaf'];
+                    var title   = parm.data['code'];
+                    if(isLeaf =='n'){
+                        title =title+"资源组"
+                    }else{
+                        title =title+"资源"
+                    }
+                    var items = [{
+                        text: '编辑',
+                        click: itemclick,
+                        title: title,
+                    }];
+                    if (parm.data.isLeaf == 'n') {
+                        items.push({
+                            text: '已设为资源组',
+                            click: itemclick
+                        })
+                    }
+                    if (parm.data.isLeaf != 'n') {
+                        items.push({
+                            text: '设为资源组',
+                            click: itemclick
+                        })
+                    }
+                    getLigerMenu(items);
+                    menu.show({
+                        top: e.pageY - e.offsetY
+                    });
+                    return false;
+                }
+            })
+        });
+        };
+        dataService.getData('queryByParentId',{parentId:1,withUnuse:true}).success(function (rs) {
+            var H = document.documentElement.clientHeight;
+
+            var val = {
+                pageSize: Math.floor((H - 250) / 40)
+            };
+            if (val.pageSize<= 0) {
+                val.pageSize=1
+            }
+            var page = Math.ceil(rs.total / val.pageSize);
+            if (page == 0) {
+                $('.bottomPage').remove()
+                // $('.fc-table-main').append("<div class='no_data'><p>暂时没有数据</p></div>")
+                return false
+            }
+            $('.tcdPageCode').createPage({
+                pageCount: page,
+                current: 1,
+                backFn: function (p) {
+                    var pageNo = {
+                        pageNum: p
+                    };
+                    $.extend(val, pageNo);
+                    queryList(val)
+
+                }
+            });
+        })
+
+        $scope.queryAll();
+
+
+    }
+])
+;
+
+
+/**
+ * 设为资源组弹窗
+ */
+function settingSources(id, name) {
+    var scope = angular.element($("#tagSourceConfigId")).scope();
+    scope.$apply(function () {
+        layer.confirm('你确定要把"' + name + '"设为资源组吗?', {icon: 3}, function (index) {
+            var params = {id: id, isGroup: false};
+            $.ajax({
+                type: 'GET',
+                headers: {'ticket': Cookies.get('auth') || '' },
+                url: '/wlgfapi/res/changeResGroup',
+                data: params,
+                dataType: "json"
+            }).done(function (data) {
+                if (data.status == 200) {
+                    layer.msg('设置成功!');
+                    scope.queryList();//刷新列表
+                    scope.initTree();//刷新树结构
+                } else {
+                    layer.msg('设置失败!');
+                }
+            }).fail(function () {
+                layer.msg('设置失败!');
+            });
+        })
+    });
+
+}
+
+/**
+ * 编辑资源信息弹窗
+ * @param id 资源id
+ * @param name
+ */
+function updateSources(id, name,title) {
+    var scope = angular.element($("#tagSourceConfigId")).scope();
+    scope.$apply(function () {
+        scope.updateOpen = layer.open({
+                title: '修改'+title,
+                shade: [0.8, '#393D49'],
+                shadeClose: true,
+                maxmin: true,
+                area: ['750px', '500px'],
+                type: 2,
+                content: '/index.html#/dialog/tagSourceConfig/update/' + id + '/' + name
+            }
+        )
+    });
+}
+
+/**
+ * 设为资源组信息弹窗(20160321 作废)
+ * @param id 资源id
+ * @param name
+ */
+function tagSourceConfigSetGrounp(id) {
+    var scope = angular.element($("#tagSourceConfigId")).scope();
+    scope.$apply(function () {
+        scope.updateOpen = layer.open({
+                title: '设为资源组：',
+                shade: [0.8, '#393D49'],
+                shadeClose: true,
+                maxmin: true,
+                area: ['750px', '500px'],
+                type: 2,
+                content: '/index.html#/dialog/tagSourceConfig/setGrounp/' + id
+            }
+        )
+    });
+
+
+}
+
+

@@ -1,0 +1,34 @@
+<!--已审核可视化控件-->
+<div ng-controller="pluginsDoneCtrl" id="windowLoad">
+	<div ng-include="'/views/plugins/plugins.advanceSearch.html'"></div>
+	<!-- 高级查询弹窗页 -->
+	<!--标签中心-->
+	<div class="tabs">
+		<ul class="clear plugin-tabs">
+			<li>
+				<a href="javascript:;" ui-sref="g.plugins.pre">待审核可视化控件</a>
+			</li>
+			<li class="on">
+				<a href="javascript:;" ui-sref="g.plugins.done">已审核可视化控件</a>
+			</li>
+		</ul>
+	</div>
+	<form action="" class="search tag_search tag_center_search">
+		<a href="javascript:;" ui-sref="g.plugins.addplugins" style="padding:0 10px;width:auto;">新建可视化控件</a>
+		<div class="sear-bar">
+		<select name="" id="mySelect" style="margin-right:10px;"></select>
+		<input class="text" type="text" placeholder="请输入关键词" id="mySelectVal" ng-model="$parent.mySelectVal" />
+      	<input class="sub1" id="selectId" type="button" value="搜索">
+		<input class="sub2" id="sub2" type="button" value="高级搜索" ng-click="advancedSearch()" />
+		</div>
+	</form>
+	<div class="tables_wrap" style="margin-top: 15px;">
+
+		<div class="tables_con1 no-last-col-color clear" id="tables_con_show"> </div>
+		<div class="bottomPage">
+	    	<!--<span class="cz-select">选择</span>-->
+	        <div class="tcdPageCode"></div>
+	    </div>
+
+	</div>
+</div>

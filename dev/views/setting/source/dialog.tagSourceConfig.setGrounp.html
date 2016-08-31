@@ -1,0 +1,45 @@
+<div class="high_search_no x-m" id="tagSourceConfigSetGrounp" ng-controller="tagSourceConfigSetGrounpCtrl">
+  <table class="mx-table">
+    <tr>
+      <th width=130>
+        资源英文名
+      </th>
+      <td>
+        {{option.code}}
+      </td>
+    </tr>
+    <tr>
+      <th width=130>
+        资源中文名
+      </th>
+      <td>
+        <input type="text" class="mx-text" ng-model="option.name" />
+      </td>
+    </tr>
+    <tr>
+      <th width=130>
+        父节点
+      </th>
+      <td>
+        <select class="x-m-select" name="" ng-model="option.parentId"></select>
+      </td>
+    </tr>
+    <tr>
+      <th width=130>
+        说明
+      </th>
+      <td>
+        <textarea name="" class="mx-text" id="" cols="30" rows="10" ng-model="option.comment"></textarea>
+      </td>
+    </tr>
+    <tr class="submit fr">
+      <th width=130>
+        说明
+      </th>
+      <td>
+        <a href="javascript:;" class="btn-blue" ng-click="formatOpen()">确定</a><a href="javascript:;" class="btn-gray-a" ng-click="closeOpen()">取消</a>
+      </td>
+    </tr>
+  </table>
+
+</div>

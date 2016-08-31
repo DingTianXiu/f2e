@@ -1,0 +1,23 @@
+<div class="tables_wrap" ng-controller="roleConfigPermissionsPageCtrl">
+    <form action="" class="search">
+        <select name="" ng-change="getRoleData(1)" id="" ng-options="m.id as m.name for m in roleSelectData"
+                ng-model="roleIdSelect">
+        </select>
+    </form>
+    <div class="clear group_table">
+        <div class="permiss">
+            <div class="permiss-tab">
+                <a href="javascript:;" ui-sref="g.setting.userpermissions.page({id:roleId,parentId:parRoleId})"
+                   ng-class="{uncheck: !$state.includes('g.setting.userpermissions.page')}" ng-click="getPageDate()">页面权限</a>
+                <a href="javascript:;" ui-sref="g.setting.userpermissions.data({id:roleId,parentId:parRoleId})"
+                   ng-class="{uncheck: !$state.includes('g.setting.userpermissions.data')}">数据权限</a>
+            </div>
+            <div class="permiss-content">
+                <div ui-view></div>
+            </div>
+        </div>
+        <!-- <div class="submit permiss-fr page-fr">
+             <a href="javascript:;" class="a2">重置</a><a href="javascript:;" class="a1" ng-click="formatData()">保存</a>
+         </div>-->
+    </div>
+</div>

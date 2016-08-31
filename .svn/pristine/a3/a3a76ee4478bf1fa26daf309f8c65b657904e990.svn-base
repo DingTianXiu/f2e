@@ -1,0 +1,34 @@
+<div class="">
+  <!--标签管理-->
+  <!-- 中间主体内容 -->
+  <div class="main clear">
+    <div class="main_left">
+      <div class="nav2">
+        <p ng-click="leftNav.sourcegroup = !leftNav.sourcegroup"><a href="javascript:;"><span ng-class="{active:leftNav.sourcegroup}"></span>资源组管理</a></p>
+        <div class="nav_con" ng-show="leftNav.sourcegroup">
+          <p ng-class="{on: $state.includes('g.setting.source')}">
+            <a ui-sref="g.setting.source"><span class="con3"></span>标签资源配置</a>
+          </p>
+        </div>
+      </div>
+      <div class="nav2">
+        <p ng-click="leftNav.setting = !leftNav.setting"><a href="javascript:;"><span ng-class="{active:leftNav.setting}"></span>权限管理</a></p>
+        <div class="nav_con" ng-show="leftNav.setting">
+          <p ng-class="{on: $state.includes('g.setting.roleConfig') || $state.includes('g.setting.userpermissions') || $state.includes('g.setting.userpermissions.page')}">
+            <a ui-sref="g.setting.roleConfig"><span class="con6"></span>角色配置</a>
+          </p>
+          <p ng-class="{on: $state.includes('g.setting.permissionsConfig')}">
+            <a ui-sref="g.setting.permissionsConfig"><span class="con7"></span>权限配置</a>
+          </p>
+          <!-- <p ng-class="{on: $state.includes('g.setting.clientConfig')}">
+            <a ui-sref="g.setting.clientConfig"><span class="con8"></span>用户管理</a>
+          </p> -->
+        </div>
+      </div>
+    </div>
+    <div class="main_right">
+      <!--右侧内容-->
+      <div class="" ui-view></div>
+    </div>
+  </div>
+</div>

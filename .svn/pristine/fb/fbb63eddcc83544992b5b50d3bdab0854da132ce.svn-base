@@ -1,0 +1,23 @@
+
+.table-box{width: 100%;line-height: 45px;min-width: 1000px;font-size: 14px;}
+.table-le{float: left;width:83%;overflow-x:scroll;border: 1px solid #E5E5E5;position: absolute;
+left: 0px;
+   
+    right: 170px;}
+.table-le table{width:120%;}
+.table-ri{float: right;border: 1px solid #E5E5E5;width:16.6%;position: absolute;
+    top: 70px;
+    right: 0px;
+    display: block;}
+.table-box table thead tr th {background: #fafafa;color: #82959d;border-right: 1px solid #E5E5E5;}
+.table-box table tbody tr th {color: #82959d;border-right: 1px solid #fff;}
+.table-box table tr{border-bottom: 1px solid #E5E5E5;}
+.table-box table tr th {width: 169px;height: 45px;text-align: center;}
+.table-box table tbody tr:hover{background-color:#f1f9fd;color: #008CE0;}
+.div-re{position: relative;cursor: pointer;}
+.ul-ab{position: absolute;top:40px;left:28px;background-color: #fff;line-height: 34px;border: 1px solid #E5E5E5;width: 100px;text-align: center;}
+.ul-ab li{border-bottom: 1px dashed #E5E5E5;cursor: pointer;}
+.ul-ab li:last-child{border-bottom:none;}
+/*.table-box table thead tr  .hover-bg {display: inline-block;}*/
+.table-box table thead tr  .hover-bg a{display: inline-block;margin-left: 2px;}
+.table-box table thead tr  .hover-bg a:hover{display: inline-block;width:100%;background: url(../images/222.png) no-repeat 100px center;}

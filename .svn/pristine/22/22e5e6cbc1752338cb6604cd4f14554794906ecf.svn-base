@@ -1,0 +1,32 @@
+<div class="tables_wrap" ng-controller="tagSourceConfigCtrl">
+  <div ng-if="checkPermission('resourceslabel.pageview')">
+    <input type="hidden" ng-model="closeOpen" id="closeOpen" ng-click="callbackOpen()">
+    <form action="" class="search spec_for_souconf">
+      <a href="javascript:;" class="" ng-if="checkPermission('resourceslabel.add')" ng-click="addSources()">添加资源</a>
+    </form>
+    <div class="tables_con1 clear group_table" id="tagSourceConfigId">
+      <table style="width:100%" class="fc-table">
+        <tr>
+          <td class="fc-table-fix">
+            <div class="group" style="position: relative">
+              <h4>资源组 </h4>
+              <my-ligerui-tree ng-model="myTreeOption" root-text="资源"></my-ligerui-tree>
+            </div>
+          </td>
+          <td class="fc-table-main">
+            <div  id="tables_con_show"> </div>
+            <div class="bottomPage">
+              <!-- <span class="cz-select">选择</span> -->
+              <div class="tcdPageCode"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div ng-if="!checkPermission('resourceslabel.pageview')">
+    <div class="page-forbid">
+      你无权查看该页面
+    </div>
+  </div>
+</div>

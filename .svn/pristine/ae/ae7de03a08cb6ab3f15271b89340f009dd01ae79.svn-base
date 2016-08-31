@@ -1,0 +1,46 @@
+<div ng-controller="gCtrl">
+  <!-- 头部导航 -->
+ <!--  <div class="header">
+    <a href="javascript:;" ui-sref="g.welcome"><h1 class="logo fl">
+      <img src="./public/images/logo.png" alt="" />WLGF
+    </h1></a>
+    <ul class="fl top_nav">
+      <li class="top-nav-item fl" id="li2" ng-class="{'nav-on':hovering}" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false">
+        <a href="javascript:;">数据 <span class="arrow"></span></a>
+        <div class="li2_con">
+          <p><a href="javascript:;" ui-sref="g.data.tagconfig">标签管理</a></p>
+        </div>
+      </li>
+      <li class="top-nav-item fl" id="li2" ng-class="{'nav-on':hoveringkxs}" ng-mouseenter="hoveringkxs=true" ng-mouseleave="hoveringkxs=false">
+        <a href="javascript:;">可视化 <span class="arrow"></span></a>
+        <div class="li2_con">
+          <p><a href="javascript:;" ui-sref="g.plugins.pre">可视化控件管理</a></p>
+          <p><a href="javascript:;" ui-sref="g.plugins.showcase">可视化控件展台</a></p>
+        </div>
+      </li>
+    </ul>
+    <div class="fr info" ng-class="{'nav-on':curUserHovering}" ng-mouseenter="curUserHovering=true" ng-mouseleave="curUserHovering=false">
+      <div class="info-detail">
+        <div class="info-detail-img">
+          <img src="./public/images/user.png" alt="" />
+        </div>
+        <div class="info-detail-name">
+          <p>welcome</p>
+          <p class="color-fff">{{userInfo.realName}}<span class="arrow"></span></p>
+        </div>
+
+      </div>
+      <div class="info-detail-logout">
+        <a href="javascript:;" ng-click="logOut();">退出</a>
+      </div>
+    </div>
+    <div class="fr btns">
+      <a href="javascript:;" ui-sref="g.setting.source" title="设置"><img src="./public/images/ico1.png" alt="" /></a>
+
+    </div>
+
+  </div> -->
+
+  <div class="" ui-view></div>
+  <toaster-container toaster-options="{'position-class': 'toast-center'}"></toaster-container>
+</div>

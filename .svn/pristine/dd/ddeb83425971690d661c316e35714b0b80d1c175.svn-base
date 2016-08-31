@@ -1,0 +1,28 @@
+<div class="tables_wrap" ng-controller="roleConfigCtrl" id="windowRoleConfig">
+	<div ng-if="checkPermission('permissions.role.pageview')">
+		<input type="hidden" ng-model="closeOpen" id="closeOpen" ng-click="callbackOpen()">
+		<form action="" class="search">
+			<a href="javascript:;" class="fr" ng-click="addRole()" ng-if="checkPermission('permissions.role.add')"><img src="./public/images/add1.png" alt="">添加角色</a>
+		</form>
+		<div class="tables_con1 clear group_table" id="tagRoleConfigId">
+			<table style="width:100%" class="fc-table">
+				<tr>
+					<td class="fc-table-fix">
+						<div class="group">
+							<h4>角色组</h4>
+							<my-ligerui-tree ng-model="myTreeOption" root-text="角色"></my-ligerui-tree>
+						</div>
+					</td>
+					<td class="fc-table-main">
+						<my-ligerui-list ng-model="listModel"></my-ligerui-list>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div ng-if="!checkPermission('permissions.role.pageview')">
+		<div class="page-forbid">
+			你无权查看该页面
+		</div>
+	</div>
+</div>

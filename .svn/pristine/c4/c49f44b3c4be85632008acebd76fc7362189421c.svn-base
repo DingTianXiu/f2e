@@ -1,0 +1,34 @@
+<!--可视化展台详情-->
+<div class="chart-btn" ng-controller="showcaseexampleDetailCtrl">
+	<form name="modExampleform" novalidate>
+		<h2 class="title-mr preview-title">饼图示例</h2>
+		<img src="../../public/images/tips_ico.png" id="div_pro" onmouseover="mouover()" onmouseout="mouout()" />
+		<div  id="float_box" style="display: none;"><textarea name="comment" class="" ng-model="initDataTableData.comment"></textarea></div>
+		<a class="chart-back" href="javascript:;" ng-click="close()">关闭</a>
+		<div class="step">
+			<div class="step-left">
+				<div class="example">
+					<div class="iexample shili">
+						<h2 class="step-title title-mr ">样式示例</h2>
+						<div class="shili-btn">
+							<a href="javascript:;" class="reset" ng-click="resetCode()">重置</a>
+							<a href="javascript:;" class="run" ng-click="previewExamp()">运行</a>
+						</div>
+						<div class="shadow-div"><textarea  name="sampleStyle" class="iexample-text" ng-model="initDataTableData.sampleStyle"></textarea></div>
+					</div>
+					<div class="iexample">
+						<h2 class="step-title title-mr">数据示例</h2>
+						<div class="shadow-div"><textarea  name="sampleData" class="iexample-text" ng-model="initDataTableData.sampleData"></textarea></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="preview-box step-right" id="preview" style="position: relative;">
+				<a class="down-chart" href="javascript:;" ng-click="downLoadJs()">下载源码</a>
+			    <div class="preview-name">{{initDataa.name}}+{{initDataTableData.name}}</div>
+        		<p class="preview-no">控件预览图大小不得大于 380*450px,否则将只显示部分图像</p>
+				<iframe id="previewIfrom" ng-src="{{initTempData.previewChartUrl}}" scroll="no" frameborder="0" width="380" height="450" style="margin-top:50px;margin-left: 10px;"></iframe>
+			</div>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,27 @@
+<!-- 高级搜索 -->
+<div  class="high_search" id="highSearch"style="height:300px;">
+	<div class="clear">
+		<p class="fl p1">ID<input type="text" name="metaTableName" /></p>
+
+		<p class="fl p2">实例名称<input type="text" name="metaDbName" /></p>
+         
+		
+	</div>
+	<div class="clear">
+		<p class="fl p2">控件名称<!--<input type="text" />-->
+			<select name="widgetName" id="widgetName">
+            <option value="">请选择</option>
+        </select>
+		</p>
+		<p class="fl p1">最近修改人<input type="text" name="modifiedUserName" /></p>
+	</div>
+		<div class="clear date2">
+		<p class="fl p4" style="right:315px;">更新时间<input style="text-indent:25px;" type="text" name="startModifyTime" id="modifyStart" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'modifyEnd\')||\'2030-10-01\'}'})" />至<input style="text-indent:25px;" type="text" id="modifyEnd"
+				name="endModifyTime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'modifyStart\')}',maxDate:'2020-10-01'})" /><img src="./public/images/date.png" class="calender1" alt="" /><img src="./public/images/date.png" class="calender2"
+				alt="" /></p>
+	</div>
+	<hr/>
+	<div class="submit fr">
+		<a href="javascript:;" class="a1" ng-click="highSearchConfirm()">确定</a><a href="javascript:;" class="a2" ng-click="closeHighSearch()">取消</a>
+	</div>
+</div>

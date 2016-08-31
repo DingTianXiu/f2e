@@ -1,0 +1,70 @@
+<!-- 高级搜索 -->
+<div class="high_search" id="highSearch">
+    <div class="clear">
+        <p class="fl p1">表名<input type="text" name="metaTableName"/></p>
+
+        <p class="fl p2">数据库名<input type="text" name="metaDbName"/></p>
+
+        <p class="fl p3">
+            标签数据类型
+            <my-select select-name="dataCategory" select-code="4" double-select-id="dataSource"
+                       ng-model="dataCategoryOption"/>
+        </p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">数据源<select name="dataSource" id="dataSource"/></p>
+
+        <p class="fl p2">审核状态<select name="modifyStatus" id="modifyStatus">
+            <option value="">请选择</option>
+        </select></p>
+        <p class="fl p3">使用状态<select name="useStatus" id="useStatus">
+            <option value="">请选择</option>
+        </select></p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">更新周期
+            <my-select select-name="refreshCycle" select-id="refreshCycle" select-code="14"
+                       ng-model="refreshCycleOption"></my-select>
+        </p>
+        <p class="fl p2">已部署脚本<input type="text" name="scriptFileName"/></p>
+
+        <p class="fl p3">待审核脚本<input type="text" name="waitAuditScriptFileName"/></p></div>
+    <div class="clear">
+        <p class="fl p1">附件<input type="text" name="attachmentFileName"/></p>
+
+        <p class="fl p2">部署服务器<input type="text" name="deployServer"/></p>
+
+        <p class="fl p3">部署目录<input type="text" name="deployPath"/></p></div>
+    <div class="clear">
+        <p class="fl p1">启动命令<input type="text" name="startScriptFileName"/></p>
+
+        <p class="fl p2">表说明<input type="text" name="comment"/></p>
+
+        <p class="fl p3">使用项目<input type="text"/></p></div>
+    <div class="clear">
+        <p class="fl p1">创建人<input type="text" name="createdUserName"/></p>
+
+        <p class="fl p2">修改人<input type="text" name="modifiedUserName"/></p></div>
+    <div class="clear date1">
+        <p class="fl p4">创建时间<input type="text" name="startCreatTime" id="createStart"
+                                    style="text-indent:25px;"
+                                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'createEnd\')||\'2030-10-01\'}'})"/>至<input
+                type="text" style="text-indent:25px;" id="createEnd" name="endCreateTime"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'createStart\')}',maxDate:'2020-10-01'})"/><img
+                src="./public/images/date.png" class="calender1"/>
+
+            <img src="./public/images/date.png" class="calender2" alt=""/></p></div>
+    <div class="clear date2">
+        <p class="fl p4">修改时间<input style="text-indent:25px;" type="text" name="startModifyTime"
+                                    id="modifyStart"
+                                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'modifyEnd\')||\'2030-10-01\'}'})"/>至<input
+                style="text-indent:25px;" type="text" id="modifyEnd" name="endModifyTime"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'modifyStart\')}',maxDate:'2020-10-01'})"/><img
+                src="./public/images/date.png" class="calender1" alt=""/><img src="./public/images/date.png"
+                                                                              class="calender2" alt=""/></p></div>
+    <hr/>
+    <div class="submit fr">
+        <a href="javascript:;" class="a1" ng-click="advancedSearchConfirm()">确定</a><a href="javascript:;" class="a2"
+                                                                                      ng-click="closeAdvancedSearch()">取消</a>
+    </div>
+</div>

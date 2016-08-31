@@ -1,0 +1,6 @@
+{
+  width: 200,
+  height: 200,
+  elemId: 'chartPreview',
+  data: [123,23,52,33]
+}

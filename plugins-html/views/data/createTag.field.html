@@ -1,0 +1,197 @@
+<div ng-controller="createTagFieldCtrl as th">
+  <div class="bq_wrap">
+    <p class="bq2 clear" ng-if="currentState!=='g.data.modifyTag' && currentState!=='g.data.auditTag' && currentState!=='g.data.tagdetail'">
+      <a class="fl zd" href="javascript:;" ui-sref="g.data.createTag">1数据表信息</a><img class="fl" src="../public/images/ico5.png" alt="">
+      <a class="fl " href="javascript:;">2字段设置</a>
+    </p>
+
+    <div class="border-x clearfix">
+      <table style="width: 100%">
+        <tr>
+          <td width=250 style="vertical-align:top;">
+            <div class="fieldbox" style="overflow-y:auto;">
+              <table>
+                <tbody>
+                  <tr>
+                    <th>字段</th>
+                    <th width=90>设置</th>
+                  </tr>
+                  <tr ng-repeat="m in fieldListData" ng-class="{'field-on': pageData.rowIndex==$index}">
+                    <td><span ng-bind="m.metaColumnName" title="{{m.metaColumnName}}" class="field-txt-overflow"></span></td>
+                    <td ng-if="m.type == null">
+                      <a href="javascript:;" class="link-blue" ng-click='backfillField($index)' ;>未设置</a>
+                    </td>
+                    <td ng-if="m.type == '22'">
+                      <span ng-click='backfillField($index)' ;>已设置为标签</span>
+                    </td>
+                    <td ng-if="m.type == '23'">
+                      <span ng-click='backfillField($index)' ;>已设置为维度</span>
+                    </td>
+                </tbody>
+              </table>
+
+            </div>
+          </td>
+          <td style="vertical-align:top;">
+            <div class="fielddetialbox">
+              <div style="padding: 30px 0;border-bottom:1px solid #e1e6eb;margin-bottom:30px">
+                <table class="mx-table table-a-w">
+                  <tr>
+                    <th width=250>
+                      数据类型<span class="color-red">*</span >
+                    </th>
+                    <td>
+                      <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail' || (currentState=='g.data.modifyTag' && fieldListData[pageData.rowIndex].type==23)" ng-change="changeDataType();" ng-model="fieldDetailData.type" ng-options="m.id as m.name for m in droplistData.typeList">
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="" ng-show="fieldDetailData.type == 22">
+                <form name="th.typeLabelForm" novalidate>
+                  <table class="mx-table table-a-w">
+                    <tr>
+                      <th width=250>
+                        标签中文名<span class="color-red">*</span >
+                      </th>
+                      <td>
+                        <input ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" type="text" ng-model="fieldDetailData.name" name="labelname" required ng-maxlength="20">
+                          <span ng-show="(th.typeLabelForm.labelname.$dirty || fieldsubmitted) && th.typeLabelForm.labelname.$error.required" class="color-red">标签中文名为必填项</span>
+                        <span ng-show="(th.typeLabelForm.labelname.$dirty || fieldsubmitted) && th.typeLabelForm.labelname.$error.maxlength" class="color-red">标签中文名最大长度为20</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        标签英文名<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <input ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail' || currentState=='g.data.modifyTag' " type="text" name="code" ng-model="fieldDetailData.code" required ng-maxlength="50" ng-pattern="/^\w+$/">
+                        <span ng-show="(th.typeLabelForm.code.$dirty || fieldsubmitted) && th.typeLabelForm.code.$error.required" class="color-red">标签英文名为必填项</span>
+                        <span ng-show="(th.typeLabelForm.code.$dirty || fieldsubmitted) && th.typeLabelForm.code.$error.maxlength" class="color-red">标签英文名最大长度为50</span>
+                        <span ng-show="(th.typeLabelForm.code.$dirty || fieldsubmitted) && th.typeLabelForm.code.$error.pattern" class="color-red">标签英文名不能有非法字符</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        标签识别<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="" id="" ng-model="fieldDetailData.tag" ng-options="m.id as m.name for m in droplistData[fieldDetailData.type].tagList">
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        一级类目<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="" id="" ng-model="fieldDetailData.categoryL1" ng-change="changeL1();" ng-options="m.id as m.name for m in droplistData[fieldDetailData.type].categoryL1List">
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        二级类目<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="" id="" ng-model="fieldDetailData.categoryL2" ng-options="m.id as m.name for m in pageData.categoryL2List">
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        统计口径<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <textarea ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="description" id="" cols="30" rows="10" ng-model="fieldDetailData.description" required ng-maxlength="200" ></textarea>
+                        <p>
+                          <span ng-show="(th.typeLabelForm.description.$dirty || fieldsubmitted) && th.typeLabelForm.description.$error.required" class="color-red">统计口径为必填项</span>
+                          <span ng-show="(th.typeLabelForm.description.$dirty || fieldsubmitted) && th.typeLabelForm.description.$error.maxlength" class="color-red">统计口径200</span>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr ng-if="currentState =='g.data.createTagField' || currentState =='g.data.modifyTag'">
+                      <th>
+
+                      </th>
+                      <td>
+                        <button type="submit" ng-click="saveLabel();" class="btn-gray">保存</button>
+                      </td>
+                    </tr>
+                  </table>
+
+                </form>
+              </div>
+              <div ng-show="fieldDetailData.type == 23">
+                <form name="th.typePForm" novalidate>
+                  <table class="mx-table table-a-w">
+                    <tr>
+                      <th width=250>
+                        维度识别<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <select ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="" id="" ng-model="fieldDetailData.tag" ng-options="m.id as m.name for m in droplistData[fieldDetailData.type].tagList">
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        维度中文名<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <input ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" type="text" required ng-maxlength="6" name="codename" ng-model="fieldDetailData.name">
+                        <span ng-show="(th.typePForm.codename.$dirty || fieldsubmitted) && th.typePForm.codename.$error.required" class="color-red">维度中文名为必填项</span>
+                        <span ng-show="(th.typePForm.codename.$dirty || fieldsubmitted) && th.typePForm.codename.$error.maxlength" class="color-red">维度中文名最大长度为6</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        维度英文名<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <input ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail' || currentState=='g.data.modifyTag'" type="text" name="code" ng-model="fieldDetailData.code" required ng-maxlength="50" ng-pattern="/^\w+$/">
+                        <span ng-show="(th.typePForm.code.$dirty || fieldsubmitted) && th.typePForm.code.$error.required" class="color-red">维度英文名为必填项</span>
+                        <span ng-show="(th.typePForm.code.$dirty || fieldsubmitted) && th.typePForm.code.$error.maxlength" class="color-red">维度英文名最大长度为50</span>
+                        <span ng-show="(th.typePForm.code.$dirty || fieldsubmitted) && th.typePForm.code.$error.pattern" class="color-red">维度英文名不能有非法字符</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th width=250>
+                        维度描述<span class="color-red">*</span>
+                      </th>
+                      <td>
+                        <textarea ng-disabled="currentState=='g.data.auditTag' || currentState=='g.data.tagdetail'" name="" id="" cols="30" rows="10" ng-model="fieldDetailData.description" required ng-maxlength="200"></textarea>
+                        <p>
+                          <span ng-show="(th.typePForm.description.$dirty || fieldsubmitted) && th.typePForm.description.$error.required" class="color-red">统计口径为必填项</span>
+                          <span ng-show="(th.typePForm.description.$dirty || fieldsubmitted) && th.typePForm.description.$error.maxlength" class="color-red">统计口径200</span>
+                        </p>
+                      </td>
+                    </tr>
+
+                    <tr ng-if="currentState =='g.data.createTagField' || currentState =='g.data.modifyTag'">
+                      <th>
+
+                      </th>
+                      <td>
+                        <a href="javascript:;" ng-click="saveLabel();" class="btn-gray">保存</a>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+              </div>
+
+            </div>
+          </td>
+          </tr>
+      </table>
+
+
+
+    </div>
+  </div>
+  <div class="submit" style="text-align:right;padding-top:20px;text-align:center;" ng-if="currentState!=='g.data.modifyTag' && currentState!=='g.data.auditTag' && currentState!=='g.data.tagdetail'">
+    <a href="javascript:;" ui-sref="g.data.tagconfig" class="a2">取消</a>
+    <a href="javascript:;" class="a1" style="padding: 0 10px" ng-click="submitAudit();">提交审核</a>
+  </div>
+</div>

@@ -1,0 +1,387 @@
+/**
+ * 保存数据表信息管理
+ */
+app.controller('createTagCtrl', ['$scope', '$state', '$cookies', 'globalConfig', 'dataService', 'FileUploader', 'toaster',
+  function($scope, $state, $cookies, globalConfig, dataService, FileUploader, toaster) {
+
+    // 页面初始数据
+    $scope.iniData = {
+      categoryList: [],
+      dataCategory: '',
+      metaDbIdList: [], // 数据库名
+      metaDbId: null,
+      metaTableIdList: [], // 表名
+      metaTableId: null,
+      dataSourceList: [], // 数据源
+      dataSource: null, // 数据源选中
+      refreshCycleList: [], // 更新周期
+      refreshCycle: null, // 更新周期选中项，
+      scriptFileUid: '', // 脚本
+      attachmentFileId: '', // 其他附件
+      comment: '' // 表说明
+    };
+
+    //字符过长提示
+    $scope.maxLength = true;
+
+    // 上传状态等
+    $scope.upload = {
+      uploadScrpit: {
+        status: 0, // 上传前，上传失败 0， 上传中 1， 上传成功 2
+        progress: 0,
+        fileName: ''
+      },
+      uploadAttachment: {
+        status: 0,
+        progress: 0,
+        fileName: ''
+      }
+    }
+
+    // 设置高度
+    $(".creat_wrap").css("height",$(window).height()-80);
+
+    // 改变类型获取数据库名
+    $scope.changeCat = function() {
+      getDatabase();
+      renderSource();
+    };
+
+    // 不知道啥类型
+    function getSType() {
+      dataService.getData('queryByParentId', {
+        parentId: 4
+      }).success(function(rs) {
+        $scope.iniData.categoryList = rs.data;
+        $scope.iniData.dataCategory = rs.data[0]['id'];
+        getDatabase();
+        renderSource();
+      });
+    };
+    getSType();
+
+    // 改变数据库名
+    $scope.changeDbs = function() {
+      getTable();
+    };
+
+    // 获取数据库名
+    function getDatabase() {
+      $scope.iniData.metaDbIdList = [];
+      $scope.iniData.metaDbId = '';
+
+      $scope.iniData.metaTableIdList = []; // 表名
+      $scope.iniData.metaTableId = '';
+
+      dataService.getData('queryDbsByCategoryId', {
+        categoryId: $scope.iniData.dataCategory
+      }).success(function(rs) {
+
+        $scope.iniData.metaDbIdList = rs.data;
+        $scope.iniData.metaDbId = rs.data[0]['id'];
+
+
+        getTable();
+      });
+    }
+
+    // 获取表名
+    function getTable() {
+      $scope.iniData.metaTableIdList = [];
+      $scope.iniData.metaTableId = '';
+      dataService.getData('queryTablesByDbId', {
+        metaDbId: $scope.iniData.metaDbId,
+        filter: true
+      }).success(function(rs) {
+
+        $scope.iniData.metaTableIdList = rs.data;
+        $scope.iniData.metaTableId = rs.data[0]['id'];
+
+        // 反填数据
+        getCurrentTableInfo()
+      });
+    };
+
+    // 改变表名
+    $scope.changeTables = function() {
+      getCurrentTableInfo();
+    };
+
+    // 获取当前数据
+    function getCurrentTableInfo() {
+      dataService.getData('getCreatingLabelGroup', {
+        metaTableId: $scope.iniData.metaTableId
+      }).success(function(rs) {
+        if (rs.data == null) {
+
+          $scope.iniData.id = null;
+          $scope.iniData.dataSource = $scope.iniData.dataSourceList[0].id; // 数据源选中
+          $scope.iniData.refreshCycle = $scope.iniData.refreshCycleList[0].id; // 更新周期选中项，
+          $scope.iniData.comment = ''; // 表说明
+
+          $scope.upload.uploadScrpit.status = 0;
+          $scope.upload.uploadScrpit.progress = 0;
+          $scope.upload.uploadScrpit.fileName = '';
+          $scope.upload.uploadAttachment.status = 0;
+          $scope.upload.uploadAttachment.progress = 0;
+          $scope.upload.uploadAttachment.fileName = '';
+
+          return;
+        };
+
+        $scope.iniData.id = rs.data.id;
+        $scope.iniData.dataSource = rs.data.dataSource;
+        $scope.iniData.refreshCycle = rs.data.refreshCycle;
+        $scope.iniData.scriptFileUid = rs.data.scriptFileUid;
+        $scope.iniData.scriptFileName = rs.data.scriptFileName;
+        $scope.iniData.attachmentFileUid = rs.data.attachmentFileUid;
+        $scope.iniData.attachmentFileName = rs.data.attachmentFileName;
+        $scope.iniData.comment = rs.data.comment;
+
+        if (rs.data.scriptFileUid) {
+          $scope.upload.uploadScrpit.status = 2;
+          $scope.upload.uploadScrpit.progress = 100;
+          $scope.upload.uploadScrpit.fileName = rs.data.scriptFileName;
+        }
+
+        if (rs.data.attachmentFileUid) {
+          $scope.upload.uploadAttachment.status = 2;
+          $scope.upload.uploadAttachment.progress = 100;
+          $scope.upload.uploadAttachment.fileName = rs.data.attachmentFileName;
+        }
+
+        // 反填数据
+      });
+    }
+
+    // 数据源联动
+    function renderSource() {
+      dataService.getData('queryByParentId', {
+        parentId: $scope.iniData.dataCategory
+      }).success(function(rs) {
+        $scope.iniData.dataSourceList = rs.data;
+        $scope.iniData.dataSource = rs.data[0]['id'] || '';
+      });
+    };
+
+
+    // 更新周期
+    function getCycle() {
+      dataService.getData('queryByParentId', {
+        parentId: 14
+      }).success(function(rs) {
+        $scope.iniData.refreshCycleList = rs.data;
+        $scope.iniData.refreshCycle = rs.data[0]['id'];
+      });
+    };
+    getCycle();
+
+
+    // 上传脚本
+    var uploaderScript = $scope.uploaderScript = new FileUploader({
+      url: globalConfig.api.uploadFile+'?type=script',
+      autoUpload: true,
+      queueLimit: 1,
+      headers: {
+        ticket: $cookies.get('auth')
+      },
+      removeAfterUpload: true,
+      onWhenAddingFileFailed: function(item, filter, options) { // 上传前失败
+        toaster.clear();
+        if (filter.name == 'enforceMaxFileSize') {
+          toaster.pop({
+            type: 'error',
+            title: '',
+            body: '上传文件大小超过20M',
+            showCloseButton: false
+          });
+        }
+
+        if (filter.name == 'scriptfileType') {
+          toaster.pop({
+            type: 'error',
+            title: '',
+            body: '文件格式应为txt,sh,py,pyc,pyo,pyd,jar,class,dll中的一种',
+            showCloseButton: false
+          });
+        }
+        $('#uploaderScriptid').val('');
+      },
+      onProgressItem: function(item, progress) {
+        $scope.upload.uploadScrpit.status = 1;
+      },
+      onSuccessItem: function(item, response, status, headers) { // 上传成功
+        if (status === 200 && response.status === 200) {
+          $scope.upload.uploadScrpit.status = 2; // 上传完成
+          $scope.upload.uploadScrpit.fileName = response.data.name; // 文件名
+          $scope.iniData.scriptFileUid = response.data.uid;
+          $('#uploaderScriptid').val('');
+        } else if (status === 200 && response.status === 503) {
+          $scope.upload.uploadScrpit.status = 0; // 上传完成
+          toaster.clear();
+          toaster.pop({
+              type: 'error',
+              title: '',
+              body: response.msg,
+              showCloseButton: false,
+          });
+          $('#uploaderScriptid').val('');
+        }
+      }
+    });
+    uploaderScript.filters.push({
+      'name': 'enforceMaxFileSize',
+      'fn': function(item) {
+        return item.size <= 20971520; // 20 MiB to bytes
+      }
+    });
+    uploaderScript.filters.push({
+      'name': 'scriptfileType',
+      'fn': function(item) {
+        return /^.*?\.(txt|sh|py|pyc|pyo|pyd|jar|class|dll)$/.test(item.name)
+      }
+    });
+
+    // 上传附件
+    var uploaderAttachment = $scope.uploaderAttachment = new FileUploader({
+      url: globalConfig.api.uploadFile+'?type=attachment',
+      autoUpload: true,
+      queueLimit: 1,
+      headers: {
+        ticket: $cookies.get('auth')
+      },
+      removeAfterUpload: true,
+      onWhenAddingFileFailed: function(item, filter, options) { // 上传前失败
+        toaster.clear();
+        if (filter.name == 'enforceMaxFileSize') {
+          toaster.pop({
+            type: 'error',
+            title: '',
+            body: '上传文件大小超过20M',
+            showCloseButton: false
+          });
+        }
+
+        if (filter.name == 'scriptfileType') {
+          toaster.pop({
+            type: 'error',
+            title: '',
+            body: '文件格式应为doc,docx,xls,xlsx,sql,zip,rar中的一种',
+            showCloseButton: false
+          });
+        }
+        $('#uploaderAttachmentid').val('');
+      },
+      onProgressItem: function(item, progress) {
+        $scope.upload.uploadAttachment.status = 1;
+      },
+      onSuccessItem: function(item, response, status, headers) { // 上传成功
+        if (status === 200 && response.status === 200) {
+          $scope.upload.uploadAttachment.status = 2; // 上传完成
+          $scope.upload.uploadAttachment.fileName = response.data.name; // 文件名
+          $scope.iniData.attachmentFileUid = response.data.uid;
+          $('#uploaderAttachmentid').val('');
+        } else if (status === 200 && response.status === 503) {
+          $scope.upload.uploadAttachment.status = 0; // 上传失败
+          toaster.clear();
+          toaster.pop({
+              type: 'error',
+              title: '',
+              body: response.msg,
+              showCloseButton: false,
+          });
+          $('#uploaderAttachmentid').val('');
+        }
+      }
+    });
+    uploaderAttachment.filters.push({
+      'name': 'enforceMaxFileSize',
+      'fn': function(item) {
+        return item.size <= 20971520; // 20 MiB to bytes
+      }
+    });
+    uploaderAttachment.filters.push({
+      'name': 'scriptfileType',
+      'fn': function(item) {
+        return /^.*?\.(doc|docx|xls|xlsx|sql|zip|rar)$/.test(item.name)
+      }
+    });
+
+
+    // 删除上传脚本
+    $scope.delUploadScrpit = function() {
+      $scope.upload.uploadScrpit.status = 0;
+      $scope.upload.uploadScrpit.progress = 0;
+      $scope.upload.uploadScrpit.fileName = '';
+      $scope.iniData.scriptFileUid = '';
+    }
+
+    
+
+    // 删除附件
+    $scope.delAttachment = function() {
+      $scope.upload.uploadAttachment.status = 0;
+      $scope.upload.uploadAttachment.progress = 0;
+      $scope.upload.uploadAttachment.fileName = '';
+      $scope.iniData.attachmentFileUid = '';
+    };
+
+    //取消按钮
+    $scope.cancelTag = function() {
+      $(".mask").show();
+    };
+    //继续设置
+    $scope.next = function() {
+      $(".mask").hide();
+    };
+
+
+    //监控输入字符
+    $scope.$watch('iniData.comment', function (newValue) {
+        if(newValue != null){
+            $scope.textLength = newValue.length;
+            if(newValue.length > 200){
+                $scope.maxLength = false;
+                $(".max-length").show();
+            }else{
+                $scope.maxLength = true;
+                $(".max-length").hide();
+            };
+        }else{
+            $scope.textLength = 0;
+        }
+        
+    });
+    // 保存数据并跳转
+    $scope.saveCreateTag = function() {
+      $scope.submited = true;
+      if ($scope.createtagform.$valid && $scope.maxLength) {
+
+        var params = {
+          id: $scope.iniData.id || '',
+          dataCategory: $scope.iniData.dataCategory,
+          metaDbId: $scope.iniData.metaDbId,
+          metaTableId: $scope.iniData.metaTableId,
+          dataSource: $scope.iniData.dataSource, // 数据源选中
+          refreshCycle: $scope.iniData.refreshCycle, // 更新周期选中项，
+          scriptFileUid: $scope.iniData.scriptFileUid, // 脚本
+          attachmentFileUid: $scope.iniData.attachmentFileUid, // 其他附件
+          comment: $scope.iniData.comment // 表说明
+        };
+
+
+        dataService.postData('createOrModifyLabelGroup', params).success(function(rs) {
+          if (rs.data) {
+            $state.go('g.data.createTagField', {
+              labelGroupId: rs.data
+            })
+          } else {
+            $scope.submited = false;
+          }
+
+        })
+      }
+    };
+
+  }
+]);

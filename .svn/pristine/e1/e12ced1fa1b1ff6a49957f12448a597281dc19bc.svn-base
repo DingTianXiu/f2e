@@ -1,0 +1,629 @@
+/**
+ * 标签表管理
+ */
+app.controller('tagCenterCtrl', ['$scope', '$cookies', 'globalConfig', 'dataService', '$rootScope','toaster',
+    function ($scope, $cookies, globalConfig, dataService, $rootScope,toaster) {
+
+        /**
+         * 页面初始化加载
+         */
+        $scope.queryAll = function () {
+            //查询用户自定义查询标签配置数据
+            $scope.queryViewColumnData();
+
+            $scope.g = null; //页面列表
+            //加载页面普通查询下拉
+            $scope.mySelectLoad();
+
+            //高级下拉加载标识
+            $scope.loadAdvanceSelectFalg = 0;
+
+
+        }
+
+        /**
+         * 加载页面查询下拉框
+         */
+        $scope.mySelectLoad = function () {
+            //获取配置数据
+            var selects = $rootScope.defaultAdvancedSearchSelectByCenter;
+            //更新周期
+            var mySelectHtml = [];
+            $.each(selects.mySelect, function (index, item) {
+                mySelectHtml.push({
+                    id: item[0],
+                    name: item[1]
+                });
+            });
+
+            $scope.mySelectOption = angular.copy(mySelectHtml);
+            $scope.mySelect = mySelectHtml[0].id;
+        }
+
+        /**
+         * 加载高级搜索下拉框
+         */
+        $scope.loadAdvanceSelect = function () {
+
+            //获取配置数据
+            var selects = $rootScope.defaultAdvancedSearchSelectByCenter;
+
+            //更新周期
+            var refreshCycleHtml = '';
+            $.each(selects.refreshCycle, function (index, item) {
+                refreshCycleHtml += '<option value="' + item[0] + '">' + item[1] + '</option>';
+            });
+            $("#refreshCycle").html(refreshCycleHtml);
+
+            //使用状态
+            var useStatusHtml = '<option value="">请选择</option>';
+            $.each(selects.useStatus, function (index, item) {
+                useStatusHtml += '<option value="' + item[0] + '">' + item[1] + '</option>';
+            });
+            $("#useStatus").html(useStatusHtml);
+
+            //审核状态
+            var modifyStatusHtml = '<option value="">请选择</option>';
+            $.each(selects.modifyStatus, function (index, item) {
+                modifyStatusHtml += '<option value="' + item[0] + '">' + item[1] + '</option>';
+            });
+            $("#modifyStatus").html(modifyStatusHtml);
+
+        }
+
+        /**
+         * 加载页面列表数据
+         * 刘大力
+         */
+        $scope.loadList = function () {
+            var josnList = [];
+            //循环
+            for (var j = 0; j < globalConfig.tablesCenter.tagCenter.columns.length; j++) {
+                var x = globalConfig.tablesCenter.tagCenter.columns[j]["name"];
+                var y = globalConfig.tablesCenter.tagCenter.columns[j]["display"];
+                for (var i = 0; i < $scope.queryList.length; i++) {
+                    if (x == $scope.queryList[i]["code"]) {
+                        josnList.push(globalConfig.tablesCenter.tagCenter.columns[j]);
+                    }
+                }
+                //默认操作栏
+                if (y == "操作") {
+                    josnList.push(globalConfig.tablesCenter.tagCenter.columns[j]);
+                }
+
+            }
+            load(josnList);
+        }
+        var menu;
+
+        function getLigerMenu(items) {
+            menu = $.ligerMenu({
+                width: 100,
+                items: items
+
+
+            });
+        }
+
+        function itemclick(item) {
+            if (item.text == '停用') {
+                stopOrStartTag($scope.parm.id, $scope.parm.useStatus)
+            } else {
+                stopOrStartTag($scope.parm.id, $scope.parm.useStatus)
+            }
+        }
+
+        //选择
+        $scope.getSelectedRows = function () {
+            $('.some-select').show()
+            $('.cz-select').hide()
+            load(true);
+        }
+        //取消选择
+        $scope.cancelSelect = function () {
+            $('.some-select').hide()
+            $('.cz-select').show()
+            load(false);
+        }
+        //停用
+        $scope.setRowsStop = function () {
+            var rows = $scope.g.getSelecteds();
+            var i = 0;
+            var ids=[];
+            angular.forEach(rows, function (data, arrary) {
+                ids.push(data.id)
+                if (data.useStatus != 'y') {
+                    toaster.pop({
+                        type: 'error',
+                        title: '',
+                        body: '存在不可以停用的数据',
+                        showCloseButton: false
+                    });
+                    ++i;
+                    return false;
+                }
+            })
+            if (i == 0) {
+                stopOrStartLabel(ids.join(','),0)
+            }
+
+        }
+        //启用
+        $scope.setRowsStart = function () {
+            var rows = $scope.g.getSelecteds();
+            var i = 0;
+            var ids=[];
+            angular.forEach(rows, function (data, arrary) {
+                ids.push(data.id)
+                if (data.useStatus != 'n') {
+                    toaster.pop({
+                        type: 'error',
+                        title: '',
+                        body: '存在不可以启用的数据',
+                        showCloseButton: false
+                    });
+                    ++i;
+                    return false;
+                }
+            })
+            if (i == 0) {
+                stopOrStartLabel(ids.join(','),1)
+            }
+        }
+
+        /**
+         * 显示列表
+         * 刘大力
+         * @param josnList
+         */
+        function load(josnList) {
+
+            if ($scope.g != null) {
+                $scope.pageSize = $(".l-bar-selectpagesize select", $scope.g.toolbar).val();
+            }
+            var H = document.documentElement.clientHeight;
+            var pageN = '';
+
+            if ($("span.current").text() == '') {
+                pageN = 1
+
+            } else {
+                pageN = parseInt($("span.current").text().substr(0, 1))
+            }
+            var val = {
+                pageSize: Math.floor((H - 350) / 40)>0?Math.floor((H - 350) / 40):1,
+                pageNum: pageN
+            };
+            if (josnList != true) {
+                josnList = false
+            }
+            $(function () {
+                $scope.g = $("#tables_con_show").ligerGrid({
+                    columns: globalConfig.tablesCenter.tagCenter.columns,
+                    url: globalConfig.api.queryLabelsAdvance,
+                    root: "data",
+                    checkbox: josnList,
+                    frozenCheckbox: false,
+                    headerRowHeight: 45,
+                    rowHeight: 40,
+                    pagesizeParmName: "pageSize",
+                    pageParmName: "pageNum",
+                    cssClass: "ligerClass",
+                    width: "auto", //默认宽度
+                    columnWidth: 189,
+                    alternatingRow: false, //单双行差异去除
+                    parms: $.extend(true, {deployed: true}, $scope.highSearchOption, val), //设定查询条件为已部署
+                    onBeforeShowData: function (data) {
+                        var gird1Width = $('.l-frozen .l-grid1').width();
+                        $('.l-grid2').css({right: gird1Width, left: '0px', width: 'auto'});
+                        $('.l-panel-bar').remove();
+                    },
+                    onAfterShowData: function (data) {
+                        $('.l-grid-body-inner').css('width', '1140')
+                    },
+                    onContextmenu: function (parm, e) {
+                        // alert(2)
+                        $scope.parm = parm.data;
+                        var items = [];
+                        if (parm.data.useStatus == 'y') {
+                            items.push({
+                                text: '停用',
+                                click: itemclick,
+                            })
+                        } else {
+                            items.push({
+                                text: '启用',
+                                click: itemclick,
+                            })
+                        }
+                        getLigerMenu(items);
+                        menu.show({
+                            top: e.pageY - e.offsetY
+                        });
+                        return false;
+                    }
+                });
+                $("#pageloading").hide();
+            });
+        }
+
+        dataService.getData('queryLabelsAdvance',{deployed: true}).success(function (rs) {
+            var H = document.documentElement.clientHeight;
+
+            var val = {
+                pageSize: Math.floor((H - 350) / 40)
+            };
+            if (val.pageSize<= 0) {
+                val.pageSize=1
+            }
+            var page = Math.ceil(rs.total / val.pageSize);
+            if (page == 0) {
+                $('.bottomPage').remove()
+                $('.tables_wrap').append("<div class='no_data'><p>暂时没有数据</p></div>")
+                return false
+            }
+            $('.tcdPageCode').createPage({
+                pageCount: page,
+                current: 1,
+                backFn: function (p) {
+                    var pageNo = {
+                        pageNum: p
+                    };
+                    $scope.loadList();
+
+                }
+            });
+        })
+        /**
+         * 高级搜索弹窗
+         */
+        $scope.advancedSearch = function () {
+            if ($scope.loadAdvanceSelectFalg != 1) {
+                //加载高级搜索下拉框数据
+                $scope.loadAdvanceSelect();
+                //修改标识状态
+                $scope.loadAdvanceSelectFalg = 1;
+            }
+
+            $scope.highSearchView = $rootScope.layerOpen({
+                title: '高级搜索', //标题
+                content: $("#highSearch") //div选择器
+            })
+            $('.layui-layer-shade').remove();
+        }
+
+        /**
+         * 自定义搜索弹窗
+         */
+        $scope.diySearch = function () {
+            $scope.resetSelecttd() //重置标签状态
+            $rootScope.diySearchView = $rootScope.layerOpen({
+                title: '自定义搜索',
+                content: $("#diySearch")
+            });
+        }
+
+        /**
+         * 查询用户自定义查询标签配置数据
+         */
+        $scope.queryViewColumnData = function () {
+
+            //访问数据库
+            dataService.getData('queryViewColumn', {
+                type: 'view_column_label_center',
+                rn: (new Date()).getTime()
+            }).success(function (rs) {
+                if (rs.data.length == 0) { //判断数据是否为空
+                    //保存重置初始数据
+                    $scope.selectedOptionRAW = angular.copy($rootScope.defaultQueryViewColumnByCenter);
+                    //使用默认自定义标签配置数据
+                    $scope.selectedOption = angular.copy($rootScope.defaultQueryViewColumnByCenter);
+                    var dataS = angular.copy($rootScope.defaultQueryViewColumnByCenter);
+
+                    dataS = jQuery.grep(dataS, function (item, index) {
+                        if (item.isSelected == 0) {
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    //保存列表查询参数
+                    $scope.queryList = angular.copy(dataS);
+                    //
+                } else {
+                    //保存列表查询参数
+                    $scope.queryList = angular.copy(rs.data);
+                    var data = [];
+                    var dataS = angular.copy($rootScope.defaultQueryViewColumnByCenter);
+
+                    jQuery.grep(dataS, function (item, index) {
+                        var flag = false;
+                        //勾选返回的标签
+                        $.each(rs.data, function (rsindex, rsitem) {
+                            if (item.code.trim() == rsitem.code.trim()) {
+                                item.isSelected = '1';
+                                flag = true;
+                                return false;
+                            }
+                        });
+
+                        //不在返回数据里的标签设为不选中
+                        if (!flag) {
+                            item.isSelected = '0';
+                        }
+                        data.push(item);
+                    });
+
+                    //构建数据
+                    $scope.selectedOption = angular.copy(data);
+
+                    //保存重置初始数据
+                    $scope.selectedOptionRAW = angular.copy(data);
+
+                }
+
+                //加载列表
+                // $scope.loadList();
+            });
+        };
+
+        /**
+         * 点击自定义标签事件
+         * @param option 点击的页面标签对象
+         */
+        $scope.selectedOptionUpdate = function (option) {
+
+            $scope.selectedOption = jQuery.grep($scope.selectedOption, function (item, index) { //遍历数组
+
+                if (item.code == option.code) {
+                    if (item.isSelected == 1) {
+                        item.isSelected = 0;
+                    } else {
+                        item.isSelected = 1;
+                    }
+                }
+
+                return true;
+            });
+        }
+
+        //==============================页面按钮事件绑定str===================================
+        /**
+         * 普通搜索按钮
+         */
+        $scope.mySelectClick = function () {
+            $scope.selectOption = {};
+            //获取下拉选择条件
+            $scope.selectOption[$scope.mySelect] = angular.copy($scope.mySelectVal);
+            //赋值查询条件触发列表刷新
+            $scope.highSearchOption = angular.copy($scope.selectOption);
+
+            //重新加载列表
+            //$scope.loadList();
+        }
+
+        /**
+         * 自定义搜索确定按钮
+         */
+        $scope.diySearchConfirm = function () {
+            //获取选中条件
+            var selecteds = $("#selected").find("a");
+            var option = {};
+            var queryList = []; //保存列表标题
+            $.each(selecteds, function (index, item) {
+                queryList[index] = {
+                    name: $(item).html().substring(0, $(item).html().indexOf('<')),
+                    code: $(item).attr('name')
+                };
+                option['viewColumns[' + index + '].name'] = $(item).html().substring(0, $(item).html().indexOf('<'));
+                option['viewColumns[' + index + '].code'] = $(item).attr('name');
+            });
+
+            if (queryList.length != 0) {
+                //列表标题赋值触发列表刷新
+                $scope.queryList = angular.copy(queryList);
+            } else {
+                //自定义标签恢复重置的状态
+                $scope.selectedOption = angular.copy($scope.selectedOptionRAW);
+                layer.msg('定制字段不能为空', {
+                    icon: 2
+                }); //失败
+                return;
+            }
+
+            option = $.extend(true, {}, {
+                type: 'view_column_label_center'
+            }, option);
+
+            //查询数据库
+            dataService.getData('saveViewColumn', option).success(function (rs) {
+
+                if (rs.status == '200') {
+                    //修改成功保存重置状态
+                    $scope.selectedOptionRAW = angular.copy($scope.selectedOption);
+                    layer.msg(rs.msg, {
+                        icon: 1
+                    }); //成功
+                } else {
+                    layer.msg(rs.msg, {
+                        icon: 2
+                    }); //失败
+                }
+
+            });
+
+            //重新加载列表
+            //$scope.loadList();
+            //关闭弹窗
+            $scope.closeDiySearch();
+        };
+
+        /**
+         * 高级搜索确定按钮
+         */
+        $scope.advancedSearchConfirm = function () {
+            //获取页面查询条件
+            var highSearchInput = $("#highSearch").find('input'); //input标签
+            var highSearchSelect = $("#highSearch").find('select'); //select标签
+
+            var option = {};
+            $.each(highSearchInput, function (index, item) {
+                if ($(item).val()) {
+                    option[$(item).attr('name')] = $(item).val();
+                }
+            });
+
+            $.each(highSearchSelect, function (index, item) {
+                if ($(item).val()) {
+                    var sval = $(item).val();
+                    sval = sval.substring(sval.indexOf(':') + 1, sval.length);
+                    option[$(item).attr('name')] = sval;
+                }
+            });
+
+            //赋值查询条件触发列表刷新
+            $scope.highSearchOption = angular.copy(option);
+
+            //加载列表
+            //$scope.loadList();
+
+            //关闭弹窗
+            $scope.closeAdvancedSearch();
+        }
+
+        /**
+         * 自定义标签选择系统默认按钮
+         */
+        $scope.delftSelected = function () {
+            $scope.selectedOption = null;
+            $scope.selectedOption = angular.copy($rootScope.defaultQueryViewColumnByCenter);
+        }
+
+        /**
+         * 自定义标签选择重置按钮
+         */
+        $scope.resetSelecttd = function () {
+            $scope.selectedOption = null;
+            $scope.selectedOption = angular.copy($scope.selectedOptionRAW);
+        }
+
+        //关闭高级搜索弹窗
+        $scope.closeAdvancedSearch = function () {
+            layer.close($scope.highSearchView);
+        }
+        //关闭自定义搜索弹窗
+        $scope.closeDiySearch = function () {
+            layer.close($rootScope.diySearchView);
+        }
+        //==============================页面按钮事件绑定end===================================
+
+        /**
+         * 添加标题变化执行加载列表的函数
+         */
+        $scope.$watch('queryList', function (data) {
+            if (!data)
+                return;
+
+            $scope.loadList();
+        }, true);
+
+        /**
+         * 添加查询条件变化加载列表函数
+         */
+        $scope.$watch('highSearchOption', function (data) {
+            if (!data)
+                return;
+
+            $scope.loadList();
+        }, true);
+
+        // 页面初始化配置
+        $scope.page = {}
+
+        $scope.queryAll();
+    }
+]);
+// 删除标签信息
+function stopOrStartLabel(id,type) {
+    //TODO
+    var tit='确认停用所选标签吗？'
+    var url='/wlgfapi/batch/stopOlineLabel'
+    var res='停用成功'
+    if(type==1){
+        tit='确认启用所选标签吗？'
+        url='/wlgfapi/batch/startOlineLabel'
+        res='启用成功'
+    }
+    var params = {
+        id: id
+    }
+    layer.confirm(tit, {
+        icon: 3
+    }, function(index) {
+        var scope = angular.element($("#windowLoad")).scope();
+        $.ajax({
+            type: 'POST',
+            headers: {
+                'ticket': Cookies.get('auth') || ''
+            },
+            url: url,
+            data: params,
+            dataType: "json"
+        }).done(function(data) {
+            if(data.status == 200) {
+                layer.msg(res);
+                scope.loadList(); //重新加载页面数据
+            } else {
+                layer.msg(data.msg);
+            }
+        }).fail(function() {
+            layer.msg('失败啦！');
+        });
+    });
+}
+// 启用停用标签
+function stopOrStartTag(id, useStatus) {
+
+    var usestat = '';
+    var msgs = "";
+    var msg1 = "";
+    var msg12 = "";
+    if(useStatus == "y") {
+        msgs = "您确定停用该标签吗？"
+        msg1 = "停用成功";
+        msg12 = "停用失败";
+        usestat = 'n';
+    } else {
+        msgs = "您确定启用该标签吗？"
+        msg1 = "启用成功";
+        msg12 = "启用失败";
+        usestat = 'y';
+    }
+    var params = {
+        labelId: id,
+        useStatus: usestat
+    }
+    layer.confirm(msgs, {
+        icon: 3
+    }, function(index) {
+        $.ajax({
+            type: 'POST',
+            headers: {
+                'ticket': Cookies.get('auth') || ''
+            },
+            url: '/wlgfapi/label/changeLabelUseStatus',
+            data: params,
+            dataType: "json"
+        }).done(function(data) {
+            if(data.status == 200) {
+                var scope = angular.element($("#mySelect")).scope();
+                scope.loadList();
+                layer.msg(msg1);
+            } else {
+                layer.msg(data.msg);
+            }
+        }).fail(function(data) {
+            layer.msg(data.msg);
+        });
+    });
+}

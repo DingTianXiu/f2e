@@ -1,0 +1,33 @@
+<div ng-controller="exampleListCtrl">
+  <div> <!--ng-if="checkPermission('metacenter.pageview')"-->
+    <div ng-include="'/views/plugins/example.search.html'"></div>
+    <!-- 高级查询弹窗页 -->
+    <!--实例中心-->
+
+     <form action="" class="search tag_search">
+       <a href="javascript:;" ui-sref="g.plugins.addexample">新建实例</a>
+       <div class="sear-bar">
+        <select name="" id="mySelect" >
+      </select>
+        <input class="text" type="text" placeholder="请输入关键词" id="mySelectVal" ng-model="$parent.mySelectVal" />
+        <!-- <div class="mySelectCss"  id="selectId"></div> -->
+      <input class="sub1" id="selectId" type="button" value="搜索">
+        <input class="sub2" id="sub2" type="button" value="高级搜索" ng-click="highSearch()" />
+       <!-- ng-if="checkPermission('metatable.newmeta')"-->
+       </div>
+      </form>
+    
+    <div class="tables_wrap" id="tables_wrap" style="margin-top:70px">
+     
+      	    <div class="clear" id="tables_con_show">  </div>
+      	    <div class="bottomPage">
+                <span class="cz-select" ng-click="getSelectedRows()">选择</span>
+                <div class="some-select">
+                    <span class="cz-close" ng-click="cancelSelect()">取消选择</span>
+                    <span class="cz-btn" ng-click="delRows()">删除</span>
+                </div>
+                <div class="tcdPageCode"></div>
+            </div>
+      </div>
+    </div>
+  </div>

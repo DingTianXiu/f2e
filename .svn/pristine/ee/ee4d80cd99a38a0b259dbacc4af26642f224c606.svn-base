@@ -1,0 +1,42 @@
+<div ng-controller="tagCenterPreCtrl">
+	<div ng-include="'/views/data/tagCenter.advanceSearch.html'"></div>
+	<!-- 高级查询弹窗页 -->
+	<div ng-include="'/views/data/tagConfig.Customfield.html'"></div>
+	<!-- 自定义查询弹窗页 -->
+	<!--标签中心-->
+	
+
+	<form action="" class="search tag_search">
+		<div>
+			<select name="" id="mySelect">
+			<option value="name">标签中文名</option>
+			</select>
+			<input class="text" type="text" placeholder="请输入关键词" id="mySelectVal" ng-model="$parent.mySelectVal" />
+			<input class="sub1" type="submit" value="搜索" ng-click="mySelectClick()" />
+			<input class="sub2" id="sub2" type="button" value="高级搜索" ng-click="advancedSearch()" />
+			<!-- <input class="sub2" id="sub3" type="button" value="自定义字段" ng-click="diySearch()" /> -->
+		</div>
+		
+		<!-- <a href="javascript:;" class="fr add-tag" ui-sref="g.data.createTag" ng-if="checkPermission('metacenter.newmeta')">+新建标签</a> -->
+	</form>
+	<div class="tabs">
+		<ul class="clear plugin-tabs">
+			<li>
+				<a href="javascript:;" ui-sref="g.data.tagcenter">已上线标签</a>
+			</li>
+			<li class="on">
+				<a href="javascript:;" ui-sref="g.data.tagcenterpre">未上线标签</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="tables_wrap" style="margin-top: 15px;">
+
+		<div class="tables_con1 no-last-col-color clear" id="tables_con_show"></div>
+		<div class="bottomPage">
+	        <!--<span class="cz-select">选择</span>-->
+	        <div class="tcdPageCode"></div>
+	    </div>
+
+	</div>
+</div>

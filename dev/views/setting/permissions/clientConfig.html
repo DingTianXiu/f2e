@@ -1,0 +1,25 @@
+<div ng-controller="clientConfigCtrl">
+	<div ng-if="checkPermission('permissions.client.papeview')">
+		<input type="hidden" ng-model="$parent.closeOpen" id="closeOpen" ng-click="$parent.callbackOpen()">
+		<div class="" id="windowLoad">
+			<div class="tables_wrap">
+				<!--<form action="" class="search">
+					<select name="" id="mySelect" ng-options="m.id as m.name for m in $parent.userSelect" ng-model="$parent.mySelectOption">
+					</select>
+					<input class="text" type="text" placeholder="请输入关键词" id="mySelectVal" ng-model="$parent.mySelectVal">
+					<input class="sub1" type="button" value="搜索" ng-click="$parent.mySelectClick()">
+				</form>-->
+				<div class="clear" id="tables_con_show">  </div>
+				<div class="bottomPage">
+					<!-- <span class="cz-select">选择</span> -->
+					<div class="tcdPageCode"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-if="!checkPermission('permissions.client.papeview')">
+		<div class="page-forbid">
+			你无权查看该页面
+		</div>
+	</div>
+</div>

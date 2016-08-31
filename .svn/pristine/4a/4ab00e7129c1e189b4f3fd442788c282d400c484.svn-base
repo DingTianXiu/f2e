@@ -1,0 +1,107 @@
+<div ng-controller="createTagCtrl">
+  <div class="bq_wrap">
+    <form name="createtagform" novalidate>
+      <p class="bq2 clear">
+        <a class="fl" href="javascript:;">1数据表信息</a><img class="fl" src="../../public/images/ico5.png" alt="" />
+        <a class="fl zd" href="javascript:;">2字段设置</a>
+      </p>
+      <div class="m-table-mod">
+        <div class="m-table-hd">
+          <select name="category" ng-change="changeCat();" class="cus-select" ng-model="iniData.dataCategory" ng-options="m.id as m.name for m in iniData.categoryList">
+          </select>
+        </div>
+        <div class="m-table-bd">
+          <div class="mx-table-border-hd">
+            <table class="mx-table" style="width: 800px;">
+              <tr>
+                <th width=140>
+                  数据库名<span class="color-red">*</span>
+                </th>
+                <td>
+                  <select style="margin-right: 30px" ng-change="changeDbs()" name="metaDbId" class="cus-select" id="metaDbId" ng-model="iniData.metaDbId" ng-options="m.id as m.name for m in iniData.metaDbIdList">
+                  </select>表名<span class="color-red">*</span>
+                  <select name="metaTableId" ng-change="changeTables()" id="metaTableId" class="cus-select" ng-model="iniData.metaTableId" ng-options="m.id as m.name for m in iniData.metaTableIdList"></select>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <table class="mx-table" style="width: 800px;">
+            <tr>
+              <th width=140>
+                数据源<span class="color-red">*</span>
+              </th>
+              <td>
+                <select name="dataSource" id="dataSource" class="cus-select" ng-model="iniData.dataSource" ng-options="m.id as m.name for m in iniData.dataSourceList"></select>
+              </td>
+            </tr>
+            <tr>
+              <th width=140>
+                更新周期<span class="color-red">*</span>
+              </th>
+              <td>
+                <select name="refreshCycle" id="refreshCycle" class="cus-select" ng-model="iniData.refreshCycle" ng-options="m.id as m.name for m in iniData.refreshCycleList"></select>
+              </td>
+            </tr>
+            <tr>
+              <th width=140>
+                脚本<span class="color-red" ng-if="iniData.dataCategory == 6">*</span>
+                <td>
+                  <div class="btn-upload" ng-show="upload.uploadScrpit.status === 0">
+                    <div class="btn-upload-style">
+                      上传文件
+                    </div>
+                    <input type="file" id="uploaderScriptid" class="btn-upload-file" nv-file-select uploader="uploaderScript" />
+                  </div>
+                  <input type="hidden" name="scriptFileUid" ng-if="iniData.dataCategory == 5" ng-model="iniData.scriptFileUid">
+                  <input type="hidden" name="scriptFileUid" ng-if="iniData.dataCategory == 6" required ng-model="iniData.scriptFileUid">
+                  <span class="loading-status" ng-show="upload.uploadScrpit.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+                  <div ng-show="upload.uploadScrpit.status === 2" class="uploaded-status">
+                    <span ng-bind="upload.uploadScrpit.fileName"></span><a href="javascript:;" class="link-blue" ng-click="delUploadScrpit();">删除</a>
+                  </div>
+                  <span ng-if="iniData.dataCategory == 6" ng-show="submited && createtagform.scriptFileUid.$error.required" class="color-red">脚本为必填项</span>
+                </td>
+            </tr>
+            <tr>
+              <th width=140>
+                其他附件
+              </th>
+              <td>
+                <div class="btn-upload" ng-show="upload.uploadAttachment.status === 0">
+                  <div class="btn-upload-style">
+                    上传文件
+                  </div>
+                  <input type="file" id="uploaderAttachmentid" class="btn-upload-file" nv-file-select uploader="uploaderAttachment" />
+                </div>
+                <!-- <div class="select-button" ngf-select="uploadAttachment($file)" ng-show="!upload.uploadAttachment.status && !upload.uploadAttachment.progress">选择文件</div> -->
+                <input type="hidden" name="attachmentFileId" ng-model="iniData.attachmentFileUid">
+
+                <span class="loading-status" ng-show="upload.uploadAttachment.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+                <div ng-show="upload.uploadAttachment.status === 2" class="uploaded-status">
+                  <span ng-bind="upload.uploadAttachment.fileName"></span><a href="javascript:;" class="link-blue" ng-click="delAttachment();">删除</a>
+                </div>
+
+              </td>
+            </tr>
+            <tr>
+              <th width=140>
+                表说明<span class="color-red">*</span>
+              </th>
+              <td>
+                <textarea name="comment" id="" class="mx-textarea" cols="30" rows="10" ng-model="iniData.comment" required ng-maxlength="200"></textarea>
+                <p>
+                  <span ng-show="submited && createtagform.comment.$error.required" class="color-red">表说明为必填项</span>
+                  <span ng-show="submited && createtagform.comment.$error.maxlength" class="color-red">表说明最大长度为200</span>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="mx-ft">
+        <a href="javascript:;" ui-sref="g.data.tagconfig" class="btn-gray-a">取消</a>
+        <button class="btn-blue" href="javascript:;" ng-click="saveCreateTag()">保存</button>
+      </div>
+    </form>
+  </div>
+</div>

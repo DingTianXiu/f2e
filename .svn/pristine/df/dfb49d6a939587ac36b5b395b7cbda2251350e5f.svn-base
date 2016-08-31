@@ -1,0 +1,136 @@
+<div ng-controller="addexamplePluginsCtrl">
+	<div class="bq_wrap">
+		<h2 class="border-no">新建实例控件</h2>
+		<form name="createtagform" novalidate>
+			<ul class="clear creat-step" style="border-top: 1px solid #ededed;">
+		        <li ng-class="{'on': scopevar == 1}">
+		          <h3>1</h3>
+		          <div>
+		            <p>Step1</p>
+		            <p>设置控件信息</p>
+		          </div>
+		        </li>
+		        <li>...</li>
+		        <li ng-class="{'on': scopevar == 2}">
+		          <h3>2</h3>
+		          <div>
+		            <p>Step2</p>
+		            <p>设置控件样式</p>
+		          </div>
+		        </li>
+		        <li>...</li>
+		        <li ng-class="{'on': scopevar == 3}">
+		          <h3>3</h3>
+		          <div>
+		            <p>Step3</p>
+		            <p>完成</p>
+		          </div>
+		        </li>
+		    </ul>
+			<div>
+				<!--第一步-->
+				<div class="m-table-bd step1">
+					<ul class="editTag creat-tag-ul">
+						<li>
+							<label>实例控件名称</label>
+							<input type="text" value="" name="name" ng-model="iniData.name"  maxlength="20" required class="text-input" ng-class="{'ng-error':submited && createtagform.name.$error.required}">
+							<span class="color-red">*</span>
+							<p class="p-tips">
+								<span class="color-red" ng-show="submited && createtagform.name.$error.maxlength" class="color-red">限20个字符</span>
+								<span class="color-red" ng-show="submited && createtagform.name.$error.required" class="color-red">实例名称必填</span>
+							</p>
+						</li>
+						<li>
+							<label>标准控件名称</label>
+							<select name="widgetId" ng-change="changeWidgetId()" id="widgetId" class="cus-select" ng-model="iniData.widgetId" ng-options="m.id as m.name for m in iniData.controList"></select>
+							<span class="color-red">*</span>
+						</li>
+						<li>
+							<label>实例缩略图</label>
+							<div class="btn-upload" ng-show="upload.uploadAttachment.status === 0">
+								<div class="btn-upload-style" style="position: relative;">上传图片</div>
+								<input type="file" id="uploaderAttachmentid" class="btn-upload-file" nv-file-select uploader="uploaderAttachment" />
+								<span ng-show="submited && createtagform.attachmentFileId.$error.required" class="color-red flie-must-ico">缩略图为必填项</span>
+								<span class="color-red flie-must-ico" ng-class="{'flie-ico-fail':submited && createtagform.attachmentFileId.$error.required}" >*</span>
+							</div>
+							<input type="hidden" name="attachmentFileId" ng-model="iniData.thumbnailFileUid" required>
+							<span class="loading-status" ng-show="upload.uploadAttachment.status === 1"><i class="loading-22"></i> <span>正在上传中...</span></span>
+							<div ng-show="upload.uploadAttachment.status === 2" class="uploaded-status" style="margin: auto;">
+								<em ng-bind="upload.uploadAttachment.fileName" ></em><a href="javascript:;" class="link-blue file-delet" ng-click="delAttachment();">删除</a>
+							</div>
+						</li>
+						<li class="tag-instructions">
+							<label>实例说明</label>
+							<textarea  name="comment"  class="mx-textarea" cols="30" rows="10" ng-model="iniData.comment" required  ng-class="{'ng-error':submited && createtagform.comment.$error.required}"></textarea>
+							<p class="p-tips">
+					            <span ng-show="submited && createtagform.comment.$error.required" class="color-red">实例说明为必填项</span>
+					            <span ng-show="maxLength == false" class="color-red">实例说明最大长度为200</span>
+					        </p>
+					        <span class="color-red">*</span>
+					        <em class="textLength"><em ng-class="{'warning-red':maxLength == false}">{{textLength}}</em>/200</em>
+						</li>
+						<li>
+							<div style="text-align: center;">
+								<a href="javascript:;"  ng-click="cancelTag()" class="btn-gray-a">取消</a>
+				                <a href="javascript:;" ng-click="firstStep()" class="btn-blue">下一步</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="mask">
+			        <div class="mask-bg"></div>
+			        <div class="imask">
+			          <p>标准控件新增未完成，你要取消吗？</p>
+			          <div>
+			            <button class="btn-gray-a" ui-sref="g.plugins.exampleList">取消</button>
+			            <button class="btn-blue" ng-click="next()">继续</button>
+			          </div>
+			        </div>
+			     </div>  
+				<!--第二步-->
+				<div class="main_right step2" style="display: none;"> 
+					<div class="step-pl">
+						<div class="step-left">
+							<div class="example">
+								<div class="iexample shili">
+									<h2 class="step-title title-mr ">样式示例<span style="vertical-align: middle;">*</span></h2>
+									<div class="shili-btn">
+										<a href="javascript:;" class="run" ng-click="previewExamp()">运行</a>
+									</div>
+									<div class="shadow-div"><textarea  name="sampleStyle" class="iexample-text" ng-model="iniData.sampleStyle"></textarea></div>
+								</div>
+								<div class="iexample">
+									<h2 class="step-title title-mr" style="    border-right: 1px solid #dcdcdc;">数据示例<span style="vertical-align: middle;">*</span></h2>
+									<div class="shadow-div" style="border-bottom: 1px solid #d9d9d9; "><textarea  name="sampleData" class="iexample-text" ng-model="iniData.sampleDate"></textarea></div>
+								</div>
+							</div>
+						</div>
+						<div class="preview-box step-right" id="preview" >
+							<div class="preview-name">{{iniData.name}}</div>
+				        	<p class="preview-no">实例预览图大小不得大于 380*450px,否则将只显示部分图像</p>
+							<iframe id="previewIfrom" ng-src="{{initTempData.previewChartUrl}}" scroll="no" frameborder="0" width="380" height="450" style="margin-top:50px;margin-left: 10px;"></iframe>
+						</div>
+					</div>
+					<div class="mx-ft-1 tag-submit">
+						<button class="btn-blue" href="javascript:;" ng-click="secondStep()">完成</button>
+						<a href="javascript:;"  ng-click="cancelTag()" class="btn-gray-a">取消</a>
+						
+					</div>
+				</div>
+
+				<!--第四步-->
+				<div class="step step3" style="display: none;">
+					<div class="success-tips">
+						<img src="../../public/images/step-success.png">
+						<p>新标准控件创建成功</p>
+					</div>
+					<!-- <div class="mx-ft" style="margin-left: 48%;">
+						<button class="next-step a1" href="javascript:;" ng-click="backExampleList()" style="margin: auto;">确定</button>
+					</div> -->
+					
+				</div>
+
+			</div>
+		</form>
+	</div>
+</div>

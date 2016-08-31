@@ -1,0 +1,65 @@
+<script>
+  $(function (){
+    $("#layout1").ligerLayout({
+      leftWidth: 270,
+      space :0
+    });
+    $(".l-layout .l-layout-collapse-left").append('<div class="left_nav_2"><h4 class="logo"><a href="#/welcome"><img src="./public/images/logo_in_left.png" alt=""></a></h4><ul class="nav_in_l"><li class="l-label"><a href="#/tagconfig"><em class="iconfont">&#xe607;</em><br>标签</a><div class="right-nav-p part-1"><h3 id="id">标签管理<em class="iconfont" ui-sref="g.data.tagconfig">&#xe615;</em></h3><ul><li><a href="javascript:;" ui-sref="g.data.tagconfig"><em class="iconfont">&#xe60b;</em>标签源</a></li><li><a href="javascript:;" ui-sref="g.data.tagcenter"><em class="iconfont">&#xe60a;</em>标签集</a></li><li><a href="javascript:;" ui-sref="g.data.tagshow"><em class="iconfont">&#xe60c;</em>标签展台</a></li></ul></div></li><li class="l-visua"><a href="#/plugins/prelist"><em class="iconfont">&#xe609;</em><br>可视化</a><div class="right-nav-p part-2"><h3>可视化<em class="iconfont" ui-sref="g.plugins.pre">&#xe615;</em></h3><ul><li><a href="javascript:;" ui-sref="g.plugins.pre"><em class="iconfont">&#xe60e;</em>控件源</a></li><li><a href="javascript:;" ui-sref="g.plugins.exampleList"><em class="iconfont">&#xe60d;</em>控件集</a></li><li><a href="javascript:;" ui-sref="g.plugins.showcase"><em class="iconfont">&#xe60f;</em>控件展台</a></li></ul></div></li><li class="l-manag"><a href="#/tagsourceconfig"><em class="iconfont">&#xe608;</em><br>管理</a><div class="right-nav-p part-3"><h3>管理<em class="iconfont" onclick="window.location.reload()">&#xe615;</em></h3><ul><li><a href="javascript:;" ui-sref="g.setting.source"><em class="iconfont">&#xe612;</em>资源管理</a></li><li><a href="javascript:;" ui-sref="g.setting.roleConfig"><em class="iconfont">&#xe617;</em>角色配置</a></li><li><a href="javascript:;" ui-sref="g.setting.permissionsConfig"><em class="iconfont">&#xe617;</em>页面权限配置</a></li><li><a href="javascript:;" ui-sref="g.setting.clientConfig"><em class="iconfont">&#xe617;</em>用户组</a></li></ul></div></li></ul><div class="logout"></div></div>');
+  });
+</script>
+<div class="">
+  <!--标签管理-->
+
+  <!-- 中间主体内容 -->
+  <div class="main clear" id="layout1">
+    <div class="main_left" position="left">
+      <div class="left_nav_2">
+        <h4 class="logo"><a href="#/welcome"><img src="./public/images/logo_in_left.png" alt=""></a></h4>
+        <ul class="nav_in_l">
+          <li><a href="#/tagconfig"><em class="iconfont">&#xe607;</em><br>标签</a></li>
+          <li><a href="#/plugins/prelist"><em class="iconfont">&#xe609;</em><br>可视化</a></li>
+          <li class="current"><a href="#/tagsourceconfig"><em class="iconfont">&#xe608;</em><br>管理</a></li>
+        </ul>
+      </div>
+      <div class="nav2 nav2_spec">
+        <p class="l-title"><a href="javascript:;">管理</a><em class="iconfont">&#xe615;</em></p>
+        <p class="nav_in" ng-click="leftNav.sourcegroup = !leftNav.sourcegroup"><a href="javascript:;" ui-sref="g.setting.source"><span ng-class="{active:leftNav.sourcegroup}"></span><em class="iconfont">&#xe612;</em>资源管理</a></p>
+       <!--  <div class="nav_con" ng-show="leftNav.sourcegroup">
+          <p class="nav_in_in" ng-class="{on: $state.includes('g.setting.source')}">
+            <a ui-sref="g.setting.source">标签资源配置</a>
+          </p>
+        </div> -->
+        <p ng-click="leftNav.setting = !leftNav.setting"><a href="javascript:;"><span ng-class="{active:leftNav.setting}"></span><em class="iconfont">&#xe610;</em>权限管理</a></p>
+        <div class="nav_con" ng-show="leftNav.setting">
+          <p class="nav_in_in" ng-class="{on: $state.includes('g.setting.roleConfig') || $state.includes('g.setting.userpermissions') || $state.includes('g.setting.userpermissions.page')}">
+            <a ui-sref="g.setting.roleConfig">角色配置</a>
+          </p>
+          <p class="nav_in_in" ng-class="{on: $state.includes('g.setting.permissionsConfig')}">
+            <a ui-sref="g.setting.permissionsConfig">权限配置</a>
+          </p>
+          <p class="nav_in_in" ng-class="{on: $state.includes('g.setting.clientConfig')}">
+            <a ui-sref="g.setting.clientConfig">用户管理</a>
+          </p>
+        </div>
+      </div>
+     <!--  <div class="nav2">
+        <p ng-click="leftNav.setting = !leftNav.setting"><a href="javascript:;"><span ng-class="{active:leftNav.setting}"></span>权限管理</a></p>
+        <div class="nav_con" ng-show="leftNav.setting">
+          <p ng-class="{on: $state.includes('g.setting.roleConfig') || $state.includes('g.setting.userpermissions') || $state.includes('g.setting.userpermissions.page')}">
+            <a ui-sref="g.setting.roleConfig"><span class="con6"></span>角色配置</a>
+          </p>
+          <p ng-class="{on: $state.includes('g.setting.permissionsConfig')}">
+            <a ui-sref="g.setting.permissionsConfig"><span class="con7"></span>权限配置</a>
+          </p>
+          <p ng-class="{on: $state.includes('g.setting.clientConfig')}">
+            <a ui-sref="g.setting.clientConfig"><span class="con8"></span>用户管理</a>
+          </p>
+        </div>
+      </div> -->
+    </div>
+    <div class="main_right" position="center">
+      <!--右侧内容-->
+      <div class="" ui-view></div>
+    </div>
+  </div>
+</div>
