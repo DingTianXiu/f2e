@@ -1,0 +1,52 @@
+<div class="source-dialog x-m" id="tagSourceConfigModify" ng-controller="tagSourceConfigModifyCtrl">
+  <form name="typeLabelForm" novalidate>
+    <table class="mx-table modify-source">
+      <tr>
+        <th width=130>
+          资源英文名
+        </th>
+        <td>
+          {{option.code}}
+        </td>
+      </tr>
+      <tr>
+        <th width=130>
+          资源中文名
+        </th>
+        <td>
+          <input type="text" class="mx-text" ng-model="option.name" name="name" required ng-maxlength="20" /><span class="color-red">*</span>
+          <span ng-show="(typeLabelForm.name.$dirty || submited) && typeLabelForm.name.$error.required" class="color-red">资源中文名为必填项</span>
+          <span ng-show="(typeLabelForm.name.$dirty || submited) && typeLabelForm.name.$error.maxlength" class="color-red">资源中文文名最大长度为20</span>
+        </td>
+      </tr>
+      <tr>
+        <th width=130>
+          父节点
+        </th>
+        <td  class="posit">
+          <my-ligerui-combo-box ng-model="comboBoxOption" root-text="资源" combo-box-id="createSelectRole" div-class="parentDom"/><span class="color-red">*</span>
+        </td>
+      </tr>
+      <tr>
+        <th width=130>
+          状态
+        </th>
+        <td>
+          <select name="status" class="x-m-select" id="status" ng-model="option.status" ng-options="m.id as m.name for m in statusSelect"></select>
+        </td>
+      </tr>
+      <tr>
+        <th width=130>
+          说明
+        </th>
+        <td>
+          <textarea name="" id="" class="mx-text" style="height:80px;" cols="30" rows="10" ng-model="option.comment"></textarea>
+        </td>
+      </tr>
+    </table>
+    <div style="text-align: center; ">
+      <a href="javascript:;" class="btn-blue" ng-click="formatOpen()">确定</a>
+      <a href="javascript:;" class="btn-gray-a" ng-click="close()">取消</a>
+    </div>
+  </form>
+</div>

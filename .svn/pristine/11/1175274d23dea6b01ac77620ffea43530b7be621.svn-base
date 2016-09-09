@@ -1,0 +1,606 @@
+'use strict';
+/**
+ * 项目入口文件
+ * @param  {[type]} ['config'] [description]
+ * @param  {[type]} function   (             [description]
+ * @return {[type]}            [description]
+ */
+var permissionCodes = null;
+
+var app = angular.module('App', [
+    'ngCookies',
+    'ui.router',
+    'toaster',
+    'ngAnimate',
+    'angularFileUpload',
+    'ng.shims.placeholder',
+    'ngStorage',
+    'ui.codemirror',
+    'checklist-model',
+    'angularUtils.directives.dirPagination',
+]);
+
+app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider',
+    function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
+
+        // $urlRouterProvider.deferIntercept();
+        // 配置下拉框主题
+        // uiSelectConfig.theme = 'selectize';
+        //
+        // $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        // $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+
+        // 登录
+        $stateProvider.state('login', {
+            url: '/login',
+            templateUrl: "../views/login.html",
+            extData: {
+                pageTitle: '登录'
+            }
+        });
+
+        // 虚拟主页
+        $stateProvider.state('g', {
+            url: '',
+            templateUrl: "../views/g.html",
+            // resolve: {
+            //     'userServiceData': function(userService) {
+            //         return userService.promise;
+            //     }
+            // },
+            extData: {
+                pageTitle: ''
+            }
+        });
+
+        // 欢迎
+        $stateProvider.state('g.welcome', {
+            url: '/welcome',
+            templateUrl: "../views/welcome.html",
+            extData: {
+                pageTitle: '欢迎'
+            }
+        });
+
+        // 数据 - 标签表管理
+        $stateProvider.state('g.data', {
+            url: '',
+            templateUrl: "../views/data/g.tagconfig.html",
+            extData: {
+                pageTitle: '标签管理'
+            }
+        });
+
+        // 标签管理
+        $stateProvider.state('g.data.tagconfig', {
+            url: '/tagconfig',
+            templateUrl: "../views/data/tagConfig.html",
+            extData: {
+                pageTitle: '标签表管理'
+            }
+        });
+
+        // 标签展台
+        $stateProvider.state('g.data.tagshow', {
+            url: '/tagshow',
+            templateUrl: "../views/data/tagShow.html",
+            extData: {
+                pageTitle: '标签展台'
+            }
+        });
+
+
+
+
+        // 弹窗
+        $stateProvider.state('dialog', {
+            url: '',
+            templateUrl: "../views/dialog.html",
+            extData: {
+                pageTitle: '弹窗'
+            }
+        });
+
+        // 部署弹窗
+        $stateProvider.state('dialog.deploy', {
+            url: '/dialog/tagconfig/deploy/:id',
+            templateUrl: "../views/data/dialog.tagConfig.deployment.html",
+            extData: {
+                pageTitle: '部署弹窗'
+            }
+        });
+
+        // 编辑资源组弹窗
+        $stateProvider.state('dialog.tagSourceConfigUpdate', {
+            url: '/dialog/tagSourceConfig/update/:id/:name',
+            templateUrl: "../views/setting/source/dialog.tagSourceConfig.modify.html",
+            extData: {
+                pageTitle: '编辑资源信息弹窗'
+            }
+        });
+
+        // 新增资源组弹窗
+        $stateProvider.state('dialog.tagSourceConfigAdd', {
+            url: '/dialog/tagSourceConfig/add/:parentId',
+            templateUrl: "../views/setting/source/dialog.tagSourceConfig.add.html",
+            // resolve: {
+            //     'userServiceData': function(userService) {
+            //         return userService.promise;
+            //     }
+            // },
+            extData: {
+                pageTitle: '新增资源信息弹窗'
+            }
+        });
+
+        // 新增权限弹窗(权限)
+        $stateProvider.state('dialog.permissionsConfigAdd', {
+            url: '/dialog/permissionsConfig/add/',
+            templateUrl: "../views/setting/permissions/dialog.permissionsConfig.addPermissions.html",
+            // resolve: {
+            //     'userServiceData': function(userService) {
+            //         return userService.promise;
+            //     }
+            // },
+            extData: {
+                pageTitle: '新增权限弹窗(权限)'
+            }
+        });
+
+        // 新增权限弹窗(页面)
+        $stateProvider.state('dialog.permissionsConfigAddByPage', {
+            url: '/dialog/permissionsConfig/addByPage/',
+            templateUrl: "../views/setting/permissions/dialog.permissionsConfig.addPage.html",
+            // resolve: {
+            //     'userServiceData': function(userService) {
+            //         return userService.promise;
+            //     }
+            // },
+            extData: {
+                pageTitle: '新增权限弹窗(页面)'
+            }
+        });
+
+        // 新增权限弹窗(菜单组)
+        $stateProvider.state('dialog.permissionsConfigAddByNavGrounp', {
+            url: '/dialog/permissionsConfig/addByNavGrounp/',
+            templateUrl: "../views/setting/permissions/dialog.permissionsConfig.addNavGrounp.html",
+            // resolve: {
+            //     'userServiceData': function(userService) {
+            //         return userService.promise;
+            //     }
+            // },
+            extData: {
+                pageTitle: '新增权限弹窗(菜单组)'
+            }
+        });
+
+        // 编辑权限弹窗
+        $stateProvider.state('dialog.permissionsConfigUpdate', {
+            url: '/dialog/permissionsConfig/update/:id',
+            templateUrl: "../views/setting/permissions/dialog.permissionsConfig.modify.html",
+            extData: {
+                pageTitle: '编辑权限信息弹窗'
+            }
+        });
+
+        // 设为资源组弹窗
+        $stateProvider.state('dialog.tagSourceConfigSetGrounp', {
+            url: '/dialog/tagSourceConfig/setGrounp/:id',
+            templateUrl: "../views/setting/source/dialog.tagSourceConfig.setGrounp.html",
+            // resolve: {
+            //     'userServiceData': function(userService) {
+            //         return userService.promise;
+            //     }
+            // },
+            extData: {
+                pageTitle: '设为资源组弹窗'
+            }
+        });
+
+        // 新增角色弹窗
+        $stateProvider.state('dialog.tagRoleConfigAddCtrl', {
+            url: '/dialog/tagRoleConfig/add/:parentId',
+            templateUrl: "../views/setting/permissions/roleConfig.addRole.html",
+            extData: {
+                pageTitle: '新增角色弹窗'
+            }
+        });
+
+        // 编辑角色信息弹窗
+        $stateProvider.state('dialog.tagRoleConfigUpdate', {
+            url: '/dialog/tagRoleConfig/update/:id',
+            templateUrl: "../views/setting/permissions/dialog.roleConfig.modify.html",
+            extData: {
+                pageTitle: '编辑角色信息弹窗'
+            }
+        });
+
+        // 修改用户角色信息弹窗
+        $stateProvider.state('dialog.clientConfigModify', {
+            url: '/dialog/clientConfigModify/update/:userName/:loginName/:departName/:job/:userId/:roleId',
+            templateUrl: "../views/setting/permissions/clientConfig.updata.html",
+            extData: {
+                pageTitle: '修改用户角色信息'
+            }
+        });
+
+        // 新建标签
+        $stateProvider.state('g.data.createTag', {
+            url: '/tagconfig/createTag',
+            templateUrl: "../views/data/createTag.html",
+            extData: {
+                pageTitle: '新建标签'
+            }
+        });
+
+        // 修改标签组
+        $stateProvider.state('g.data.modifyTag', {
+            url: '/tagconfig/modifyTag/:labelGroupId',
+            templateUrl: "../views/data/modifyTag.html",
+            extData: {
+                pageTitle: '修改标签组'
+            }
+        });
+
+        // 审核标签组
+        $stateProvider.state('g.data.auditTag', {
+            url: '/tagconfig/auditTag/:labelGroupId',
+            templateUrl: "../views/data/tagConfig.audit.html",
+            extData: {
+                pageTitle: '审核标签组'
+            }
+        });
+
+        // 标签组详情
+        $stateProvider.state('g.data.tagdetail', {
+            url: '/tagconfig/tagdetail/:labelGroupId',
+            templateUrl: "../views/data/tagConfig.detail.html",
+            extData: {
+                pageTitle: '查看标签组详情'
+            }
+        });
+
+        // 字段设置
+        $stateProvider.state('g.data.createTagField', {
+            url: '/tagconfig/createtagfield/:labelGroupId',
+            templateUrl: "../views/data/createTag.field.html",
+            extData: {
+                pageTitle: '字段设置'
+            }
+        });
+
+        // 数据 - 标签中心管理
+        $stateProvider.state('g.data.tagcenter', {
+            url: '/tagcenter',
+            templateUrl: "../views/data/tagCenter.html",
+            extData: {
+                pageTitle: '标签中心管理'
+            }
+        });
+
+        // 数据 - 标签中心管理-待审核标签
+        $stateProvider.state('g.data.tagcenterpre', {
+            url: '/tagcenter/pre',
+            templateUrl: "../views/data/tagCenter.pre.html",
+            extData: {
+                pageTitle: '标签中心管理'
+            }
+        });
+
+        // 设置
+        $stateProvider.state('g.setting', {
+            url: '',
+            templateUrl: "../views/setting/g.setting.html",
+            extData: {
+                pageTitle: '设置'
+            }
+        });
+
+        // 设置-标签资源配置
+        $stateProvider.state('g.setting.source', {
+            url: '/tagsourceconfig',
+            templateUrl: "../views/setting/source/tagSourceConfig.html",
+            extData: {
+                pageTitle: '标签资源配置'
+            }
+        });
+
+        // 设置-角色配置
+        $stateProvider.state('g.setting.roleConfig', {
+            url: '/roleConfig',
+            templateUrl: "../views/setting/permissions/roleConfig.html",
+            extData: {
+                pageTitle: '角色配置'
+            }
+        });
+
+        // 设置-权限配置
+        $stateProvider.state('g.setting.permissionsConfig', {
+            url: '/permissionsconfig',
+            templateUrl: "../views/setting/permissions/permissionsConfig.html",
+            extData: {
+                pageTitle: '角色配置'
+            }
+        });
+
+        // 设置-用户配置
+        $stateProvider.state('g.setting.clientConfig', {
+            url: '/clientconfig',
+            templateUrl: "../views/setting/permissions/clientConfig.html",
+            extData: {
+                pageTitle: '角色配置'
+            }
+        });
+
+        // 设置-角色配置-权限配置
+        $stateProvider.state('g.setting.userpermissions', {
+            url: '',
+            templateUrl: "../views/setting/permissions/roleConfig.permissions.html",
+            extData: {
+                pageTitle: '权限配置'
+            }
+        });
+
+        // 设置-角色配置-权限配置-页面
+        $stateProvider.state('g.setting.userpermissions.page', {
+            url: '/userpermissions/:id/:parentId',
+            templateUrl: "../views/setting/permissions/roleConfig.permissions.page.html",
+            extData: {
+                pageTitle: '权限配置'
+            }
+        });
+
+        // 设置-角色配置-权限配置-数据
+        $stateProvider.state('g.setting.userpermissions.data', {
+            url: '/userdatapermissions/:id/:parentId',
+            templateUrl: "../views/setting/permissions/roleConfig.permissions.data.html",
+            extData: {
+                pageTitle: '权限配置'
+            }
+        });
+
+        // 控件管理g
+        $stateProvider.state('g.plugins', {
+            url: '',
+            templateUrl: "../views/plugins/g.plugins.html",
+            extData: {
+                pageTitle: '控件管理'
+            }
+        });
+
+        // 待审核可视化控件
+        $stateProvider.state('g.plugins.pre', {
+            url: '/plugins/prelist',
+            templateUrl: "../views/plugins/pre.plugins.html",
+            extData: {
+                pageTitle: '待审核可视化控件'
+            }
+        });
+
+        // 已审核可视化控件
+        $stateProvider.state('g.plugins.done', {
+            url: '/plugins/donelist',
+            templateUrl: "../views/plugins/done.plugins.html",
+            extData: {
+                pageTitle: '已审核可视化控件'
+            }
+        });
+
+        // 已审核可视化控件-审核
+        $stateProvider.state('g.plugins.audit', {
+            url: '/plugins/audit/:id',
+            templateUrl: "../views/plugins/audit.plugins.html",
+            extData: {
+                pageTitle: '审核控件'
+            }
+        });
+
+          // 示例列表
+        $stateProvider.state('g.plugins.exampleList', {
+            url: '/plugins/example/edit',
+            templateUrl: "../views/plugins/exampleList.html",
+            extData: {
+                pageTitle: '实例管理'
+            }
+        });
+        // 添加示例
+        $stateProvider.state('g.plugins.addexample', {
+            url: '/plugins/example/addexample',
+            templateUrl: "../views/plugins/addexamplePlugins.html",
+            extData: {
+                pageTitle: '新建实例'
+            }
+        });
+
+        // 修改示例
+        $stateProvider.state('g.plugins.editexample', {
+            url: '/plugins/example/edit/:id',
+            templateUrl: "../views/plugins/modifyExamplePlugins.html",
+            extData: {
+                pageTitle: '修改实例'
+            }
+        });
+
+        // 预览示例
+        $stateProvider.state('g.plugins.preview', {
+            url: '/preview/:id',
+            templateUrl: "../views/plugins/previewexample.plugins.html",
+            extData: {
+                pageTitle: '实例预览'
+            }
+        });
+
+        // 预览刚刚上传的配置及文件示例
+        $stateProvider.state('g.plugins.previewchart', {
+            url: '/chartpreview',
+            templateUrl: "../views/plugins/chartpreview.html",
+            extData: {
+                pageTitle: '预览示例'
+            }
+        });
+
+        // 预览已审核的可视化控件
+        $stateProvider.state('g.plugins.previewUploadPlugin', {
+            url: '/previewuploadplugin/:id',
+            templateUrl: "../views/plugins/preview.plugin.html",
+            extData: {
+                pageTitle: '可视化控件预览'
+            }
+        });
+
+        // 新建控件
+        $stateProvider.state('g.plugins.addplugins', {
+            url: '/plugins/add',
+            templateUrl: "../views/plugins/add.plugins.html",
+            extData: {
+                pageTitle: '新建可视化控件'
+            }
+        });
+
+        // 编辑控件
+        $stateProvider.state('g.plugins.modifyplugins', {
+            url: '/plugins/modify/:type/:id',
+            templateUrl: "../views/plugins/eidt.plugins.html",
+            extData: {
+                pageTitle: '编辑控件'
+            }
+        });
+
+        // 控件展台
+        $stateProvider.state('g.plugins.showcase', {
+            url: '/plugins/example/showcase',
+            templateUrl: "../views/plugins/showcaseexample.plugins.html",
+            extData: {
+                pageTitle: '可视化控件展台'
+            }
+        });
+
+        // 控件展台-详细
+        $stateProvider.state('g.plugins.showcasedetail', {
+            url: '/showcase/:id',
+            templateUrl: "../views/plugins/showcaseexampleDetail.html",
+            extData: {
+                pageTitle: '可视化展台详情页'
+            }
+        });
+
+        // 控件管理g
+        $stateProvider.state('g.api', {
+            url: '',
+            templateUrl: "../views/api/g.api.html",
+            extData: {
+                pageTitle: '控件管理'
+            }
+        });
+
+        //api 详情列表
+        $stateProvider.state('g.api.apiList', {
+            url: '/apiList',
+            templateUrl: "../views/api/apilist.html",
+            extData: {
+                pageTitle: 'api列表'
+            }
+        });
+
+        //api 详情列表
+        $stateProvider.state('g.api.createApi', {
+            url: '/createApi',
+            templateUrl: "../views/api/createApi.html",
+            extData: {
+                pageTitle: '新建api'
+            }
+        });
+
+        //api 详情列表
+        $stateProvider.state('g.api.apiDetail', {
+            url: '/apiDetail',
+            templateUrl: "../views/api/apiDetail.html",
+            extData: {
+                pageTitle: 'api详情'
+            }
+        });
+
+        //api 展台
+        $stateProvider.state('g.api.apiBooth', {
+            url: '/apiBooth',
+            templateUrl: "../views/api/apiBooth.html",
+            extData: {
+                pageTitle: 'api展台'
+            }
+        });
+
+        //api 服务包源
+        $stateProvider.state('g.api.apiPackage', {
+            url: '/apiPackage',
+            templateUrl: "../views/api/apiPackage.html",
+            extData: {
+                pageTitle: '服务包源代'
+            }
+        });
+
+
+
+
+        // 默认跳转页
+        $urlRouterProvider.otherwise('/login');
+
+        // 验证接口是否未登录
+        $httpProvider.interceptors.push('httpInterceptor');
+
+    }
+]);
+
+
+app.run(['$rootScope', '$state', '$stateParams', '$templateCache', '$cookies', '$localStorage', 'toaster',
+    function ($rootScope, $state, $stateParams, $templateCache, $cookies, $localStorage, toaster) {
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+
+        // 开发时去除模板缓存
+        // $rootScope.$on('$viewContentLoaded', function() {
+        //     $templateCache.removeAll();
+        // });
+        //
+        permissionCodes = $localStorage.permissionCodes || [];
+
+        // 默认页
+        $rootScope.$on('$stateChangeStart', function (evt, to, params) {
+            if (to.redirectTo) {
+                evt.preventDefault();
+                $state.go(to.redirectTo, params)
+            }
+        });
+
+        // 改变标题
+        $rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
+            $rootScope.title = current.extData.pageTitle;
+            $rootScope.backsref = current.extData.backsref;
+            $rootScope.backsreftitle = current.extData.backsreftitle;
+            console.log($state.current.name);
+            if($state.current.name=="login"){
+                $rootScope.headShow = false;
+            }else{
+                $rootScope.headShow = true;
+            }
+        });
+
+        // 捕获xhr
+        $rootScope.$on('xhrError', function (event, current, previous) {
+            toaster.clear();
+            toaster.pop({
+                type: 'error',
+                title: '发生错误',
+                body: current,
+                showCloseButton: true,
+                // closeHtml: '<button>Close</button>'
+            });
+
+        });
+
+
+    }
+
+
+]);

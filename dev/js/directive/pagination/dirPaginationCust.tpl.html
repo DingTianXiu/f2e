@@ -1,0 +1,34 @@
+<!--<div class="page_box">
+    <span ng-if="directionLinks"
+          ng-class="{ disabled : pagination.current == 1 }"
+          ng-click="setCurrent(pagination.current - 1)">上</span>
+    <span ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)"
+       ng-class="{ page_color : pagination.current == pageNumber, disabled : pageNumber == '...' }"
+       ng-click="setCurrent(pageNumber)">{{ pageNumber }}</span>
+    <span ng-if="directionLinks"
+          ng-class="{ disabled : pagination.current == pagination.last }"
+          ng-click="setCurrent(pagination.current + 1)">下</span>
+</div>-->
+
+<div class="bottomPage">
+    <!--<span class="cz-select" ng-click="getSelectedRows()">选择</span>
+    <div class="some-select">
+        <span class="cz-close" ng-click="cancelSelect()">取消选择</span>
+        <span class="cz-btn" ng-click="setRowsStop()">停用</span>
+        <span class="cz-btn" ng-click="setRowsStart()">启用</span>
+        <span class="cz-btn" ng-click="delRows()">删除</span>
+    </div>-->
+    <div class="tcdPageCode">
+        <span class="prevPage"
+              ng-if="directionLinks"
+              ng-class="{ disabled : pagination.current != 1 }"
+              ng-click="setCurrent(pagination.current - 1)"></span>
+        <span ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" class="current"
+              ng-class="{ on : pagination.current == pageNumber, disabled : pageNumber == '...' }"
+              ng-click="setCurrent(pageNumber)">{{ pageNumber }}</span>
+        <span class="disabled nextPage"
+              ng-if="directionLinks"
+              ng-class="{ disabled : pagination.current != pagination.last }"
+              ng-click="setCurrent(pagination.current + 1)"></span>
+        <span class="current">共{{pagination.last}}页</span></div>
+</div>

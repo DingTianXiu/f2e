@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh_CN" ng-app="App">
+
+	<head>
+		<meta charset="utf-8">
+		<title ng-bind="title + ' - 物料工坊'">正在加载中...</title>
+		<!-- build:indexCSS public/styles/main.css -->
+		<link href="./public/styles/reset.css" media="screen" title="no title" rel="stylesheet" charset="utf-8">
+		<link href="./public/styles/word-count.css" media="screen" title="no title" rel="stylesheet" charset="utf-8">
+		<link href="./js/libs/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+		<link href="./js/libs/layer/skin/layer.css" rel="stylesheet" type="text/css">
+		<link href="./js/libs/layer/skin/layer.ext.css" rel="stylesheet" type="text/css">
+		<link href="./bower_components/AngularJS-Toaster/toaster.min.css" rel="stylesheet" />
+		<link href="./public/styles/style.css" media="screen" rel="stylesheet" title="no title" charset="utf-8">
+		<link href="./public/styles/apiStyle.css" media="screen" rel="stylesheet" title="no title" charset="utf-8">
+		<link href="./js/libs/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
+		<link href="./bower_components/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css">
+		<!-- endbuild -->
+	</head>
+
+	<body>
+		<div class="page-loading" id="pageLoading"></div>
+		<div class="g-wrap" ui-view></div>
+
+		<!-- build:jsLibs script/libs.js -->
+		<script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+		<script src="./js/libs/layer/layer.js" charset="utf-8"></script>
+		<script src="./js/libs/js.cookie.js" charset="utf-8"></script>
+		<script src="./js/libs/swiper.js" charset="utf-8"></script>
+		<script src="./js/libs/ligerUI/js/core/base.min.js" charset="utf-8"></script>
+		<script src="./js/libs/ligerUI/js/plugins/ligerMenu.js" charset="utf-8"></script>
+		<script src="./js/libs/ligerUI/js/plugins/ligerGrid.min.js" charset="utf-8"></script>
+		<script src="./js/libs/ligerUI/js/plugins/ligerTree.min.js" charset="utf-8"></script>
+		<script src="./js/libs/ligerUI/js/plugins/ligerComboBox.min.js" charset="utf-8"></script>
+		<script src="./js/libs/echarts.min.js" charset="utf-8"></script>
+		<script src="./bower_components/angular/angular.min.js" charset="utf-8"></script>
+		<script src="./bower_components/angular-animate/angular-animate.min.js" charset="utf-8"></script>
+		<script src="./bower_components/javascript-md5/js/md5.min.js" charset="utf-8"></script>
+		<script src="./bower_components/angular-cookies/angular-cookies.min.js" charset="utf-8"></script>
+		<script src="./bower_components/angular-ui-router/release/angular-ui-router.min.js" charset="utf-8"></script>
+		<script src="./bower_components/AngularJS-Toaster/toaster.min.js" charset="utf-8"></script>
+		<script src="./bower_components/ngstorage/ngStorage.min.js" charset="utf-8"></script>
+		<script src="./bower_components/angular-file-upload/dist/angular-file-upload.min.js" charset="utf-8"></script>
+		<script src="./js/libs/angular-shims-placeholder.min.js" charset="utf-8"></script>
+		<script src="./bower_components/javascript-md5/js/md5.min.js" charset="utf-8"></script>
+		<script src="./bower_components/codemirror/lib/codemirror.js" charset="utf-8"></script>
+		<script src="./bower_components/angular-ui-codemirror/ui-codemirror.min.js" charset="utf-8"></script>
+		<script src="./bower_components/checklist-model/checklist-model.js" charset="utf-8"></script>
+		<script src="./js/libs/My97DatePicker/WdatePicker.js" charset="utf-8"></script>
+		<script src="./js/libs/jquery.page.js" charset="utf-8"></script>
+		<script src="./public/scripts/word-count.js" charset="utf-8"></script>
+		<script src="./public/scripts/zepto.js" charset="utf-8"></script>
+		<!-- endbuild -->
+
+		<!-- build:jsMain script/main.js -->
+		<script src="./js/app.js" charset="utf-8"></script>
+		<script src="./js/config.js" charset="utf-8"></script>
+		<script src="./js/directive/directive.js" charset="utf-8"></script>
+		<script src="./js/directive/pagination/dirPagination.js"></script>
+		<script src="./js/modules/sso_core.js" charset="utf-8"></script>
+
+		<script src="./js/services/service.global.js" charset="utf-8"></script>
+		<script src="./js/services/service.utils.js" charset="utf-8"></script>
+
+		<script src="./js/controllers/loginCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/gCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/tagConfigCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/createTagCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/createTagFieldCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/tagCenterCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/tagCenterPreCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/dilogCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/modifyTagCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/auditTagCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/tagDetailCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/data/showTagCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/permissions/roleConfigCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/setting/tagSourceConfigCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/permissions/permissionsConfigCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/permissions/roleConfigPermissionsPageCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/permissions/clientConfigCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/permissions/roleConfigPermissionsDataCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/api/apiPackageCtrl.js" charset="utf-8"></script>
+
+		<!--API模块的js文件加载-->
+		<script src="./js/controllers/api/apiListCtrl.js" charset="utf-8"></script>
+
+		<script src="./js/controllers/plugins/addPluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/pluginsPreCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/pluginsDoneCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/exampleListCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/addexamplePluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/modifyExamplePluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/showcaseexample.pluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/editPluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/previewexample.pluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/showcaseexampleDetailCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/auditPluginsCtrl.js" charset="utf-8"></script>
+		<script src="./js/controllers/plugins/previewPluginCtrl.js" charset="utf-8"></script>
+		<script src="./js/libs/ligerUI/js/plugins/ligerLayout.js" charset="utf-8"></script>
+		<!-- endbuild -->
+
+		<!-- build:jsTpl script/tpl.js -->
+		<script src="./js/templates.js" charset="utf-8"></script>
+		<!-- endbuild -->
+
+		<script type="text/javascript">
+			window.onload = function() {
+				$('#pageLoading').fadeOut('fast');
+			};
+		</script>
+	</body>
+
+</html>

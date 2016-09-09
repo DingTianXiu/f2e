@@ -11,19 +11,19 @@ app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', '
 
             $scope.initTree();//初始化树形菜单
             $scope.idOption = 1;//设置树形菜单默认选中值
-            
+
             $scope.queryList();//加载页面列表
         }
         // var treeHeight = ;
 
         //初始化树结构高度
 
-        $(".tables_con1 .group").css("height",window.height-70 );
+        $(".tables_con1 .group").css("height", window.height - 70);
         $scope.isChoose = false;
         $scope.addSourceBtn = function () {
-            if($scope.isChoose){
+            if ($scope.isChoose) {
                 $scope.isChoose = false;
-            }else{
+            } else {
                 $scope.isChoose = true;
             }
         }
@@ -36,7 +36,7 @@ app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', '
                     $scope.myTreeOption = {
                         url: 'resGetTree',
                         parms: {rootId: 0},
-                        fun: $scope.queryList
+                        fun: $scope.getPageParm
                     }
                 }
             );
@@ -45,20 +45,19 @@ app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', '
          * 新增资源组弹窗
          */
         $scope.addSources = function (selectedOption) {
-            if(selectedOption=="n"){
+            if (selectedOption == "n") {
                 $scope.closeAddOpen = $rootScope.layerOpen({
                     type: 2,
                     title: '添加资源',
-                    content: '/index.html#/dialog/tagSourceConfig/add/'+ $scope.idOption+"?"+selectedOption,
+                    content: '/index.html#/dialog/tagSourceConfig/add/' + $scope.idOption + "?" + selectedOption,
                 });
-            }else{
+            } else {
                 $scope.closeAddOpen = $rootScope.layerOpen({
                     type: 2,
                     title: '添加资源组',
-                    content: '/index.html#/dialog/tagSourceConfig/add/'+ $scope.idOption+"?"+selectedOption,
+                    content: '/index.html#/dialog/tagSourceConfig/add/' + $scope.idOption + "?" + selectedOption,
                 });
             }
-
         }
 
         /**
@@ -73,12 +72,13 @@ app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', '
          */
         $scope.callbackOpen = function () {
             $scope.initTree();//刷新树结构;
-            var data = $("#closeOpen").val();//获取返回值
-            if(data!=''){
-                $scope.queryList(data);//根据返回数据刷新页面
-            }else{
-                $(".l-bar-button.l-bar-btnload").click();//刷新页面
-            }
+            // var data = $("#closeOpen").val();//获取返回值
+            // if (data != '') {
+            var data={data:{id:$scope.closeOpen}}
+                $scope.getPageParm(data);//根据返回数据刷新页面
+            // } else {
+            //     $(".l-bar-button.l-bar-btnload").click();//刷新页面
+            // }
         }
         var menu;
 
@@ -91,136 +91,111 @@ app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', '
 
         function itemclick(item) {
             if (item.text == '编辑') {
-                updateSources($scope.parm.id,$scope.parm.name,item.title)
+                updateSources($scope.parm.id, $scope.parm.name, item.title)
             } else if (item.text == '设为资源组') {
-                settingSources($scope.parm.id,$scope.parm.name)
+                settingSources($scope.parm.id, $scope.parm.name)
             }
         };
         /**
          * 加载列表
          */
-        $scope.queryList = function (id) {
-            console.log(typeof id);
-            var test={};
-            var H = document.documentElement.clientHeight;
+        $scope.queryList = function (data) {
 
-            var val = {
-                pageSize: Math.floor((H - 250) / 40),
-            };
-            if(null==id){
-                test={parentId:1,withUnuse:true}
-            }else {
-                /***
-                 * 如果 等于obj 说明是右边菜单点击进来
-                 */
-                var parentId = 1;
-                if(typeof(id) == "object"){
-                    parentId = id.data.id;
-                }else if(typeof(id) == "string"){
-                    var data = JSON.parse(id);
-                    if(isNotEmpty(data['parentId'])){
-                        parentId = data['parentId'];
-                    }
-                }
-                test={parentId:parentId,withUnuse:true}
-            }
-            $.extend(val, test);
-            dataService.getData('queryByParentId',val).success(function (rs) {
 
-            $("#tables_con_show").ligerGrid({
-                columns: $rootScope.tagSourceConfigColumns.columns,
-                cssClass: "ligerClass",
-                isScroll: false,
-                enabledSort: false,
-                headerRowHeight: 45,
-                rowHeight: 40,
-                pageParmName: 'pageNum',
-                pagesizeParmName: 'pageSize',
-                width: "auto", //默认列宽度
-                columnWidth: 160,
-                alternatingRow: false, //单双行差异去除
-                data: {
-                    Rows: rs.data
-                },
-                record: rs.total,
-                onAfterShowData: function (data) {
-                    var gird1Width = $('.l-frozen .l-grid1').width();
-                    $('.l-grid2').css({right: gird1Width,left: '0px',width:'auto'});
-                    $('.l-panel-bar').remove();
-                    if(rs.data==''||rs.data==null){
-                        $('.fc-table-fix').append("<div class='no_data'><p>暂时没有数据</p></div>")
-                    }
+                $("#tables_con_show").ligerGrid({
+                    columns: $rootScope.tagSourceConfigColumns.columns,
+                    url: globalConfig.api.queryListByParentIdRes,
+                    cssClass: "ligerClass",
+                    isScroll: false,
+                    headerRowHeight: 45,
+                    rowHeight: 40,
+                    // pageParmName: 'pageNum',
+                    // pagesizeParmName: 'pageSize',
+                    parms: data,
+                    alternatingRow: false, //单双行差异去除
+                    root: "data",
+                    onAfterShowData: function (data) {
+                        var gird1Width = $('.l-frozen .l-grid1').width();
+                        $('.l-grid2').css({right: gird1Width, left: '0px', width: 'auto'});
+                        $('.l-panel-bar').remove();
+                        if (data.Total == '' || data.Total == null) {
+                            $('.fc-table-fix').append("<div class='no_data'><p>暂时没有数据</p></div>")
+                        }
 
-                },
-                onBeforeShowData: function (data) {
-                    if(rs.data==''||rs.data==null){
-                        $('.l-grid2').css('left','0px')
+                    },
+                    onBeforeShowData: function (data) {
+                        if (data.Total == '' || data.Total == null) {
+                            $('.l-grid2').css('left', '0px')
+                        }
+                    },
+                    onContextmenu: function (parm, e) {
+                        $scope.parm = parm.data;
+                        var isLeaf = parm.data['isLeaf'];
+                        var title = parm.data['code'];
+                        if (isLeaf == 'n') {
+                            title = title + "资源组"
+                        } else {
+                            title = title + "资源"
+                        }
+                        var items = [{
+                            text: '编辑',
+                            click: itemclick,
+                            title: title,
+                        }];
+                        if (parm.data.isLeaf == 'n') {
+                            items.push({
+                                text: '已设为资源组',
+                                click: itemclick
+                            })
+                        }
+                        if (parm.data.isLeaf != 'n') {
+                            items.push({
+                                text: '设为资源组',
+                                click: itemclick
+                            })
+                        }
+                        getLigerMenu(items);
+                        menu.show({
+                            top: e.pageY - e.offsetY
+                        });
+                        return false;
                     }
-                },
-                onContextmenu: function (parm, e) {
-                    $scope.parm = parm.data;
-                    var isLeaf  = parm.data['isLeaf'];
-                    var title   = parm.data['code'];
-                    if(isLeaf =='n'){
-                        title =title+"资源组"
-                    }else{
-                        title =title+"资源"
-                    }
-                    var items = [{
-                        text: '编辑',
-                        click: itemclick,
-                        title: title,
-                    }];
-                    if (parm.data.isLeaf == 'n') {
-                        items.push({
-                            text: '已设为资源组',
-                            click: itemclick
-                        })
-                    }
-                    if (parm.data.isLeaf != 'n') {
-                        items.push({
-                            text: '设为资源组',
-                            click: itemclick
-                        })
-                    }
-                    getLigerMenu(items);
-                    menu.show({
-                        top: e.pageY - e.offsetY
-                    });
-                    return false;
-                }
-            })
-        });
+                })
         };
-        dataService.getData('queryByParentId',{parentId:1,withUnuse:true}).success(function (rs) {
+        $scope.getPageParm = function (data) {
+
+            if(data==undefined){
+                data=1
+            }else {
+                data=data.data.id
+            }
+            $scope.closeOpen=data;
+        dataService.getData('queryByParentId', {parentId:data, withUnuse: true}).success(function (rs) {
             var H = document.documentElement.clientHeight;
 
             var val = {
                 pageSize: Math.floor((H - 250) / 40)
             };
-            if (val.pageSize<= 0) {
-                val.pageSize=1
+            if (val.pageSize <= 0) {
+                val.pageSize = 1
             }
             var page = Math.ceil(rs.total / val.pageSize);
-            if (page == 0) {
+            console.log(page)
+            if (page == 0 || page == 1) {
                 $('.bottomPage').remove()
                 // $('.fc-table-main').append("<div class='no_data'><p>暂时没有数据</p></div>")
-                return false
+                // return false
             }
             $('.tcdPageCode').createPage({
                 pageCount: page,
                 current: 1,
                 backFn: function (p) {
-                    var pageNo = {
-                        pageNum: p
-                    };
-                    $.extend(val, pageNo);
-                    console.log("123");
-                    $scope.queryList(JSON.stringify(val));
-
+                    $scope.queryList({ pageNum: p,pageSize:val.pageSize,parentId: data, withUnuse: true});
                 }
             });
+            $scope.queryList({ pageNum: 1,pageSize:val.pageSize,parentId: data, withUnuse: true});
         })
+    }
 
         $scope.queryAll();
 
@@ -236,7 +211,7 @@ app.controller('tagSourceConfigCtrl', ['$scope', 'globalConfig', '$rootScope', '
 function settingSources(id, name) {
     var scope = angular.element($("#tagSourceConfigId")).scope();
     scope.$apply(function () {
-        layer.confirm('你确定要把"' + name + '"设为资源组吗?', {icon: 3}, function (index) {
+        layer.confirm('你确定要把"' + name + '"设为资源组吗?', {}, function (index) {
             var params = {id: id, isGroup: false};
             $.ajax({
                 type: 'GET',

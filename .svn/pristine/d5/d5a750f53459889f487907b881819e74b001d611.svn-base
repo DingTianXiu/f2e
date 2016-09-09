@@ -1,0 +1,347 @@
+<!-- API展台 -->
+<div ng-controller="apiDetailCtrl" class="apiDetailCtrl">
+  <div class="bq_wrap">
+    <h2><a href="javascript:;" ui-sref="g.api.apiBooth"><|API列表</a></h2>
+    <div class="amend bottom-none mar-left">
+      <div class="list-amend">
+        <div class="tag-show-table">
+
+          <p>所有类目</p>
+          <!--<div class="search">-->
+            <!--<input class="text" type="text" placeholder="请输入关键词" id="mySelectVal"-->
+                   <!--ng-model="$parent.mySelectVal" style="width:222px;height:21px;margin-bottom:1px;">-->
+            <!--<input class="sub1" type="button" value="搜索" ng-click="mySelectClick()"-->
+                   <!--style="width:68px;height:25px;">-->
+          <!--</div>-->
+          <div class="clear">
+
+            <div class="left show-tree">
+              <my-ligerui-tree ng-model="myTreeOption" root-text="类目"></my-ligerui-tree>
+            </div>
+
+            <div class="left">
+              <div class="apiBoothDetail" style="margin-left: 20px;">
+
+                <!--API名称-->
+                <div>
+                  <p>ad.iterm.get<a href="apiDetail.html" style="margin-left: 80%;">测试该API</a></p>
+                  <p style="font-size: 14px">通过设置必要的参数，来获取API后台标准类目属性，以及这些属性里面详细的属性值iterm_values。</p>
+                </div>
+
+                <div class="tabs" style="margin-top:10px;">
+                  <ul class="clear plugin-tabs">
+                    <li id="api30" class="on"><a href="javascript:;" id="api300" ui-sref="g.api.apiDetail">3.0</a></li>
+                    <li id="api20"><a href="javascript:;" id="api200" ui-sref="g.api.apiDetail">2.0</a></li>
+                    <li id="api10"><a href="javascript:;" id="api100" ui-sref="g.api.apiDetail">1.0</a></li>
+                    <li id="api05"><a href="javascript:;" id="api050" ui-sref="g.api.apiDetail">0.5</a></li>
+                  </ul>
+                </div>
+
+                <!--请求格式-->
+                <div class="requestFormat">
+                  <p style="font-size: 14px">请求格式</p>
+                  <table class="show-tab">
+                    <tr>
+                      <th title="URL" class="th-color">URL</th>
+                      <th title="支持格式" class="th-color">支持格式</th>
+                      <th title="HTTP请求方式" class="th-color">
+                        HTTP请求方式
+                      </th>
+                      <th title="是否登录" class="th-color">是否登录</th>
+                    </tr>
+                    <tr>
+                      <td>{{dataInfo.allCount}}</td>
+                      <td>{{dataInfo.onlineCount}}</td>
+                      <td>{{dataInfo.levelFCount}}</td>
+                      <td>{{dataInfo.allCount}}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <!--系统参数-->
+                <div class="requestFormat">
+                  <p style="font-size: 14px">系统参数</p>
+                  <table class="show-tab">
+                    <tr>
+                      <th title="名称" class="th-color">名称</th>
+                      <th title="类型" class="th-color">类型</th>
+                      <th title="是否必须" class="th-color">是否必须</th>
+                      <th title="描述" class="th-color">描述</th>
+                    </tr>
+                    <tr>
+                      <td>{{dataInfo.allCount}}</td>
+                      <td>{{dataInfo.onlineCount}}</td>
+                      <td>{{dataInfo.levelFCount}}</td>
+                      <td>{{dataInfo.allCount}}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <!--请求参数-->
+                <div class="requestFormat">
+                  <p style="font-size: 14px">请求参数</p>
+                  <table class="show-tab">
+                    <tr>
+                      <th title="名称" class="th-color">名称</th>
+                      <th title="类型" class="th-color">类型</th>
+                      <th title="是否必须" class="th-color">是否必须</th>
+                      <th title="示例值" class="th-color">示例值</th>
+                      <th title="描述" class="th-color">描述</th>
+                    </tr>
+                    <tr>
+                      <td>{{dataInfo.allCount}}</td>
+                      <td>{{dataInfo.onlineCount}}</td>
+                      <td>{{dataInfo.levelFCount}}</td>
+                      <td>{{dataInfo.allCount}}</td>
+                      <td>{{dataInfo.allCount}}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <!--响应参数-->
+                <div class="requestFormat">
+                  <p style="font-size: 14px">响应参数</p>
+                  <table class="show-tab">
+                    <tr>
+                      <th title="名称" class="th-color">名称</th>
+                      <th title="类型" class="th-color">类型</th>
+                      <th title="示例值" class="th-color">示例值</th>
+                      <th title="描述" class="th-color">描述</th>
+                    </tr>
+                    <tr>
+                      <td>{{dataInfo.allCount}}</td>
+                      <td>{{dataInfo.onlineCount}}</td>
+                      <td>{{dataInfo.levelFCount}}</td>
+                      <td>{{dataInfo.allCount}}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <!--请求示例-->
+                <div class="apiDetail-example">
+                  <p style="font-size: 14px">请求示例</p>
+                  <div class="tabs" style="margin-top: 10px;">
+                    <ul class="clear plugin-tabs">
+                      <li class="on" style="margin-left: -6px;width: 69px;"><a
+                              href="javascript:;">JAVA</a></li>
+                    </ul>
+                  </div>
+                  <div style="display: block;">
+                    <table class="show-tab" style="margin-top:10px;">
+                      <tr>
+                        <td>1</td>
+                        <td > ADtimeClient client = new
+                          DefaultADtimeClient(url, appkey,
+                          secret);
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td >ItempropvaluesGetRequest req = new
+                          ItempropvaluesGetRequest();
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td >
+                          req.setFields("cid,pid,prop_name,vid,name,name_alias,status,sort_order");
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td >req.setCid(50010538L);</td>
+                      </tr>
+                      <tr>
+                        <td>5</td>
+                        <td >req.setPvs("20561:1234");</td>
+                      </tr>
+                      <tr>
+                        <td>6</td>
+                        <td >
+                          req.setDatetime(StringUtils.parseDateTime("2000-01-01
+                          00:00:00"));
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>7</td>
+                        <td > req.setType(1L);</td>
+                      </tr>
+                      <tr>
+                        <td>8</td>
+                        <td > req.setAttrKeys("item_must_image");</td>
+                      </tr>
+                      <tr>
+                        <td>9</td>
+                        <td > ItempropvaluesGetResponse rsp =
+                          client.execute(req);
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>10</td>
+                        <td > System.out.println(rsp.getBody());</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+
+                <!--响应示例-->
+                <div class="apiDetail-example">
+                  <p style="font-size: 14px">响应示例</p>
+                  <div class="tabs" style="margin-top: 10px;">
+                    <ul class="clear plugin-tabs">
+                      <li class="on" style="margin-left: -6px;width: 69px;"><a
+                              href="javascript:;">JASON</a></li>
+                    </ul>
+                  </div>
+                  <div style="display: block;">
+                    <table class="show-tab" style="margin-top:10px;">
+                      <tr>
+                        <td>1</td>
+                        <td > ADtimeClient client = new
+                          DefaultADtimeClient(url, appkey,
+                          secret);
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td >ItempropvaluesGetRequest req = new
+                          ItempropvaluesGetRequest();
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td >
+                          req.setFields("cid,pid,prop_name,vid,name,name_alias,status,sort_order");
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td >req.setCid(50010538L);</td>
+                      </tr>
+                      <tr>
+                        <td>5</td>
+                        <td >req.setPvs("20561:1234");</td>
+                      </tr>
+                      <tr>
+                        <td>6</td>
+                        <td >
+                          req.setDatetime(StringUtils.parseDateTime("2000-01-01
+                          00:00:00"));
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>7</td>
+                        <td > req.setType(1L);</td>
+                      </tr>
+                      <tr>
+                        <td>8</td>
+                        <td > req.setAttrKeys("item_must_image");</td>
+                      </tr>
+                      <tr>
+                        <td>9</td>
+                        <td > ItempropvaluesGetResponse rsp =
+                          client.execute(req);
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>10</td>
+                        <td > System.out.println(rsp.getBody());</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <!--异常示例-->
+                <div class="apiDetail-example">
+                  <p style="font-size: 14px">异常示例</p>
+                  <div class="tabs" style="margin-top: 10px;">
+                    <ul class="clear plugin-tabs">
+                      <li class="on" style="margin-left: -6px;width: 69px;"><a
+                              href="javascript:;">JASON</a></li>
+                    </ul>
+                  </div>
+                  <div style="display: block;">
+                    <table class="show-tab" style="margin-top:10px;">
+                      <tr>
+                        <td>1</td>
+                        <td > ADtimeClient client = new
+                          DefaultADtimeClient(url, appkey,
+                          secret);
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td >ItempropvaluesGetRequest req = new
+                          ItempropvaluesGetRequest();
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td >
+                          req.setFields("cid,pid,prop_name,vid,name,name_alias,status,sort_order");
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td >req.setCid(50010538L);</td>
+                      </tr>
+                      <tr>
+                        <td>5</td>
+                        <td >req.setPvs("20561:1234");</td>
+                      </tr>
+                      <tr>
+                        <td>6</td>
+                        <td >
+                          req.setDatetime(StringUtils.parseDateTime("2000-01-01
+                          00:00:00"));
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>7</td>
+                        <td > req.setType(1L);</td>
+                      </tr>
+                      <tr>
+                        <td>8</td>
+                        <td > req.setAttrKeys("item_must_image");</td>
+                      </tr>
+                      <tr>
+                        <td>9</td>
+                        <td > ItempropvaluesGetResponse rsp =
+                          client.execute(req);
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>10</td>
+                        <td > System.out.println(rsp.getBody());</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+
+                <div class="requestFormat">
+                  <p style="font-size: 14px">错误码解释</p>
+                  <table class="show-tab">
+                    <tr>
+                      <th title="名称" class="th-color">错误码类型</th>
+                      <th title="类型" class="th-color">错误描述</th>
+                      <th title="是否必须" class="th-color">解决方案</th>
+                    </tr>
+                    <tr>
+                      <td>{{dataInfo.allCount}}</td>
+                      <td>{{dataInfo.onlineCount}}</td>
+                      <td>{{dataInfo.levelFCount}}</td>
+                    </tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

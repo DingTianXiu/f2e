@@ -1,0 +1,48 @@
+<!-- API展台 -->
+<div ng-controller="apiBoothCtrl" class="apiBoothCtrl">
+    <div class="bq_wrap">
+        <h2>API展台</h2>
+        <div class="amend bottom-none mar-left">
+            <div class="list-amend">
+                <div class="tag-show-table">
+
+                    <p>所有类目</p>
+                    <div class="search">
+                        <input class="text" type="text" placeholder="请输入关键词" id="mySelectVal"
+                               ng-model="$parent.mySelectVal" style="width:222px;height:21px;margin-bottom:1px;">
+                        <input class="sub1" type="button" value="搜索" ng-click="mySelectClick()"
+                               style="width:68px;height:25px;">
+                    </div>
+                    <div class="clear">
+
+                        <div class="left show-tree">
+                            <my-ligerui-tree ng-model="myTreeOption" root-text="类目"></my-ligerui-tree>
+                        </div>
+
+                        <div class="left">
+                            <div class="apiList">
+                                <p style="margin-left: 20px;">舆情类
+                                <p style="margin-left: 30px;font-size: 14px">舆情类中包含以下API</p>
+                                <table class="show-tab" style="margin-left: 20px;border: none">
+                                    <tr>
+                                        <th title="API名称" class="th-color">API名称</th>
+                                        <th title="版本" class="th-color">版本</th>
+                                        <th title="描述" class="th-color">描述</th>
+                                    </tr>
+                                    <tr class="apiDetail" ui-sref="g.api.apiDetail">
+                                        <td>{{dataInfo.allCount}}</td>
+                                        <td>{{dataInfo.onlineCount}}</td>
+                                        <td>{{dataInfo.levelFCount}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

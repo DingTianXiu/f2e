@@ -1,0 +1,249 @@
+<div ng-controller="editPluginsCtrl">
+  <div class="bq_wrap">
+    <h2>编辑可视化控件</h2>
+    <form name="createtagform" novalidate>
+      <ul class="clear creat-step">
+        <li ng-class="{'on': pageData.step ==1 }">
+          <h3>1</h3>
+          <div>
+            <p>Step1</p>
+            <p>设置控件信息</p>
+          </div>
+        </li>
+        <li>...</li>
+        <li ng-class="{'on': pageData.step ==2 }">
+          <h3>2</h3>
+          <div>
+            <p>Step2</p>
+            <p>设置控件样式</p>
+          </div>
+        </li>
+        <li>...</li>
+        <li ng-class="{'on': pageData.step ==3 }">
+          <h3>3</h3>
+          <div>
+            <p>Step3</p>
+            <p>完成</p>
+          </div>
+        </li>
+      </ul>
+      <div class="">
+
+        <div class="step-1 m-table-bd" style="padding: 10px 0 0px 0;" ng-show="pageData.step === 1">
+          <ul class="editTag creat-tag-ul">
+            <li>
+              <label>ID</label>
+              <input type="text"  class="text-input disable-text" ng-model="formData.targetId"  name="targetId"/>
+            </li>
+            <li>
+              <label>控件名称</label>
+              <input type="text" value="" class="text-input" ng-model="formData.name" name="name" maxlength="20" required ng-class="{'ng-error':submited && createtagform.name.$error.required}"/>
+              <p class="left">
+                <span class="color-red" ng-show="submited && createtagform.name.$error.maxlength" class="color-red">限20个字符</span>
+                <span class="color-red" ng-show="submited && createtagform.name.$error.required" class="color-red">控件名称必填</span>
+              </p>
+              <span class="color-red">*</span>
+            </li>
+            <li>
+              <label>控件分类</label>
+              <select name="refreshCycle" id="refreshCycle" class="cus-select" ng-model="formData.category" ng-options="m.id as m.name for m in pageData.categoryList"></select>
+              <span class="color-red">*</span>
+            </li>
+            <li>
+              <label>底层库</label>
+              <label ng-repeat="baseLib in pageData.baseLibList" class="baseLabel">
+              <input type="checkbox" checklist-model="formData.baseLibs" checklist-value="baseLib.id" required name="baseLibId" class="baseLibId"/>{{baseLib.name}}</label>
+              <p class="p-tips">
+                <span class="color-red" ng-show="submited && createtagform.baseLibId.$error.required" class="color-red">底层库必填</span>
+              </p>
+              <span class="color-red">*</span>
+            </li>
+            <li>
+              <label>扩展插件</label>
+              <div class="btn-upload" ng-show="upload.uploadScrpit.status === 0">
+                  <div class="btn-upload-style">
+                    上传文件
+                  </div>
+                  <input type="file" id="uploaderScriptid" class="btn-upload-file" nv-file-select uploader="uploaderScript"/>
+                  <span ng-show="submited && createtagform.scriptFileUid.$error.required" class="color-red flie-must-ico">扩展插件必填</span>
+                  <span class="color-red flie-must-ico" ng-class="{'flie-ico-fail':submited && createtagform.scriptFileUid.$error.required}" >*</span>
+              </div>
+              <input type="hidden" name="scriptFileUid" ng-model="formData.pluginFileUid" required>
+              <span class="loading-status" ng-show="upload.uploadScrpit.status === 1">
+                <i class="loading-22"></i>
+                <span>正在上传中...</span>
+              </span>
+              <div ng-show="upload.uploadScrpit.status === 2" class="uploaded-status">
+                <em ng-bind="upload.uploadScrpit.fileName"></em>
+                <a href="javascript:;" class="link-blue file-delet" ng-click="delUploadScrpit();">删除</a>
+              </div>
+              <h3 class="file-tips" ng-class="{'file-tips-marLeft':upload.uploadScrpit.status === 2}">仅支持js文件</h3>
+            </li>
+            <li>
+              <label>开发文档</label>
+              <div class="btn-upload" ng-show="upload.uploadDoc.status === 0">
+                  <div class="btn-upload-style">
+                    上传文件
+                  </div>
+                  <input type="file" id="uploaderDoc" class="btn-upload-file" nv-file-select uploader="uploaderDoc"/>
+                  <span ng-show="submited && createtagform.attachmentFileId.$error.required" class="color-red flie-must-ico">开发文档必填</span>
+                  <span class="color-red flie-must-ico" ng-class="{'flie-ico-fail':submited && createtagform.attachmentFileId.$error.required}" >*</span>
+              </div>
+              <input type="hidden" name="attachmentFileId" ng-model="formData.docFileUid" required>
+              <span class="loading-status" ng-show="upload.uploadDoc.status === 1">
+                <i class="loading-22"></i>
+                <span>正在上传中...</span>
+              </span>
+              <div ng-show="upload.uploadDoc.status === 2" class="uploaded-status">
+                <em ng-bind="upload.uploadDoc.fileName"></em>
+                <a href="javascript:;" class="link-blue file-delet" ng-click="delUploadDoc();">删除</a>
+              </div>
+              <h3 class="file-tips" ng-class="{'file-tips-marLeft':upload.uploadDoc.status === 2}">仅支持html、doc、docx、md文件</h3>
+            </li>
+            <!--<li>-->
+              <!--<label>缩略图</label>-->
+              <!--<div class="btn-upload" ng-show="upload.uploadThumbnail.status === 0">-->
+                <!--<div class="btn-upload-style">-->
+                  <!--上传文件-->
+                <!--</div>-->
+                <!--<input type="file" id="uploaderThumbnail" class="btn-upload-file" nv-file-select uploader="uploadThumbnail"/>-->
+                <!--<span ng-show="submited && createtagform.uploadThumbnailId.$error.required" class="color-red flie-must-ico">缩略图必填</span>-->
+                <!--<span class="color-red flie-must-ico" ng-class="{'flie-ico-fail':submited && createtagform.uploadThumbnailId.$error.required}" >仅支持jpg,png,gif文件*</span>-->
+              <!--</div>-->
+              <!--<input type="hidden" name="uploadThumbnailId" ng-model="formData.thumbnailFileUid" required>-->
+              <!--<span class="loading-status" ng-show="upload.uploadThumbnail.status === 1">-->
+                <!--<i class="loading-22"></i>-->
+                <!--<span>正在上传中...</span>-->
+              <!--</span>-->
+              <!--<div ng-show="upload.uploadThumbnail.status === 2" class="uploaded-status">-->
+                <!--<span ng-bind="upload.uploadThumbnail.fileName"></span>-->
+                <!--<a href="javascript:;" class="link-blue file-delet" ng-click="delUploadThumbnail();">删除</a>-->
+              <!--</div>-->
+            <!--</li>-->
+            <li>
+              <label>附加样式</label>
+              <div class="btn-upload" ng-show="upload.uploadAttachment.status === 0">
+                <div class="btn-upload-style">
+                  上传文件
+                </div>
+                <input type="file" id="uploaderAttachmentid" class="btn-upload-file" nv-file-select uploader="uploaderAttachment"/>
+              </div>
+              <input type="hidden" name="attachmentFileId" ng-model="formData.styleFileUid">
+              <span class="loading-status" ng-show="upload.uploadAttachment.status === 1">
+                <i class="loading-22"></i>
+                <span>正在上传中...</span>
+              </span>
+              <div ng-show="upload.uploadAttachment.status === 2" class="uploaded-status">
+                <em ng-bind="upload.uploadAttachment.fileName"></em>
+                <a href="javascript:;" class="link-blue file-delet" ng-click="delUploadAttachment();">删除</a>
+              </div>
+              <h3 class="file-tips" ng-class="{'file-tips-marLeft':upload.uploadAttachment.status === 2}">仅支持css、less、sass文件</h3>
+            </li>
+            <li class="tag-instructions">
+              <label>变更说明</label>
+              <textarea  name="modifyComment"  class="mx-textarea"  ng-model="formData.modifyComment" required  ng-class="{'ng-error':submited && createtagform.modifyComment.$error.required}"></textarea>
+              <p class="left">
+                <span ng-show="submited && createtagform.modifyComment.$error.required" class="color-red">变更说明为必填项</span>
+                <span ng-show="maxLength == false" class="color-red">变更说明最大长度为200</span>
+              </p>
+              <span class="color-red">*</span>
+              <em class="textLength"><em ng-class="{'warning-red':maxLength == false}">{{textLength}}</em>/200</em>
+            </li>
+            <li>
+              <div class="btn-center">
+                <a href="javascript:;"  ng-click="cancelTag()" class="btn-gray-a">取消</a>
+                <a href="javascript:;" ng-click="toStep2();" class="btn-blue">下一步</a>
+              </div>          
+            </li>
+          </ul>
+        </div>
+      <div class="mask">
+        <div class="mask-bg"></div>
+        <div class="imask">
+          <p>标准控件修改未完成，你要取消吗？</p>
+          <div>
+            <button class="btn-gray-a" ng-click="back()">取消</button>
+            <button class="btn-blue" ng-click="next()">继续</button>
+          </div>
+          
+        </div>
+      </div> 
+        <!--step 2-->
+        <div class="m-table-bd  clear" ng-show="pageData.step === 2">
+          <div class="">
+<!--             <span style="margin-right: 40px;">控件名称：{{formData.name}}</span>
+            <span><label>实例：</label>
+              <select name="currentSample" id="currentSample" class="cus-select"  ng-change="changeSampleVal();" ng-model="pageData.currentSampleId" ng-options="m.id as m.name for m in sampleData"></select>
+            </span>
+          </div> -->
+          <div class="st3-bd clear ">
+            <div class="step-left">
+              <dl class="code-box" style="border-bottom:none;position: relative;">
+                <dt>样式示例<span class="color-red">*</span></dt>
+                <div class="shili-btn">
+                  <a href="javascript:;" class="run" ng-click="previewExamp()">运行</a>
+                </div>
+                <dd>
+                  <div class="cb-h">
+                    <textarea ui-codemirror ui-codemirror-opts="editorReadonlyOptions" class="input-txt" rows="8" ng-model="sampleData[pageData.currentSampleIndex]['sampleStyle']" cols="40" style="width:390px;height:90px"></textarea>
+                  </div>
+                </dd>
+              </dl>
+              <dl class="code-box" style="margin-bottom:25px;">
+                <dt>数据示例<span class="color-red">*</span></dt>
+                <dd>
+                  <div class="cb-h">
+                    <textarea ui-codemirror ui-codemirror-opts="editorReadonlyOptions" class="input-txt" rows="8" cols="40" ng-model="sampleData[pageData.currentSampleIndex]['sampleData']" style="width:390px;height:90px"></textarea>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+            <div class="p-preview step-right">
+              <div class="tabs" style="margin-top:0;">
+                <ul class="clear">
+                  <li ng-class="{'on': tempShowData.previewTabIndex ===0}">
+                    <a href="javascript:;" ng-click="tempShowData.previewTabIndex=0">标准{{formData.name}}图</a>
+                  </li>
+                  <!--<li ng-class="{'on': tempShowData.previewTabIndex === 1}">-->
+                    <!--<a href="javascript:;" ng-click="tempShowData.previewTabIndex=1">控件缩略图</a>-->
+                  <!--</li>-->
+                </ul>
+              </div>
+              <div class="preview-box" ng-show="tempShowData.previewTabIndex ===0">
+                <!-- <div class="preview-name">{{iniData.name}}</div> -->
+                <p class="preview-no" style="top: 0px;">控件预览图大小不得大于 380*450px,否则将只显示部分图像</p>
+                <iframe ng-src="{{pageData.previewChartUrl}}" id="chartPreviewIframe" scroll="no" frameborder="0" width="380" height="450"></iframe>
+              </div>
+              <!--<div class="preview-box" ng-show="tempShowData.previewTabIndex === 1">-->
+                  <!--<img ng-src="{{exchangeThumbnailUrl(sampleData[pageData.currentSampleIndex]['thumbnailFileUid'])}}" alt="预览图" />-->
+              <!--</div>-->
+            </div>
+          </div>
+          <div class="tag-submit pad-left">
+            <a href="javascript:;" ng-click="pageData.step = 1" class="btn-gray-a a2">取消</a>
+            <a href="javascript:;" ng-click="toStep4();" class="btn-blue a1">完成</a>
+          </div>
+        </div>
+
+        <!--setp3-->
+        <div class="step-3" ng-show="pageData.step === 3">
+          <div class="t-box">
+
+            <div class="success-post">
+              <img src="./../../public/images/post-success.png" alt=""/>
+              <p style="margin-top:20px">
+                恭喜您，可视化控件“{{formData.name}}”创建完成，
+              </p>
+              <p>
+                审核通过后才能生效，谢谢！
+              </p>
+            </div>
+            <div class="tac">
+              <a href="javascript:;" ui-sref="g.plugins.pre" class="btn-blue">确定</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

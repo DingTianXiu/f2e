@@ -1,0 +1,197 @@
+<div class="" ng-controller="apiPackageCtrl">
+    <form action="" class="search tag_search">
+        <div>
+            <input class="text" type="text" style="margin: 18px 0 0 30px;" placeholder="输入服务包名称" id="mySelectVal"
+                   ng-model="$parent.mySelectVal">
+            <input class="sub1" type="button" value="搜索" ng-click="mySelectClick()">
+        </div>
+        <a href="javascript:;" class="fr add-tag">新增服务包</a>
+        <a href="javascript:;" class="fr add-tag">添加API</a>
+    </form>
+
+    <!-- 服务包列表 -->
+    <div class="tables_wrap" style="margin-top: 70px;" ng-show="!initData.isShowAPI">
+        <div>
+            <div class="table-box">
+                <div class="table-le">
+                    <div class="tab-thead">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>服务包名称</th>
+                                <th class="hover-bg"><a>API名称</a></th>
+                                <th>状态</th>
+                                <th>描述</th>
+                                <th>创建人</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr dir-paginate="item in initData.pageInfo.listInfo.data | itemsPerPage: initData.pageInfo.listInfo.pageSize"
+                                total-items="initData.pageInfo.listInfo.total"
+                                current-page="initData.pageInfo.listInfo.pageNum"
+                                pagination-id="pageInfo" class="l-grid-row" ng-class="$even?'1':''">
+                                <td ng-click="showList(item)">
+                                <span title="{{item.name}}"><shift-input call-fun="callFunTest" options="item"
+                                                                         value-name="name"></shift-input></span>
+                                </td>
+                                <td>
+                                <span title="{{item.select}}">
+                                    <shift-select
+                                            options="item"
+                                            value-name="select"
+                                            call-fun="callFunTest"
+                                            select-options="selectOptions">
+                                    </shift-select>
+                                </span>
+                                </td>
+                                <td>
+                                    <span title="{{item.name}}" ng-click="updateMs(item)">{{item.name}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.name}}">{{item.name}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-ri">
+                    <div>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in initData.pageInfo.listInfo.data">
+                                <th class="th-re"
+                                    ng-mouseenter="item.isShowOperate = true"
+                                    ng-mouseleave="item.isShowOperate = false">
+                                    ...
+                                    <div ng-show="item.isShowOperate" class="divth-ab">
+                                        <a>修改</a><a>编辑</a><a>删除</a>
+                                    </div>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 分页 -->
+                <dir-pagination-controls class="page_box" direction-links="true" style="margin-right: 37px"
+                                         boundary-links="true" pagination-id="pageInfo"
+                                         template-url="./js/directive/pagination/dirPaginationCust.tpl.html"
+                                         on-page-change="queryListByType(newPageNumber)">
+                </dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+
+    <!-- api详情 -->
+    <div class="tables_wrap" style="margin-top: 70px;" ng-show="initData.isShowAPI">
+        <div class="apiBack"><a ng-click="showList()">返回上一级 </a> | <a>全部服务包</a></div>
+        <div class="table-box">
+            <div class="table-le">
+                <div class="tab-thead">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>API名称</th>
+                            <th>API版本</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr dir-paginate="item in initData.pageInfo.apiListInfo.data | itemsPerPage: initData.pageInfo.apiListInfo.pageSize"
+                            total-items="initData.pageInfo.apiListInfo.total"
+                            current-page="initData.pageInfo.apiListInfo.pageNum"
+                            pagination-id="pageInfo" class="l-grid-row">
+                            <td>
+                                <span title="{{item.name}}"><shift-input call-fun="callFunTest" options="item"
+                                                                         value-name="name"></shift-input></span>
+                            </td>
+                            <td>
+                                <span title="{{item.name}}">{{item.name}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="table-ri">
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in initData.pageInfo.apiListInfo.data">
+                            <th class="th-re"
+                                ng-mouseenter="item.isShowOperate = true"
+                                ng-mouseleave="item.isShowOperate = false">
+                                ...
+                                <div ng-show="item.isShowOperate" class="divth-ab">
+                                    <a>修改</a><a>编辑</a><a>删除</a>
+                                </div>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 分页 -->
+            <dir-pagination-controls class="page_box" direction-links="true" style="margin-right: 37px"
+                                     boundary-links="true" pagination-id="pageInfo"
+                                     template-url="./js/directive/pagination/dirPaginationCust.tpl.html"
+                                     on-page-change="queryListByType(newPageNumber)">
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>
+
+<!-- 高级搜索 -->
+<div class="high_search" id="updateMs" style="height:300px;">
+    <div class="clear">
+        <p class="fl p1">ID<input type="text" name="targetId"/></p>
+        <p class="fl p2">控件名称<input type="text" name="name"/></p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">
+            审核状态
+            <select name="modifyStatus" id="modifyStatus">
+                <option value="">请选择</option>
+            </select>
+        </p>
+        <p class="fl p2">
+            控件分类
+            <!-- <select name="widgetCatName" id="widgetCatName">
+                  <option value="">请选择</option>
+              </select> -->
+            <input type="text" name="widgetCatName"/>
+        </p>
+    </div>
+    <div class="clear">
+        <p class="fl p1">
+            审核意见<input type="text" name="auditComment"/>
+        </p>
+        <p class="fl p2">最近修改人<input type="text" name="modifiedLoginName"/></p>
+    </div>
+    <div class="clear date2">
+        <p class="fl p4" style="right:315px;">修改时间<input style="text-indent:25px;" type="text" name="startModifyTime"
+                                                         id="modifyStart"
+                                                         onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'modifyEnd\')||\'2030-10-01\'}'})"/>至<input
+                style="text-indent:25px;" type="text" id="modifyEnd" name="endModifyTime"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'modifyStart\')}',maxDate:'2020-10-01'})"/><img
+                src="./public/images/date.png" class="calender1" alt=""/><img src="./public/images/date.png"
+                                                                              class="calender2" alt=""/></p>
+    </div>
+    <hr/>
+    <div class="submit fr">
+        <a href="javascript:;" class="a1" ng-click="advancedSearchConfirm()">确定</a>
+        <a href="javascript:;" class="a2" ng-click="CLOSE_OPEN()">取消</a>
+    </div>
+</div>

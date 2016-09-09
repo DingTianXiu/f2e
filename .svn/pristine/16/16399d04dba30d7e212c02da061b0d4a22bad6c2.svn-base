@@ -1,0 +1,35 @@
+/**
+ * Created by ArvinChen on 2016/8/31 0031.
+ */
+/**
+ * 标签展台
+ */
+app.controller('apiPackageCtrl', ['$scope', 'globalConfig', '$rootScope', 'dataService', '$timeout', '$state',
+    function ($scope, globalConfig, $rootScope, dataService, $timeout, $state) {
+
+
+        $scope.selectOptions = [{name: '测试1', code: "1"}, {name: "测试2", code: "2"}];
+
+
+        $scope.callFunTest = function(itemData){
+            layer.msg("执行保存数据!"+JSON.stringify(itemData));
+        }
+
+        $scope.initData = {
+            pageInfo: {
+                listInfo: {
+                    pageSize: 10,
+                    total: 20,
+                    pageNum: 1,
+                    data: [
+                        {name: 'API名称', select: 1},
+                        {name: 'API名称', select: 2},
+                        {name: 'API名称', select: 1},
+                        {name: 'API名称', select: 1},
+                        {name: 'API名称', select: 1}
+                    ]
+                }
+            }
+        }
+    }
+]);
